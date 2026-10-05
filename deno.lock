@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "npm:@supabase/supabase-js@2.117.2": "2.117.2",
     "npm:@supabase/supabase-js@^2.75.0": "2.117.2",
     "npm:ipaddr.js@2.2.0": "2.2.0",
     "npm:linkedom@0.18.12": "0.18.12",
