@@ -1,4 +1,4 @@
-import {db,PLANS,findLink,stripe} from '../_shared/billing.ts';
+import {db,PLANS,findLink,stripe,checkoutError} from '../_shared/billing.ts';
 const cors={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization, apikey, content-type, x-client-info','Access-Control-Allow-Methods':'POST, OPTIONS','Cache-Control':'no-store'};
 const reply=(body:unknown,status=200)=>Response.json(body,{status,headers:cors});
 Deno.serve(async req=>{
@@ -17,9 +17,9 @@ Deno.serve(async req=>{
     if(previewError) throw previewError;
     if(input.action==='status') return reply({subscriptions:subs.map(({stripe_customer_id,...s})=>s),preview:preview?{...preview,amount:PLANS[preview.plan].amount}:null});
     if(input.action==='checkout') {
-      if(preview) return reply({error:'Your account has a complimentary plan preview. Paid checkout is disabled while this preview is enabled.'},409);
       if(!Object.hasOwn(PLANS,input.plan)) return reply({error:'Choose one of the available plans.'},400);
-      if(subs.some(s=>!['canceled','incomplete_expired'].includes(s.status))) return reply({error:'You already have a subscription. Manage it before starting another plan.'},409);
+      const blocked=checkoutError(input.plan,subs,preview);
+      if(blocked) return reply({error:blocked},409);
       const since=new Date(Date.now()-60000).toISOString();
       const {count,error:rateError}=await client.from('billing_checkout_intents').select('id',{count:'exact',head:true}).eq('user_id',user.id).gte('created_at',since);
       if(rateError) throw rateError;

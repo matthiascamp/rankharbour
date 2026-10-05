@@ -30,7 +30,7 @@ with sync_playwright() as p:
         assert any(c.get('plan')==plan for c in billing_calls)
     state['error']=True
     page.locator('[data-subscribe=starter]').click()
-    expect(page.locator('#dash-panel-pricing [data-billing-message]')).to_contain_text('being connected')
+    expect(page.locator('#dash-panel-pricing [data-billing-message]').first).to_contain_text('being connected')
     state['error']=False
     state['subscriptions']=[{'stripe_subscription_id':'sub_fixture','plan':'growth','status':'active','amount':14900,'current_period_end':'2026-11-02T00:00:00Z','cancel_at_period_end':False}]
     page.locator('#dash-tab-account').click();page.locator('#billing-refresh').click()
@@ -41,7 +41,17 @@ with sync_playwright() as p:
     tab=popup.value;tab.wait_for_url('https://billing.stripe.com/**');tab.close()
     assert billing_calls[-1]=={'action':'portal','subscriptionId':'sub_fixture'}
     page.locator('#dash-tab-pricing').click()
-    for button in page.locator('[data-subscribe]').all(): expect(button).to_be_disabled()
+    for button in page.locator('.plan [data-subscribe]').all(): expect(button).to_be_disabled()
+    addon=page.locator('[data-subscribe="google-business-posts"]')
+    expect(addon).to_be_enabled()
+    with context.expect_page() as popup: addon.click()
+    tab=popup.value;tab.wait_for_url('https://buy.stripe.com/**');tab.close()
+    assert any(c.get('plan')=='google-business-posts' for c in billing_calls)
+    state['subscriptions'].append({'stripe_subscription_id':'sub_addon','plan':'google-business-posts','status':'active','amount':2900,'current_period_end':'2026-11-02T00:00:00Z','cancel_at_period_end':False})
+    page.locator('#dash-tab-account').click();page.locator('#billing-refresh').click()
+    expect(page.locator('#billing-records')).to_contain_text('Google Business Posts (add-on)')
+    assert page.get_by_role('button',name='Manage subscription',exact=True).count()==2
+    page.locator('#dash-tab-pricing').click();expect(addon).to_be_disabled()
     page.locator('#dash-tab-account').click()
     for width in [1440,390,320]:
         page.set_viewport_size({'width':width,'height':1000})
@@ -57,6 +67,7 @@ with sync_playwright() as p:
     page.locator('#dash-tab-pricing').click()
     expect(page.locator('[data-subscribe=pro]')).to_have_text('Your plan · Free preview')
     expect(page.locator('[data-subscribe=pro]')).to_be_disabled()
+    expect(addon).to_be_disabled()
     page.locator('#header-logout').click()
     expect(page.locator('[data-view=signin]')).to_be_visible()
     expect(page.locator('#billing-records')).to_be_empty()

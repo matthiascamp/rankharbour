@@ -5,7 +5,18 @@ export const PLANS: Record<string,{name:string;amount:number;url:string}> = {
   pro:{name:'Pro',amount:24900,url:'https://buy.stripe.com/bJe8wOguJcXOa7k4WZasg03'},
   enterprise:{name:'Enterprise',amount:49900,url:'https://buy.stripe.com/4gMcN4a6l5vmfrE2ORasg04'},
   'enterprise-plus':{name:'Enterprise Plus',amount:79900,url:'https://buy.stripe.com/5kQ7sKbap3ne4N04WZasg00'},
+  'google-business-posts':{name:'Google Business Posts',amount:2900,url:'https://buy.stripe.com/aFacN47YdcXOenA757asg05'},
 };
+export const ADDON_PLAN='google-business-posts';
+export function checkoutError(plan:string,subs:Array<{plan:string;status:string}>,preview:unknown) {
+  if(preview) return 'Your account has a complimentary plan preview. Paid checkout is disabled while this preview is enabled.';
+  const current=subs.filter(s=>!['canceled','incomplete_expired'].includes(s.status));
+  if(plan===ADDON_PLAN) {
+    if(current.some(s=>s.plan===ADDON_PLAN)) return 'You already have Google Business Posts. Manage it in Account centre.';
+    if(!current.some(s=>s.plan!==ADDON_PLAN && ['active','trialing'].includes(s.status))) return 'An active SEO plan is required before adding Google Business Posts.';
+  } else if(current.some(s=>s.plan!==ADDON_PLAN)) return 'You already have an SEO subscription. Manage it before starting another plan.';
+  return null;
+}
 export const db = () => createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false,autoRefreshToken:false}});
 export async function stripe(path:string, body?:URLSearchParams) {
   const response=await fetch('https://api.stripe.com/v1/'+path,{method:body?'POST':'GET',signal:AbortSignal.timeout(12000),headers:{Authorization:`Bearer ${Deno.env.get('STRIPE_SECRET_KEY')?.trim()}`,'Stripe-Version':'2025-02-24.acacia',...(body?{'Content-Type':'application/x-www-form-urlencoded'}:{})},body});

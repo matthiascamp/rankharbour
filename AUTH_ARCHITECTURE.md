@@ -251,3 +251,16 @@ the normal plan value and a zero cost, without renewal dates or portal controls.
 The billing endpoint refuses checkout while a preview is assigned. Removing the
 preview administratively restores normal checkout; previews never call Stripe or
 create a customer, subscription, invoice or scheduled charge.
+
+## Google Business Posts add-on
+
+`google-business-posts` uses the supplied live Payment Link and costs AUD29 every
+28 days. Checkout requires an active or trialing base SEO plan and rejects an
+existing nonterminal subscription for the same add-on. Free-preview accounts remain
+blocked from all paid checkouts. The webhook validates the exact price and stores
+the add-on as a separate subscription owned by the same account. Both subscriptions
+have their own portal controls and billing dates. Cancellation is independent;
+cancelling the base plan does not cancel the add-on. The dashboard states this before
+checkout. Publishing Google posts remains a service workflow, not an automated
+Google integration. Live link validation and account association were checked using
+a temporary synthetic account, removed afterwards; no payment was submitted.

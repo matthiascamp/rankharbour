@@ -1,5 +1,6 @@
 // All subscription ownership and checkout references are issued by the server.
-const NAMES = {starter:'Starter',growth:'Growth',pro:'Pro',enterprise:'Enterprise','enterprise-plus':'Enterprise Plus'};
+const ADDON='google-business-posts';
+const NAMES = {starter:'Starter',growth:'Growth',pro:'Pro',enterprise:'Enterprise','enterprise-plus':'Enterprise Plus',[ADDON]:'Google Business Posts'};
 export function initBilling(root) {
   const status=root.querySelector('#billing-status');
   const records=root.querySelector('#billing-records');
@@ -7,8 +8,20 @@ export function initBilling(root) {
   const buttons=[...root.querySelectorAll('[data-subscribe]')];
   let userId=null, generation=0, controller=null, loading=false, subscriptions=[], checked=false, preview=null;
   const message=text=>messages.forEach(el=>{el.textContent=text;});
-  const hasSubscription=()=>subscriptions.some(s=>!['canceled','incomplete_expired'].includes(s.status));
-  function renderButtons() {buttons.forEach(b=>{b.disabled=loading||!checked||hasSubscription()||!!preview; b.textContent=preview?(preview.plan===b.dataset.subscribe?'Your plan · Free preview':'Preview account'):hasSubscription()?'Manage in Account centre':`Choose ${NAMES[b.dataset.subscribe]}`;});}
+  const hasSubscription=()=>subscriptions.some(s=>s.plan!==ADDON&&!['canceled','incomplete_expired'].includes(s.status));
+  function renderButtons() {
+    const activeBase=subscriptions.some(s=>s.plan!==ADDON&&['active','trialing'].includes(s.status));
+    const hasAddon=subscriptions.some(s=>s.plan===ADDON&&!['canceled','incomplete_expired'].includes(s.status));
+    buttons.forEach(b=>{
+      if(b.dataset.subscribe===ADDON) {
+        b.disabled=loading||!checked||!!preview||hasAddon||!activeBase;
+        b.textContent=preview?'Unavailable in free preview':hasAddon?'Manage in Account centre':!checked?'Loading account…':!activeBase?'Choose an SEO plan first':'Add Google Business Posts';
+      } else {
+        b.disabled=loading||!checked||hasSubscription()||!!preview;
+        b.textContent=preview?(preview.plan===b.dataset.subscribe?'Your plan · Free preview':'Preview account'):hasSubscription()?'Manage in Account centre':`Choose ${NAMES[b.dataset.subscribe]}`;
+      }
+    });
+  }
   async function request(body,signal) {
     const [{getSupabaseClient},{getAuthConfig}]=await Promise.all([import('./src/auth/client.js'),import('./src/auth/config.js')]);
     const {data:{session}}=await getSupabaseClient().auth.getSession();
@@ -34,7 +47,7 @@ export function initBilling(root) {
     }
     subscriptions.forEach(sub=>{
       const box=document.createElement('div');box.className='dash-box';
-      const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[sub.plan]||sub.plan} — ${sub.status.replaceAll('_',' ')}`;
+      const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[sub.plan]||sub.plan}${sub.plan===ADDON?' (add-on)':''} — ${sub.status.replaceAll('_',' ')}`;
       const detail=document.createElement('p');detail.className='dash-box__text';
       detail.textContent=new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD'}).format(sub.amount/100)+' AUD every 28 days';
       const date=document.createElement('p');date.className='dash-box__text';
