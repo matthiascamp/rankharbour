@@ -465,3 +465,18 @@ body.auth-page {
 @media (max-width: 600px) { .explain { padding: 20px; } }
 .billing-help .btn-brass { white-space: normal; text-align: center; max-width: 100%; }
 @media (max-width: 400px) { .billing-help .btn-brass { padding: 12px 16px; gap: 10px; } }
+/* Keep plan prices aligned when five cards share a laptop-width row. */
+@media (min-width: 1200px) {
+  .plan__tagline { min-height: 3em; line-height: 1.5; }
+  .plan__price { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+/* Ensure controls remain comfortable on touch screens and at browser zoom. */
+.auth-page .plan__cta, .auth-page .seo-btn-sm, .auth-page .btn-chalk { min-height: 44px; }
+.auth-page .auth-link { min-height: 32px; }
+.auth-field__row { flex-wrap: wrap; column-gap: 10px; row-gap: 0; }
+.account-intro, .auth-view, .overview-feature > div, .account-settings-grid > * { min-width: 0; }
+@media (max-width: 900px) and (max-height: 500px) {
+  .account-intro { display: none; }
+  .auth-main { align-items: flex-start; padding-top: 96px; }
+  .seo__about { position: static; }
+}

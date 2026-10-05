@@ -1110,3 +1110,16 @@ p {
     transition: none !important;
   }
 }
+/* Narrow-phone cards need a full row for readable inclusions and touch targets. */
+@media (max-width: 380px) {
+  .public-plans { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .public-plan { padding: 24px; }
+  .public-plan--featured { padding: 23px; }
+  .public-plan h3 { font-size: 21px; }
+  .public-plan ul { font-size: 14px; }
+}
+.public-plan .button { min-height: 44px; }
+@media (max-width: 650px) {
+  .menu-toggle { min-width: 44px; min-height: 44px; }
+  .site-header nav { max-height: calc(100svh - 88px); overflow-y: auto; }
+}
