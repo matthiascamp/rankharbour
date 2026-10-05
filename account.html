@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="no-referrer">
+  <title>Account — RankHarbour</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="rankharbour.css">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="seo-evaluation.css">
+  <!-- Pinned, locally vendored Supabase SDK. src/auth/client.js imports the bare specifier. -->
+  <script type="importmap">
+    { "imports": { "@supabase/supabase-js": "./vendor/supabase-js@2.117.2/supabase.mjs" } }
+  </script>
+</head>
+<body class="auth-page">
+
+<div class="auth-bg" aria-hidden="true"></div>
+
+<header class="rh-header auth-header" role="banner">
+  <div class="rh-header__inner">
+    <a href="RankHarbour.html" class="rh-logo" aria-label="RankHarbour home">
+      <img class="rh-logo__mark" src="assets/images/rankharbour-anchor-hero.png"
+           width="1254" height="1254" alt="">
+      <span class="rh-logo__word">
+        <img class="rh-logo__img" src="assets/images/rankharbour-logo-horizontal.png"
+             width="2172" height="724" alt="RankHarbour">
+      </span>
+    </a>
+    <!-- Dashboard sections. Shown only on the signed-in dashboard; dashboard.js drives the tabs. -->
+    <nav class="auth-header__nav" id="header-nav" aria-label="Dashboard" hidden>
+      <div class="dash-tabs" role="tablist" aria-label="Account sections" aria-orientation="horizontal">
+        <button type="button" class="dash-tab" role="tab" id="dash-tab-overview" aria-controls="dash-panel-overview" aria-selected="true">
+          <svg class="dash-tab__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z"/></svg>
+          <span>Overview</span>
+        </button>
+        <button type="button" class="dash-tab" role="tab" id="dash-tab-pricing" aria-controls="dash-panel-pricing" aria-selected="false" tabindex="-1">
+          <svg class="dash-tab__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          <span>Plans<span class="dash-tab__more"> &amp; Pricing</span></span>
+        </button>
+        <button type="button" class="dash-tab" role="tab" id="dash-tab-seo" aria-controls="dash-panel-seo" aria-selected="false" tabindex="-1">
+          <svg class="dash-tab__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5M8 10.5l1.8 1.8 3.2-3.4"/></svg>
+          <span>SEO<span class="dash-tab__more dash-tab__more--xs"> Evaluation</span></span>
+        </button>
+        <button type="button" class="dash-tab" role="tab" id="dash-tab-account" aria-controls="dash-panel-account" aria-selected="false" tabindex="-1">
+          <svg class="dash-tab__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg>
+          <span>Account<span class="dash-tab__more"> centre</span></span>
+        </button>
+      </div>
+    </nav>
+    <!-- Shown only while a session exists; account.js wires it to the shared logout. -->
+    <button type="button" class="auth-header__logout" id="header-logout" data-logout
+            data-label="Log out" data-busy="Logging out&hellip;" hidden>Log out</button>
+  </div>
+</header>
+
+<main class="auth-main">
+  <div class="auth-card">
+
+    <!-- Shared live region for errors, confirmations and progress. -->
+    <p class="auth-notice" id="auth-notice" role="status" aria-live="polite"></p>
+
+    <!-- Loading -->
+    <section class="auth-view" data-view="loading" aria-labelledby="loading-title">
+      <p class="eyebrow auth-eyebrow">Client account</p>
+      <h1 class="auth-title" id="loading-title" tabindex="-1">Connecting&hellip;</h1>
+      <p class="auth-lede" id="loading-text">Checking your session.</p>
+      <noscript>
+        <p class="auth-lede auth-lede--warn">JavaScript is required to sign in. Please enable it and reload this page.</p>
+      </noscript>
+    </section>
+
+    <!-- Auth service unavailable -->
+    <section class="auth-view" data-view="unavailable" aria-labelledby="unavailable-title" hidden>
+      <p class="eyebrow auth-eyebrow">Client account</p>
+      <h1 class="auth-title" id="unavailable-title" tabindex="-1">Sign-in is unavailable</h1>
+      <p class="auth-lede">We couldn&rsquo;t load the sign-in service. Check your connection and try again.</p>
+      <a class="btn-brass auth-submit" href="account.html">Try again</a>
+    </section>
+
+    <!-- Sign in -->
+    <section class="auth-view" data-view="signin" aria-labelledby="signin-title" hidden>
+      <p class="eyebrow auth-eyebrow">Client account</p>
+      <h1 class="auth-title" id="signin-title" tabindex="-1">Welcome back</h1>
+      <form class="auth-form" id="signin-form" method="post" action="#" novalidate>
+        <fieldset disabled>
+          <legend class="sr-only">Sign in with email and password</legend>
+          <div class="auth-field">
+            <label for="signin-email">Email</label>
+            <input id="signin-email" name="email" type="email" autocomplete="username" inputmode="email" required>
+          </div>
+          <div class="auth-field">
+            <div class="auth-field__row">
+              <label for="signin-password">Password</label>
+              <button type="button" class="auth-link" data-go="forgot">Forgot password?</button>
+            </div>
+            <input id="signin-password" name="password" type="password" autocomplete="current-password" required>
+          </div>
+          <button type="submit" class="btn-brass auth-submit" data-label="Sign in" data-busy="Signing in&hellip;">Sign in</button>
+        </fieldset>
+      </form>
+      <p class="auth-switch">New to RankHarbour? <button type="button" class="auth-link" data-go="signup">Create an account</button></p>
+    </section>
+
+    <!-- Sign up -->
+    <section class="auth-view" data-view="signup" aria-labelledby="signup-title" hidden>
+      <p class="eyebrow auth-eyebrow">Client account</p>
+      <h1 class="auth-title" id="signup-title" tabindex="-1">Create an account</h1>
+      <form class="auth-form" id="signup-form" method="post" action="#" novalidate>
+        <fieldset disabled>
+          <legend class="sr-only">Create an account</legend>
+          <div class="auth-field">
+            <label for="signup-name">Name <span class="auth-optional">(optional)</span></label>
+            <input id="signup-name" name="displayName" type="text" autocomplete="name" maxlength="100">
+          </div>
+          <div class="auth-field">
+            <label for="signup-email">Email</label>
+            <input id="signup-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          </div>
+          <div class="auth-field">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" name="password" type="password" autocomplete="new-password" minlength="6" required aria-describedby="signup-password-hint">
+            <p class="auth-hint" id="signup-password-hint">At least 6 characters.</p>
+          </div>
+          <div class="auth-field">
+            <label for="signup-confirm">Confirm password</label>
+            <input id="signup-confirm" name="confirm" type="password" autocomplete="new-password" required>
+          </div>
+          <button type="submit" class="btn-brass auth-submit" data-label="Create account" data-busy="Creating account&hellip;">Create account</button>
+        </fieldset>
+      </form>
+      <p class="auth-switch">Already have an account? <button type="button" class="auth-link" data-go="signin">Sign in</button></p>
+    </section>
+
+    <!-- Check email (after signup or reset request) -->
+    <section class="auth-view" data-view="check-email" aria-labelledby="check-title" hidden>
+      <p class="eyebrow auth-eyebrow">Check your inbox</p>
+      <h1 class="auth-title" id="check-title" tabindex="-1">Confirm your email</h1>
+      <p class="auth-lede" id="check-text"></p>
+      <p class="auth-hint">Didn&rsquo;t arrive? Check spam, or wait a minute before trying again.</p>
+      <button type="button" class="btn-chalk auth-submit" data-go="signin">Back to sign in</button>
+    </section>
+
+    <!-- Forgot password -->
+    <section class="auth-view" data-view="forgot" aria-labelledby="forgot-title" hidden>
+      <p class="eyebrow auth-eyebrow">Password reset</p>
+      <h1 class="auth-title" id="forgot-title" tabindex="-1">Reset your password</h1>
+      <p class="auth-lede">Enter your email and we&rsquo;ll send you a secure reset link.</p>
+      <form class="auth-form" id="forgot-form" method="post" action="#" novalidate>
+        <fieldset disabled>
+          <legend class="sr-only">Request a password reset link</legend>
+          <div class="auth-field">
+            <label for="forgot-email">Email</label>
+            <input id="forgot-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          </div>
+          <button type="submit" class="btn-brass auth-submit" data-label="Send reset link" data-busy="Sending&hellip;">Send reset link</button>
+        </fieldset>
+      </form>
+      <p class="auth-switch"><button type="button" class="auth-link" data-go="signin">&larr; Back to sign in</button></p>
+    </section>
+
+    <!-- New password (recovery link callback) -->
+    <section class="auth-view" data-view="recovery" aria-labelledby="recovery-title" hidden>
+      <p class="eyebrow auth-eyebrow">Password reset</p>
+      <h1 class="auth-title" id="recovery-title" tabindex="-1">Choose a new password</h1>
+      <form class="auth-form" id="recovery-form" method="post" action="#" novalidate>
+        <fieldset disabled>
+          <legend class="sr-only">Set a new password</legend>
+          <!-- Hidden username helps password managers save the new password against the right account. -->
+          <input type="email" name="username" id="recovery-username" autocomplete="username" hidden>
+          <div class="auth-field">
+            <label for="recovery-password">New password</label>
+            <input id="recovery-password" name="password" type="password" autocomplete="new-password" minlength="6" required aria-describedby="recovery-password-hint">
+            <p class="auth-hint" id="recovery-password-hint">At least 6 characters.</p>
+          </div>
+          <div class="auth-field">
+            <label for="recovery-confirm">Confirm new password</label>
+            <input id="recovery-confirm" name="confirm" type="password" autocomplete="new-password" required>
+          </div>
+          <button type="submit" class="btn-brass auth-submit" data-label="Update password" data-busy="Updating&hellip;">Update password</button>
+        </fieldset>
+      </form>
+    </section>
+
+    <!-- Signed in: client dashboard. Personal fields stay empty until a session exists. -->
+    <section class="auth-view dash" data-view="account" aria-labelledby="account-title" hidden>
+      <header class="dash__head">
+        <p class="eyebrow auth-eyebrow">Client account</p>
+        <h1 class="auth-title dash__title" id="account-title" tabindex="-1">Welcome</h1>
+        <p class="dash__session-note">You&rsquo;ll stay signed in on this browser until you log out.</p>
+      </header>
+
+      <div class="dash__main">
+
+        <!-- Overview -->
+        <section class="dash-panel" role="tabpanel" id="dash-panel-overview" aria-labelledby="dash-tab-overview" tabindex="0">
+          <h2 class="dash-h2" id="dash-overview-title" tabindex="-1">Getting started</h2>
+          <p class="dash-lede">Your RankHarbour account is ready. From here you can compare our Small Business and Enterprise SEO plans, run an on-page SEO evaluation of a public web page, and keep your sign-in details up to date.</p>
+
+          <div class="dash-shortcuts">
+            <button type="button" class="dash-shortcut" data-dash-go="pricing">
+              <span class="dash-shortcut__kicker">Plans &amp; Pricing</span>
+              <span class="dash-shortcut__title">Small Business and Enterprise SEO</span>
+              <span class="dash-shortcut__text">Five monthly plans from $99 to $799 AUD, full inclusions, a side-by-side comparison and how our process works.</span>
+              <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button type="button" class="dash-shortcut" data-dash-go="seo">
+              <span class="dash-shortcut__kicker">SEO Evaluation</span>
+              <span class="dash-shortcut__title">Check a page&rsquo;s on-page SEO</span>
+              <span class="dash-shortcut__text">Enter a public URL and get a checklist of on-page passes, warnings and failures with recommended fixes.</span>
+              <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
+            </button>
+            <button type="button" class="dash-shortcut" data-dash-go="account">
+              <span class="dash-shortcut__kicker">Account centre</span>
+              <span class="dash-shortcut__title">Your sign-in details</span>
+              <span class="dash-shortcut__text">See the name and email on your account, reset your password or log out.</span>
+              <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+
+          <h3 class="dash-h3">How to compare our services</h3>
+          <ol class="dash-steps">
+            <li>
+              <span class="dash-steps__num" aria-hidden="true">1</span>
+              <div>
+                <p class="dash-steps__title">Choose Small Business or Enterprise</p>
+                <p>Small Business SEO (Starter, Growth and Pro) suits sole traders through to established small businesses. Enterprise SEO (Enterprise and Enterprise Plus) suits organisations where organic search is an important customer-acquisition channel.</p>
+              </div>
+            </li>
+            <li>
+              <span class="dash-steps__num" aria-hidden="true">2</span>
+              <div>
+                <p class="dash-steps__title">Decide how hands-on you want us to be</p>
+                <p>Every plan includes Search Console and Analytics monitoring and a monthly report. Plans differ in how many search opportunities we monitor, how many significant page optimisations and SEO articles we deliver each month, and the level of technical work, strategy and support.</p>
+              </div>
+            </li>
+            <li>
+              <span class="dash-steps__num" aria-hidden="true">3</span>
+              <div>
+                <p class="dash-steps__title">Check the bigger projects separately</p>
+                <p>Website rebuilds, custom software, integrations and similar work sit outside the monthly plans and are quoted individually.</p>
+              </div>
+            </li>
+          </ol>
+
+          <p class="dash-note">Not sure which plan suits your business? <a class="dash-link" href="RankHarbour.html#contact">Get in touch</a> and we&rsquo;ll talk it through with you.</p>
+        </section>
+
+        <!-- Plans & Pricing -->
+        <section class="dash-panel" role="tabpanel" id="dash-panel-pricing" aria-labelledby="dash-tab-pricing" tabindex="0" hidden>
+          <h2 class="dash-h2" id="dash-pricing-title" tabindex="-1">SEO Plans</h2>
+          <p class="dash-lede">Our SEO plans are designed to continuously improve your website&rsquo;s visibility, attract more relevant visitors, and adapt to how people are actually searching.</p>
+          <p class="dash-lede dash-lede--sub">Rather than simply setting a list of keywords once and leaving them unchanged, we continuously monitor search performance, emerging opportunities, competitor activity, and changing customer search behaviour. We then use that data to improve pages, update targeting, create new content, and prioritise the opportunities most likely to increase qualified organic traffic.</p>
+          <p class="plans-currency">All prices are per month in Australian dollars.</p>
+
+          <!-- All five plans share one responsive grid; each card names its category. -->
+          <section class="plans-group" aria-labelledby="plans-title">
+            <div class="plans-group__head">
+              <h3 class="dash-h3" id="plans-title">Monthly SEO plans</h3>
+              <ul class="plans-legend" aria-label="Plan categories">
+                <li class="plans-legend__item"><span class="plans-legend__name">Small Business SEO</span> Starter &middot; Growth &middot; Pro</li>
+                <li class="plans-legend__item plans-legend__item--ent"><span class="plans-legend__name">Enterprise SEO</span> Enterprise &middot; Enterprise Plus</li>
+              </ul>
+            </div>
+            <ul class="plans" aria-labelledby="plans-title">
+              <li class="plan" data-plan="starter" data-group="small">
+                <article class="plan__body" aria-labelledby="plan-starter-name">
+                  <p class="plan__group">Small Business SEO</p>
+                  <h4 class="plan__name" id="plan-starter-name">Starter</h4>
+                  <p class="plan__tagline">SEO Essentials</p>
+                  <p class="plan__price"><span class="plan__amount">$99</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__fit">Best for sole traders, startups, and small businesses that want their website properly monitored and maintained for search without the cost of a traditional SEO agency.</p>
+                  <ul class="plan__list">
+                    <li>5 priority search themes monitored</li>
+                    <li>Initial SEO health review</li>
+                    <li>Google Search Console monitoring</li>
+                    <li>Basic on-page SEO improvements</li>
+                    <li>Monthly organic-search performance report</li>
+                  </ul>
+                  <div class="plan__foot">
+                    <details class="plan__more">
+                      <summary>Full inclusions <span class="plan__count">17</span></summary>
+                      <div class="plan__more-body">
+                        <p class="plan__lead">Includes:</p>
+                        <ul class="plan__full">
+                          <li>Initial SEO health review</li>
+                          <li>Google Search Console monitoring</li>
+                          <li>Google Analytics traffic monitoring</li>
+                          <li>Website indexing monitoring</li>
+                          <li>Sitemap and crawlability checks</li>
+                          <li>Broken-link monitoring</li>
+                          <li>Basic technical SEO checks</li>
+                          <li>5 priority search themes monitored</li>
+                          <li>Monthly search-query analysis</li>
+                          <li>Identification of new search terms customers are using</li>
+                          <li>Monitoring of rising and declining keyword opportunities</li>
+                          <li>Basic title and meta-description optimisation</li>
+                          <li>Basic on-page SEO improvements</li>
+                          <li>Internal-link recommendations</li>
+                          <li>Basic competitor visibility monitoring</li>
+                          <li>Monthly organic-search performance report</li>
+                          <li>Recommended SEO priorities for the following month</li>
+                        </ul>
+                        <p class="plan__ideal"><strong>Ideal for:</strong> Businesses that want their website kept search-ready while gradually improving visibility.</p>
+                      </div>
+                    </details>
+                    <button type="button" class="btn-chalk plan__cta" data-compare="starter">Compare inclusions</button>
+                  </div>
+                </article>
+              </li>
+              <li class="plan plan--featured" data-plan="growth" data-group="small">
+                <article class="plan__body" aria-labelledby="plan-growth-name">
+                  <p class="plan__badge" id="plan-growth-badge">Best Value</p>
+                  <p class="plan__group">Small Business SEO</p>
+                  <h4 class="plan__name" id="plan-growth-name">Growth</h4>
+                  <p class="plan__tagline">Active SEO Growth</p>
+                  <p class="plan__price"><span class="plan__amount">$149</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__fit">Best for small businesses that want active, ongoing SEO rather than simple monitoring.</p>
+                  <p class="plan__lead">Everything in Starter, plus:</p>
+                  <ul class="plan__list">
+                    <li>15 priority search themes monitored</li>
+                    <li>Continuous Search Opportunity Optimisation</li>
+                    <li>1 significant page optimisation per month</li>
+                    <li>1 SEO article/content strategy brief per month</li>
+                    <li>Monthly search-growth report</li>
+                  </ul>
+                  <div class="plan__foot">
+                    <details class="plan__more">
+                      <summary>Full inclusions <span class="plan__count">20</span></summary>
+                      <div class="plan__more-body">
+                        <p class="plan__lead">Includes everything in Starter, plus:</p>
+                        <ul class="plan__full">
+                          <li>15 priority search themes monitored</li>
+                          <li>Continuous Search Opportunity Optimisation</li>
+                          <li>Ongoing keyword opportunity research</li>
+                          <li>Search Console query-trend monitoring</li>
+                          <li>Relevant emerging-search monitoring</li>
+                          <li>Competitor keyword-gap analysis</li>
+                          <li>Search-intent analysis</li>
+                          <li>Identification of high-impression, low-click opportunities</li>
+                          <li>Identification of keywords approaching page-one rankings</li>
+                          <li>1 significant page optimisation per month</li>
+                          <li>Page headings and content adjusted around current search demand</li>
+                          <li>Title and meta-description optimisation</li>
+                          <li>Internal-link optimisation</li>
+                          <li>Local SEO recommendations</li>
+                          <li>Google Business Profile optimisation where applicable</li>
+                          <li>Content-gap identification</li>
+                          <li>1 SEO article/content strategy brief per month</li>
+                          <li>Existing-content refresh recommendations</li>
+                          <li>Monthly search-growth report</li>
+                          <li>Clear monthly summary of completed work and upcoming opportunities</li>
+                        </ul>
+                        <p class="plan__ideal"><strong>Ideal for:</strong> Small businesses that want their SEO to continually adapt rather than relying on a static keyword list.</p>
+                      </div>
+                    </details>
+                    <button type="button" class="btn-brass plan__cta" data-compare="growth">Compare inclusions</button>
+                  </div>
+                </article>
+              </li>
+              <li class="plan" data-plan="pro" data-group="small">
+                <article class="plan__body" aria-labelledby="plan-pro-name">
+                  <p class="plan__group">Small Business SEO</p>
+                  <h4 class="plan__name" id="plan-pro-name">Pro</h4>
+                  <p class="plan__tagline">SEO + Content Growth</p>
+                  <p class="plan__price"><span class="plan__amount">$249</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__fit">Best for established small businesses that want both ongoing SEO optimisation and new search-targeted content.</p>
+                  <p class="plan__lead">Everything in Growth, plus:</p>
+                  <ul class="plan__list">
+                    <li>30+ search opportunities monitored</li>
+                    <li>2 significant page optimisations per month</li>
+                    <li>1 fully written SEO article per month</li>
+                    <li>Technical SEO monitoring</li>
+                    <li>Priority support</li>
+                  </ul>
+                  <div class="plan__foot">
+                    <details class="plan__more">
+                      <summary>Full inclusions <span class="plan__count">26</span></summary>
+                      <div class="plan__more-body">
+                        <p class="plan__lead">Includes everything in Growth, plus:</p>
+                        <ul class="plan__full">
+                          <li>30+ search opportunities monitored</li>
+                          <li>Broader competitor keyword research</li>
+                          <li>Search-volume and search-intent analysis</li>
+                          <li>Seasonal and emerging-search research</li>
+                          <li>Continuous keyword portfolio refinement</li>
+                          <li>2 significant page optimisations per month</li>
+                          <li>Service-page and landing-page SEO improvements</li>
+                          <li>Content structure optimisation</li>
+                          <li>Internal-link architecture improvements</li>
+                          <li>Search-result click-through-rate optimisation</li>
+                          <li>Technical SEO monitoring</li>
+                          <li>Structured-data and schema recommendations</li>
+                          <li>Keyword cannibalisation monitoring</li>
+                          <li>Content-decay monitoring</li>
+                          <li>1 fully written SEO article per month</li>
+                          <li>Article keyword research</li>
+                          <li>Article topic research</li>
+                          <li>Search-intent targeting</li>
+                          <li>SEO-friendly heading structure</li>
+                          <li>Internal links to relevant products and services</li>
+                          <li>Calls to action designed to move readers toward enquiry or purchase</li>
+                          <li>Existing articles refreshed when better opportunities are identified</li>
+                          <li>Local SEO improvements</li>
+                          <li>Competitor-content monitoring</li>
+                          <li>Monthly performance and strategy report</li>
+                          <li>Priority support</li>
+                        </ul>
+                      </div>
+                    </details>
+                    <button type="button" class="btn-chalk plan__cta" data-compare="pro">Compare inclusions</button>
+                  </div>
+                </article>
+              </li>
+              <li class="plan plan--enterprise" data-plan="enterprise" data-group="enterprise">
+                <article class="plan__body" aria-labelledby="plan-enterprise-name">
+                  <p class="plan__group">Enterprise SEO</p>
+                  <h4 class="plan__name" id="plan-enterprise-name">Enterprise</h4>
+                  <p class="plan__tagline">Managed SEO</p>
+                  <p class="plan__price"><span class="plan__amount">$499</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__fit">Best for larger businesses, growing organisations, or websites where organic search is becoming an important customer-acquisition channel.</p>
+                  <p class="plan__lead">Everything in Pro, plus:</p>
+                  <ul class="plan__list">
+                    <li>75+ search opportunities monitored</li>
+                    <li>4 significant page optimisations per month</li>
+                    <li>2 fully written SEO articles per month</li>
+                    <li>Technical SEO audits</li>
+                    <li>Monthly SEO strategy review</li>
+                    <li>Priority implementation queue</li>
+                  </ul>
+                  <div class="plan__foot">
+                    <details class="plan__more">
+                      <summary>Full inclusions <span class="plan__count">24</span></summary>
+                      <div class="plan__more-body">
+                        <p class="plan__lead">Includes everything in Pro, plus:</p>
+                        <ul class="plan__full">
+                          <li>75+ search opportunities monitored</li>
+                          <li>Full keyword-landscape monitoring</li>
+                          <li>Wider competitor search-strategy monitoring</li>
+                          <li>Emerging-demand and trend analysis</li>
+                          <li>Search-intent change monitoring</li>
+                          <li>Commercial keyword prioritisation</li>
+                          <li>4 significant page optimisations per month</li>
+                          <li>2 fully written SEO articles per month</li>
+                          <li>Existing-content refreshes</li>
+                          <li>Service and category page recommendations</li>
+                          <li>Advanced internal-link optimisation</li>
+                          <li>Technical SEO audits</li>
+                          <li>Indexing and crawl monitoring</li>
+                          <li>Structured-data optimisation</li>
+                          <li>Website performance monitoring</li>
+                          <li>Conversion-focused SEO recommendations</li>
+                          <li>Local SEO and location strategy</li>
+                          <li>Competitor content-gap analysis</li>
+                          <li>Keyword cannibalisation detection</li>
+                          <li>Google Search Console performance analysis</li>
+                          <li>Analytics performance analysis</li>
+                          <li>Monthly SEO strategy review</li>
+                          <li>Priority implementation queue</li>
+                          <li>Priority support</li>
+                        </ul>
+                        <p class="plan__ideal"><strong>Ideal for:</strong> Businesses that want SEO actively managed across content, technical performance, competitors, and changing search demand.</p>
+                      </div>
+                    </details>
+                    <button type="button" class="btn-chalk plan__cta" data-compare="enterprise">Compare inclusions</button>
+                  </div>
+                </article>
+              </li>
+              <li class="plan plan--enterprise" data-plan="enterprise-plus" data-group="enterprise">
+                <article class="plan__body" aria-labelledby="plan-enterprise-plus-name">
+                  <p class="plan__group">Enterprise SEO</p>
+                  <h4 class="plan__name" id="plan-enterprise-plus-name">Enterprise Plus</h4>
+                  <p class="plan__tagline">Advanced Search Growth</p>
+                  <p class="plan__price"><span class="plan__amount">$799</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__fit">Best for organisations that want SEO treated as a major ongoing growth channel.</p>
+                  <p class="plan__lead">Everything in Enterprise, plus:</p>
+                  <ul class="plan__list">
+                    <li>150+ search opportunities monitored</li>
+                    <li>8 significant page optimisations per month</li>
+                    <li>4 fully written SEO articles per month</li>
+                    <li>AI-search visibility monitoring</li>
+                    <li>Custom reporting</li>
+                    <li>Direct strategy consultation</li>
+                  </ul>
+                  <div class="plan__foot">
+                    <details class="plan__more">
+                      <summary>Full inclusions <span class="plan__count">24</span></summary>
+                      <div class="plan__more-body">
+                        <p class="plan__lead">Includes everything in Enterprise, plus:</p>
+                        <ul class="plan__full">
+                          <li>150+ search opportunities monitored</li>
+                          <li>Broad competitor intelligence</li>
+                          <li>Multi-service and multi-category keyword strategy</li>
+                          <li>Advanced trending-query analysis</li>
+                          <li>Seasonal search-demand analysis</li>
+                          <li>Search-demand forecasting</li>
+                          <li>8 significant page optimisations per month</li>
+                          <li>4 fully written SEO articles per month</li>
+                          <li>New landing-page opportunity research</li>
+                          <li>Content-cluster development</li>
+                          <li>Existing-content refresh program</li>
+                          <li>Advanced internal-link strategy</li>
+                          <li>Advanced technical SEO monitoring</li>
+                          <li>Structured-data strategy</li>
+                          <li>Site-architecture recommendations</li>
+                          <li>Multi-location SEO support where required</li>
+                          <li>Search-conversion analysis</li>
+                          <li>Content cannibalisation and consolidation strategy</li>
+                          <li>AI-search visibility monitoring</li>
+                          <li>Search visibility across traditional and AI-assisted search</li>
+                          <li>Monthly strategic SEO review</li>
+                          <li>Custom reporting</li>
+                          <li>Priority support</li>
+                          <li>Direct strategy consultation</li>
+                        </ul>
+                        <p class="plan__ideal"><strong>Ideal for:</strong> Businesses that want continuous research, content creation, optimisation, measurement, and strategic SEO management.</p>
+                      </div>
+                    </details>
+                    <button type="button" class="btn-chalk plan__cta" data-compare="enterprise-plus">Compare inclusions</button>
+                  </div>
+                </article>
+              </li>
+            </ul>
+          </section>
+
+          <div class="compare" id="compare">
+            <div class="compare__head">
+              <h3 class="dash-h3" id="compare-title">Plan Comparison</h3>
+              <p class="compare__focus" id="compare-focus" hidden>
+                <span>Highlighting <strong id="compare-focus-name"></strong></span>
+                <button type="button" class="dash-link" id="compare-clear">Show all plans</button>
+              </p>
+            </div>
+            <p class="compare__hint" id="compare-hint">Scroll sideways to see every plan.</p>
+            <div class="compare__scroll" role="region" aria-labelledby="compare-title" aria-describedby="compare-hint" tabindex="0">
+              <table class="compare__table" id="compare-table">
+                <caption class="sr-only">Features included in the Starter, Growth, Pro, Enterprise and Enterprise Plus plans</caption>
+                <thead>
+                  <tr class="compare__groups">
+                    <th scope="col" rowspan="2" class="compare__feature">Feature</th>
+                    <th scope="colgroup" colspan="3">Small Business</th>
+                    <th scope="colgroup" colspan="2" class="compare__group-ent">Enterprise</th>
+                  </tr>
+                  <tr>
+                    <th scope="col" data-col="starter" tabindex="-1">Starter</th>
+                    <th scope="col" data-col="growth" tabindex="-1">Growth</th>
+                    <th scope="col" data-col="pro" tabindex="-1">Pro</th>
+                    <th scope="col" data-col="enterprise" tabindex="-1" class="compare__ent-start">Enterprise</th>
+                    <th scope="col" data-col="enterprise-plus" tabindex="-1">Enterprise Plus</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="compare__price-row"><th scope="row">Monthly Price</th><td data-col="starter">$99</td><td data-col="growth">$149</td><td data-col="pro">$249</td><td data-col="enterprise" class="compare__ent-start">$499</td><td data-col="enterprise-plus">$799</td></tr>
+                  <tr><th scope="row">Search Monitoring</th><td data-col="starter" class="is-yes"><span class="sr-only">Included</span></td><td data-col="growth" class="is-yes"><span class="sr-only">Included</span></td><td data-col="pro" class="is-yes"><span class="sr-only">Included</span></td><td data-col="enterprise" class="is-yes compare__ent-start"><span class="sr-only">Included</span></td><td data-col="enterprise-plus" class="is-yes"><span class="sr-only">Included</span></td></tr>
+                  <tr><th scope="row">Search Opportunities Monitored</th><td data-col="starter">5</td><td data-col="growth">15</td><td data-col="pro">30+</td><td data-col="enterprise" class="compare__ent-start">75+</td><td data-col="enterprise-plus">150+</td></tr>
+                  <tr><th scope="row">Continuous Search Opportunity Optimisation</th><td data-col="starter">Basic</td><td data-col="growth" class="is-yes"><span class="sr-only">Included</span></td><td data-col="pro">Advanced</td><td data-col="enterprise" class="compare__ent-start">Advanced</td><td data-col="enterprise-plus">Advanced</td></tr>
+                  <tr><th scope="row">Competitor Monitoring</th><td data-col="starter">Basic</td><td data-col="growth" class="is-yes"><span class="sr-only">Included</span></td><td data-col="pro" class="is-yes"><span class="sr-only">Included</span></td><td data-col="enterprise" class="compare__ent-start">Advanced</td><td data-col="enterprise-plus">Advanced</td></tr>
+                  <tr><th scope="row">Significant Page Optimisations</th><td data-col="starter">Minor</td><td data-col="growth">1/month</td><td data-col="pro">2/month</td><td data-col="enterprise" class="compare__ent-start">4/month</td><td data-col="enterprise-plus">8/month</td></tr>
+                  <tr><th scope="row">SEO Articles</th><td data-col="starter" class="is-no"><span aria-hidden="true">&mdash;</span><span class="sr-only">Not included</span></td><td data-col="growth">Strategy Brief</td><td data-col="pro">1/month</td><td data-col="enterprise" class="compare__ent-start">2/month</td><td data-col="enterprise-plus">4/month</td></tr>
+                  <tr><th scope="row">Existing Content Refresh</th><td data-col="starter" class="is-no"><span aria-hidden="true">&mdash;</span><span class="sr-only">Not included</span></td><td data-col="growth">Recommendations</td><td data-col="pro" class="is-yes"><span class="sr-only">Included</span></td><td data-col="enterprise" class="is-yes compare__ent-start"><span class="sr-only">Included</span></td><td data-col="enterprise-plus" class="is-yes"><span class="sr-only">Included</span></td></tr>
+                  <tr><th scope="row">Internal Linking</th><td data-col="starter">Basic</td><td data-col="growth" class="is-yes"><span class="sr-only">Included</span></td><td data-col="pro" class="is-yes"><span class="sr-only">Included</span></td><td data-col="enterprise" class="compare__ent-start">Advanced</td><td data-col="enterprise-plus">Advanced</td></tr>
+                  <tr><th scope="row">Technical SEO</th><td data-col="starter">Monitoring</td><td data-col="growth">Monitoring</td><td data-col="pro" class="is-yes"><span class="sr-only">Included</span></td><td data-col="enterprise" class="compare__ent-start">Advanced</td><td data-col="enterprise-plus">Advanced</td></tr>
+                  <tr><th scope="row">Local SEO</th><td data-col="starter">Basic</td><td data-col="growth" class="is-yes"><span class="sr-only">Included</span></td><td data-col="pro" class="is-yes"><span class="sr-only">Included</span></td><td data-col="enterprise" class="is-yes compare__ent-start"><span class="sr-only">Included</span></td><td data-col="enterprise-plus">Multi-location</td></tr>
+                  <tr><th scope="row">AI Search Visibility</th><td data-col="starter" class="is-no"><span aria-hidden="true">&mdash;</span><span class="sr-only">Not included</span></td><td data-col="growth" class="is-no"><span aria-hidden="true">&mdash;</span><span class="sr-only">Not included</span></td><td data-col="pro">Basic</td><td data-col="enterprise" class="is-yes compare__ent-start"><span class="sr-only">Included</span></td><td data-col="enterprise-plus" class="is-yes"><span class="sr-only">Included</span></td></tr>
+                  <tr><th scope="row">Strategy Review</th><td data-col="starter" class="is-no"><span aria-hidden="true">&mdash;</span><span class="sr-only">Not included</span></td><td data-col="growth" class="is-no"><span aria-hidden="true">&mdash;</span><span class="sr-only">Not included</span></td><td data-col="pro">Included in Report</td><td data-col="enterprise" class="compare__ent-start">Monthly</td><td data-col="enterprise-plus">Monthly</td></tr>
+                  <tr><th scope="row">Reporting</th><td data-col="starter">Monthly</td><td data-col="growth">Monthly</td><td data-col="pro">Advanced</td><td data-col="enterprise" class="compare__ent-start">Advanced</td><td data-col="enterprise-plus">Custom</td></tr>
+                  <tr><th scope="row">Support</th><td data-col="starter">Standard</td><td data-col="growth">Standard</td><td data-col="pro">Priority</td><td data-col="enterprise" class="compare__ent-start">Priority</td><td data-col="enterprise-plus">Priority</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="compare__note"><span class="compare__key"><span class="compare__tick" aria-hidden="true"></span> Included</span> <span class="compare__key"><span aria-hidden="true">&mdash;</span> Not included</span> Prices are per month in Australian dollars.</p>
+          </div>
+
+          <!-- How the service works -->
+          <section class="explain" aria-labelledby="explain-title">
+            <h3 class="dash-h3" id="explain-title">How our SEO works</h3>
+            <p class="explain__intro">SEO is treated as an ongoing cycle rather than a one-time setup.</p>
+            <ol class="cycle" aria-label="Continuous improvement cycle">
+              <li>Research</li><li>Optimise</li><li>Publish</li><li>Measure</li><li>Improve</li>
+            </ol>
+
+            <div class="explain__list">
+              <details class="explain__item">
+                <summary>
+                  <span class="explain__title">Continuous Search Opportunity Optimisation</span>
+                  <span class="explain__sum">We continuously analyse how people are searching for your products and services.</span>
+                </summary>
+                <div class="explain__body">
+                  <p>We continuously analyse how people are searching for your products and services, including:</p>
+                  <ul class="explain__bullets">
+                    <li>Emerging search terms</li>
+                    <li>Changing customer behaviour</li>
+                    <li>Seasonal search demand</li>
+                    <li>Competitor opportunities</li>
+                    <li>Rising and declining queries</li>
+                    <li>Search terms already generating impressions for your website</li>
+                    <li>High-potential keywords where your site is close to ranking strongly</li>
+                  </ul>
+                  <p>When valuable opportunities are identified, we adjust page targeting, content priorities, headings, metadata, internal links, and future content strategy accordingly.</p>
+                </div>
+              </details>
+
+              <details class="explain__item">
+                <summary>
+                  <span class="explain__title">Search-Targeted Content</span>
+                  <span class="explain__sum">The goal is not simply more traffic, but more relevant traffic.</span>
+                </summary>
+                <div class="explain__body">
+                  <p>SEO articles are not created simply to add more pages to your website.</p>
+                  <p>Each article is based around a genuine search opportunity and is designed to:</p>
+                  <ul class="explain__bullets">
+                    <li>Answer questions potential customers are searching for</li>
+                    <li>Attract relevant organic traffic</li>
+                    <li>Build topical authority</li>
+                    <li>Support important service and product pages</li>
+                    <li>Strengthen internal linking</li>
+                    <li>Move visitors toward becoming customers</li>
+                  </ul>
+                  <p>The goal is not simply more traffic, but more relevant traffic.</p>
+                </div>
+              </details>
+
+              <details class="explain__item">
+                <summary>
+                  <span class="explain__title">How Our SEO Process Works <span class="explain__tag">13 steps</span></span>
+                  <span class="explain__sum">Each month we research, optimise, measure the impact of previous changes and adjust the strategy.</span>
+                </summary>
+                <div class="explain__body">
+                  <p>SEO is treated as an ongoing cycle rather than a one-time setup.</p>
+                  <p>Each month, we:</p>
+                  <ol class="explain__steps">
+                    <li>Analyse website performance and search data</li>
+                    <li>Identify new search opportunities</li>
+                    <li>Monitor rising and declining search queries</li>
+                    <li>Review competitors</li>
+                    <li>Identify pages with strong impressions but weak click-through rates</li>
+                    <li>Identify keywords close to stronger ranking positions</li>
+                    <li>Prioritise the opportunities most likely to generate relevant traffic</li>
+                    <li>Optimise existing pages</li>
+                    <li>Improve titles, headings, metadata, content, and internal links</li>
+                    <li>Create or recommend new search-targeted content</li>
+                    <li>Monitor technical SEO issues</li>
+                    <li>Measure the impact of previous changes</li>
+                    <li>Adjust the SEO strategy for the following month</li>
+                  </ol>
+                  <p>This creates a continuous improvement cycle:</p>
+                  <p class="explain__flow">Research &rarr; Optimise &rarr; Publish &rarr; Measure &rarr; Improve</p>
+                </div>
+              </details>
+
+              <details class="explain__item">
+                <summary>
+                  <span class="explain__title">Our Approach to Keywords</span>
+                  <span class="explain__sum">We do not simply select a fixed group of keywords when you sign up and leave them unchanged.</span>
+                </summary>
+                <div class="explain__body">
+                  <p>We do not simply select a fixed group of keywords when you sign up and leave them unchanged.</p>
+                  <p>Search behaviour constantly changes.</p>
+                  <p>Customers use different phrases, competitors target new searches, seasonal demand changes, and new opportunities appear over time.</p>
+                  <p>Our Continuous Search Opportunity Optimisation process monitors these changes and continually refines your SEO strategy.</p>
+                  <p>This can include:</p>
+                  <ul class="explain__bullets explain__bullets--cols">
+                    <li>Targeting newly emerging searches</li>
+                    <li>Expanding successful keyword groups</li>
+                    <li>Improving pages already beginning to rank</li>
+                    <li>Updating pages that are losing visibility</li>
+                    <li>Targeting valuable competitor keyword gaps</li>
+                    <li>Adjusting targeting around seasonal demand</li>
+                    <li>Creating new articles around valuable customer questions</li>
+                    <li>Strengthening service pages using supporting content</li>
+                    <li>Removing or consolidating competing content</li>
+                    <li>Improving search-result click-through rates</li>
+                  </ul>
+                  <p>The objective is to continually expand the number of relevant searches through which potential customers can discover your business.</p>
+                </div>
+              </details>
+
+              <details class="explain__item">
+                <summary>
+                  <span class="explain__title">SEO Content Strategy</span>
+                  <span class="explain__sum">Content is created around real search opportunities rather than publishing articles simply for the sake of having a blog.</span>
+                </summary>
+                <div class="explain__body">
+                  <p>Content is created around real search opportunities rather than publishing articles simply for the sake of having a blog.</p>
+                  <p>A typical content strategy may include:</p>
+                  <ul class="explain__bullets explain__bullets--cols">
+                    <li>Customer questions</li>
+                    <li>Buying guides</li>
+                    <li>Service explanations</li>
+                    <li>Product comparisons</li>
+                    <li>Industry-specific guides</li>
+                    <li>Local search content</li>
+                    <li>Educational resources</li>
+                    <li>Frequently searched problems</li>
+                    <li>Commercial research queries</li>
+                    <li>Informational searches that naturally lead toward your services</li>
+                  </ul>
+                  <p>Every piece of content should have a clear purpose.</p>
+                  <p>Where appropriate, articles are internally linked toward relevant commercial pages so traffic can move from:</p>
+                  <p class="explain__flow">Google Search &rarr; Helpful Content &rarr; Product or Service Page &rarr; Enquiry or Sale</p>
+                </div>
+              </details>
+
+              <details class="explain__item">
+                <summary>
+                  <span class="explain__title">What We Measure <span class="explain__tag">13 metrics</span></span>
+                  <span class="explain__sum">SEO performance is measured using meaningful search and website data.</span>
+                </summary>
+                <div class="explain__body">
+                  <p>SEO performance is measured using meaningful search and website data, including:</p>
+                  <ul class="explain__bullets explain__bullets--cols">
+                    <li>Organic website visitors</li>
+                    <li>Google Search clicks</li>
+                    <li>Search impressions</li>
+                    <li>Click-through rate</li>
+                    <li>Search queries</li>
+                    <li>Landing-page performance</li>
+                    <li>New keyword opportunities</li>
+                    <li>Keyword visibility trends</li>
+                    <li>Website engagement</li>
+                    <li>Enquiries or conversions where tracking is available</li>
+                    <li>Pages gaining visibility</li>
+                    <li>Pages losing visibility</li>
+                    <li>Content performance</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+
+            <div class="explain__promise" id="no-guarantee">
+              <p class="explain__promise-title">We focus on long-term organic growth rather than guaranteeing individual rankings.</p>
+              <p>No legitimate SEO provider can guarantee a specific Google ranking, position, traffic level, or number of enquiries.</p>
+              <p>Instead, our goal is to consistently improve the quality, relevance, visibility, and search performance of your website over time.</p>
+            </div>
+          </section>
+
+          <aside class="custom-work" id="custom-work" aria-labelledby="custom-work-title">
+            <div class="custom-work__intro">
+              <h3 class="dash-h3" id="custom-work-title">Custom work, quoted separately</h3>
+              <p>Larger projects sit outside the monthly plans. We scope each one with you and provide a separate quote.</p>
+            </div>
+            <ul class="custom-work__list">
+              <li>Website rebuilds</li>
+              <li>Custom software</li>
+              <li>Integrations</li>
+              <li>Major SEO projects</li>
+              <li>Photography</li>
+              <li>Google Ads setup</li>
+            </ul>
+            <a class="btn-chalk custom-work__cta" href="RankHarbour.html#contact">Discuss a project</a>
+          </aside>
+        </section>
+
+        <!-- SEO Evaluation. Results are built by seo-evaluation.js with textContent only. -->
+        <section class="dash-panel seo" role="tabpanel" id="dash-panel-seo" aria-labelledby="dash-tab-seo" tabindex="0" hidden>
+          <h2 class="dash-h2" id="dash-seo-title" tabindex="-1">SEO Evaluation</h2>
+          <p class="dash-lede">Check one public web page against an on-page SEO checklist: titles, descriptions, headings, content, images and links. Each result comes with the evidence we found and a recommended fix.</p>
+
+          <div class="seo__layout">
+            <div class="seo__work">
+              <form class="seo-form" id="seo-form" novalidate>
+                <label class="seo-form__label" for="seo-url">Page URL</label>
+                <div class="seo-form__row">
+                  <input class="seo-form__input" id="seo-url" name="url" type="text" inputmode="url"
+                         autocomplete="url" spellcheck="false" autocapitalize="off" maxlength="2048"
+                         placeholder="example.com.au/services" aria-describedby="seo-url-hint seo-status" required>
+                  <button type="submit" class="btn-brass seo-form__submit" id="seo-submit" data-label="Evaluate page" data-busy="Evaluating&hellip;">Evaluate page</button>
+                  <button type="button" class="btn-chalk seo-form__cancel" id="seo-cancel" hidden>Cancel</button>
+                </div>
+                <p class="seo-form__hint" id="seo-url-hint">A bare domain like <span class="seo-code">example.com.au</span> or a full <span class="seo-code">https://</span> address. The page must be publicly reachable.</p>
+                <p class="seo-status" id="seo-status" role="status" aria-live="polite"></p>
+              </form>
+
+              <div class="seo-results" id="seo-results" aria-labelledby="seo-results-title" hidden>
+                <div class="seo-results__head">
+                  <h3 class="dash-h3 dash-h3--flush" id="seo-results-title" tabindex="-1">Evaluation results</h3>
+                  <div class="seo-results__actions">
+                    <button type="button" class="btn-chalk seo-btn-sm" id="seo-rerun">Run again</button>
+                    <button type="button" class="btn-chalk seo-btn-sm" id="seo-download">Download JSON report</button>
+                  </div>
+                </div>
+                <dl class="seo-target">
+                  <div><dt>Checked URL</dt><dd id="seo-final-url"></dd></div>
+                  <div id="seo-requested-row" hidden><dt>Requested</dt><dd id="seo-requested-url"></dd></div>
+                  <div><dt>HTTP status</dt><dd id="seo-http-status"></dd></div>
+                  <div><dt>Checked</dt><dd><time id="seo-checked-at"></time></dd></div>
+                </dl>
+
+                <div class="seo-summary">
+                  <div class="seo-score">
+                    <p class="seo-score__label" id="seo-score-label">On-page checklist score</p>
+                    <p class="seo-score__value"><span id="seo-score">&ndash;</span><span class="seo-score__max"> / 100</span></p>
+                    <div class="seo-meter" role="meter" id="seo-meter" aria-labelledby="seo-score-label" aria-valuemin="0" aria-valuemax="100"><span class="seo-meter__fill" id="seo-meter-fill"></span></div>
+                    <p class="seo-score__note">Measures how many on-page checks this page meets. It is not a ranking prediction.</p>
+                  </div>
+                  <ul class="seo-counts" aria-label="Check totals">
+                    <li class="seo-count" data-status="pass"><span class="seo-count__num" id="seo-count-pass">0</span><span class="seo-count__label"><span class="seo-icon" aria-hidden="true"></span>Passed</span></li>
+                    <li class="seo-count" data-status="warn"><span class="seo-count__num" id="seo-count-warn">0</span><span class="seo-count__label"><span class="seo-icon" aria-hidden="true"></span>Warnings</span></li>
+                    <li class="seo-count" data-status="fail"><span class="seo-count__num" id="seo-count-fail">0</span><span class="seo-count__label"><span class="seo-icon" aria-hidden="true"></span>Failed</span></li>
+                  </ul>
+                </div>
+
+                <h4 class="seo-h4">Checks <span class="seo-h4__aside">Failures first, then warnings, then passes</span></h4>
+                <ol class="seo-checks" id="seo-checks"></ol>
+
+                <h4 class="seo-h4">Page metrics</h4>
+                <dl class="seo-metrics" id="seo-metrics"></dl>
+
+                <div class="seo-limits">
+                  <h4 class="seo-h4 seo-h4--flush">Limitations of this evaluation</h4>
+                  <ul class="seo-limits__list" id="seo-limitations"></ul>
+                  <p class="seo-attrib" id="seo-attribution"></p>
+                </div>
+              </div>
+            </div>
+
+            <aside class="seo__about" aria-labelledby="seo-how-title">
+              <h3 class="dash-h3 dash-h3--flush" id="seo-how-title">How the evaluation works</h3>
+              <ol class="seo-process">
+                <li><strong>Enter a public URL.</strong> Any page anyone can open without signing in.</li>
+                <li><strong>We fetch the server HTML.</strong> Our server requests that one page and reads the HTML it returns.</li>
+                <li><strong>Checks are evaluated.</strong> Each on-page check is marked passed, warning or failed, with the evidence found.</li>
+                <li><strong>Prioritise the fixes.</strong> Start with failures, then warnings, using each recommendation.</li>
+                <li><strong>Run it again.</strong> After publishing changes, re-run the evaluation to confirm they worked.</li>
+              </ol>
+              <div class="seo-scope">
+                <p class="seo-scope__title">What it does not cover</p>
+                <p>It reviews a single page&rsquo;s server HTML only. It does not render JavaScript, crawl the rest of your site, read your Google Search Console rankings or traffic, or measure Core Web Vitals and page speed.</p>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- Account -->
+        <section class="dash-panel" role="tabpanel" id="dash-panel-account" aria-labelledby="dash-tab-account" tabindex="0" hidden>
+          <h2 class="dash-h2" id="dash-account-title" tabindex="-1">Account centre</h2>
+          <p class="dash-lede">The details you use to sign in to RankHarbour.</p>
+
+          <div class="dash-box">
+            <dl class="auth-details dash-details">
+              <div class="auth-details__row" id="account-name-row" hidden>
+                <dt>Name</dt>
+                <dd id="account-name"></dd>
+              </div>
+              <div class="auth-details__row">
+                <dt>Email</dt>
+                <dd id="account-email"></dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="dash-box dash-box--row">
+            <div>
+              <h3 class="dash-h3 dash-h3--flush">Password</h3>
+              <p class="dash-box__text">We&rsquo;ll email you a secure link to choose a new password.</p>
+              <p class="dash-status" id="dash-reset-status" role="status" aria-live="polite"></p>
+            </div>
+            <button type="button" class="btn-chalk" id="dash-reset-btn" data-label="Send reset link" data-busy="Sending&hellip;">Send reset link</button>
+          </div>
+
+          <div class="dash-box dash-box--row">
+            <div>
+              <h3 class="dash-h3 dash-h3--flush">Log out</h3>
+              <p class="dash-box__text">You stay signed in on this browser, including when you close it or visit other pages, until you log out here or from the header.</p>
+            </div>
+            <div class="auth-actions dash-actions">
+              <button type="button" class="btn-brass" id="signout-btn" data-logout data-label="Log out" data-busy="Logging out&hellip;">Log out</button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<script type="module" src="account.js"></script>
+<script>
+  // Fallback if account.js cannot load at all (blocked, 404, or no module support).
+  setTimeout(function () {
+    if (window.__rhAuthBooted) return;
+    var views = document.querySelectorAll('[data-view]');
+    for (var i = 0; i < views.length; i++) {
+      views[i].hidden = views[i].getAttribute('data-view') !== 'unavailable';
+    }
+  }, 6000);
+</script>
+</body>
+</html>

@@ -1,0 +1,344 @@
+# SEO Plans
+
+Our SEO plans are designed to continuously improve your website’s visibility, attract more relevant visitors, and adapt to how people are actually searching.
+
+Rather than simply setting a list of keywords once and leaving them unchanged, we continuously monitor search performance, emerging opportunities, competitor activity, and changing customer search behaviour. We then use that data to improve pages, update targeting, create new content, and prioritise the opportunities most likely to increase qualified organic traffic.
+
+---
+
+## Small Business SEO
+
+### Starter — $99/month
+
+**SEO Essentials**
+
+Best for sole traders, startups, and small businesses that want their website properly monitored and maintained for search without the cost of a traditional SEO agency.
+
+Includes:
+
+- Initial SEO health review
+- Google Search Console monitoring
+- Google Analytics traffic monitoring
+- Website indexing monitoring
+- Sitemap and crawlability checks
+- Broken-link monitoring
+- Basic technical SEO checks
+- 5 priority search themes monitored
+- Monthly search-query analysis
+- Identification of new search terms customers are using
+- Monitoring of rising and declining keyword opportunities
+- Basic title and meta-description optimisation
+- Basic on-page SEO improvements
+- Internal-link recommendations
+- Basic competitor visibility monitoring
+- Monthly organic-search performance report
+- Recommended SEO priorities for the following month
+
+**Ideal for:**  
+Businesses that want their website kept search-ready while gradually improving visibility.
+
+---
+
+### Growth — $149/month
+
+**Best Value**
+
+**Active SEO Growth**
+
+Best for small businesses that want active, ongoing SEO rather than simple monitoring.
+
+Includes everything in Starter, plus:
+
+- 15 priority search themes monitored
+- Continuous Search Opportunity Optimisation
+- Ongoing keyword opportunity research
+- Search Console query-trend monitoring
+- Relevant emerging-search monitoring
+- Competitor keyword-gap analysis
+- Search-intent analysis
+- Identification of high-impression, low-click opportunities
+- Identification of keywords approaching page-one rankings
+- 1 significant page optimisation per month
+- Page headings and content adjusted around current search demand
+- Title and meta-description optimisation
+- Internal-link optimisation
+- Local SEO recommendations
+- Google Business Profile optimisation where applicable
+- Content-gap identification
+- 1 SEO article/content strategy brief per month
+- Existing-content refresh recommendations
+- Monthly search-growth report
+- Clear monthly summary of completed work and upcoming opportunities
+
+### Continuous Search Opportunity Optimisation
+
+We continuously analyse how people are searching for your products and services, including:
+
+- Emerging search terms
+- Changing customer behaviour
+- Seasonal search demand
+- Competitor opportunities
+- Rising and declining queries
+- Search terms already generating impressions for your website
+- High-potential keywords where your site is close to ranking strongly
+
+When valuable opportunities are identified, we adjust page targeting, content priorities, headings, metadata, internal links, and future content strategy accordingly.
+
+**Ideal for:**  
+Small businesses that want their SEO to continually adapt rather than relying on a static keyword list.
+
+---
+
+### Pro — $249/month
+
+**SEO + Content Growth**
+
+Best for established small businesses that want both ongoing SEO optimisation and new search-targeted content.
+
+Includes everything in Growth, plus:
+
+- 30+ search opportunities monitored
+- Broader competitor keyword research
+- Search-volume and search-intent analysis
+- Seasonal and emerging-search research
+- Continuous keyword portfolio refinement
+- 2 significant page optimisations per month
+- Service-page and landing-page SEO improvements
+- Content structure optimisation
+- Internal-link architecture improvements
+- Search-result click-through-rate optimisation
+- Technical SEO monitoring
+- Structured-data and schema recommendations
+- Keyword cannibalisation monitoring
+- Content-decay monitoring
+- 1 fully written SEO article per month
+- Article keyword research
+- Article topic research
+- Search-intent targeting
+- SEO-friendly heading structure
+- Internal links to relevant products and services
+- Calls to action designed to move readers toward enquiry or purchase
+- Existing articles refreshed when better opportunities are identified
+- Local SEO improvements
+- Competitor-content monitoring
+- Monthly performance and strategy report
+- Priority support
+
+### Search-Targeted Content
+
+SEO articles are not created simply to add more pages to your website.
+
+Each article is based around a genuine search opportunity and is designed to:
+
+- Answer questions potential customers are searching for
+- Attract relevant organic traffic
+- Build topical authority
+- Support important service and product pages
+- Strengthen internal linking
+- Move visitors toward becoming customers
+
+The goal is not simply more traffic, but more relevant traffic.
+
+---
+
+# Enterprise SEO
+
+### Enterprise — $499/month
+
+**Managed SEO**
+
+Best for larger businesses, growing organisations, or websites where organic search is becoming an important customer-acquisition channel.
+
+Includes everything in Pro, plus:
+
+- 75+ search opportunities monitored
+- Full keyword-landscape monitoring
+- Wider competitor search-strategy monitoring
+- Emerging-demand and trend analysis
+- Search-intent change monitoring
+- Commercial keyword prioritisation
+- 4 significant page optimisations per month
+- 2 fully written SEO articles per month
+- Existing-content refreshes
+- Service and category page recommendations
+- Advanced internal-link optimisation
+- Technical SEO audits
+- Indexing and crawl monitoring
+- Structured-data optimisation
+- Website performance monitoring
+- Conversion-focused SEO recommendations
+- Local SEO and location strategy
+- Competitor content-gap analysis
+- Keyword cannibalisation detection
+- Google Search Console performance analysis
+- Analytics performance analysis
+- Monthly SEO strategy review
+- Priority implementation queue
+- Priority support
+
+**Ideal for:**  
+Businesses that want SEO actively managed across content, technical performance, competitors, and changing search demand.
+
+---
+
+### Enterprise Plus — $799/month
+
+**Advanced Search Growth**
+
+Best for organisations that want SEO treated as a major ongoing growth channel.
+
+Includes everything in Enterprise, plus:
+
+- 150+ search opportunities monitored
+- Broad competitor intelligence
+- Multi-service and multi-category keyword strategy
+- Advanced trending-query analysis
+- Seasonal search-demand analysis
+- Search-demand forecasting
+- 8 significant page optimisations per month
+- 4 fully written SEO articles per month
+- New landing-page opportunity research
+- Content-cluster development
+- Existing-content refresh program
+- Advanced internal-link strategy
+- Advanced technical SEO monitoring
+- Structured-data strategy
+- Site-architecture recommendations
+- Multi-location SEO support where required
+- Search-conversion analysis
+- Content cannibalisation and consolidation strategy
+- AI-search visibility monitoring
+- Search visibility across traditional and AI-assisted search
+- Monthly strategic SEO review
+- Custom reporting
+- Priority support
+- Direct strategy consultation
+
+**Ideal for:**  
+Businesses that want continuous research, content creation, optimisation, measurement, and strategic SEO management.
+
+---
+
+# Plan Comparison
+
+| Feature | Starter | Growth | Pro | Enterprise | Enterprise Plus |
+|---|---:|---:|---:|---:|---:|
+| Monthly Price | $99 | $149 | $249 | $499 | $799 |
+| Search Monitoring | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Search Opportunities Monitored | 5 | 15 | 30+ | 75+ | 150+ |
+| Continuous Search Opportunity Optimisation | Basic | ✓ | Advanced | Advanced | Advanced |
+| Competitor Monitoring | Basic | ✓ | ✓ | Advanced | Advanced |
+| Significant Page Optimisations | Minor | 1/month | 2/month | 4/month | 8/month |
+| SEO Articles | — | Strategy Brief | 1/month | 2/month | 4/month |
+| Existing Content Refresh | — | Recommendations | ✓ | ✓ | ✓ |
+| Internal Linking | Basic | ✓ | ✓ | Advanced | Advanced |
+| Technical SEO | Monitoring | Monitoring | ✓ | Advanced | Advanced |
+| Local SEO | Basic | ✓ | ✓ | ✓ | Multi-location |
+| AI Search Visibility | — | — | Basic | ✓ | ✓ |
+| Strategy Review | — | — | Included in Report | Monthly | Monthly |
+| Reporting | Monthly | Monthly | Advanced | Advanced | Custom |
+| Support | Standard | Standard | Priority | Priority | Priority |
+
+---
+
+# How Our SEO Process Works
+
+SEO is treated as an ongoing cycle rather than a one-time setup.
+
+Each month, we:
+
+1. Analyse website performance and search data
+2. Identify new search opportunities
+3. Monitor rising and declining search queries
+4. Review competitors
+5. Identify pages with strong impressions but weak click-through rates
+6. Identify keywords close to stronger ranking positions
+7. Prioritise the opportunities most likely to generate relevant traffic
+8. Optimise existing pages
+9. Improve titles, headings, metadata, content, and internal links
+10. Create or recommend new search-targeted content
+11. Monitor technical SEO issues
+12. Measure the impact of previous changes
+13. Adjust the SEO strategy for the following month
+
+This creates a continuous improvement cycle:
+
+**Research → Optimise → Publish → Measure → Improve**
+
+---
+
+# Our Approach to Keywords
+
+We do not simply select a fixed group of keywords when you sign up and leave them unchanged.
+
+Search behaviour constantly changes.
+
+Customers use different phrases, competitors target new searches, seasonal demand changes, and new opportunities appear over time.
+
+Our Continuous Search Opportunity Optimisation process monitors these changes and continually refines your SEO strategy.
+
+This can include:
+
+- Targeting newly emerging searches
+- Expanding successful keyword groups
+- Improving pages already beginning to rank
+- Updating pages that are losing visibility
+- Targeting valuable competitor keyword gaps
+- Adjusting targeting around seasonal demand
+- Creating new articles around valuable customer questions
+- Strengthening service pages using supporting content
+- Removing or consolidating competing content
+- Improving search-result click-through rates
+
+The objective is to continually expand the number of relevant searches through which potential customers can discover your business.
+
+---
+
+# SEO Content Strategy
+
+Content is created around real search opportunities rather than publishing articles simply for the sake of having a blog.
+
+A typical content strategy may include:
+
+- Customer questions
+- Buying guides
+- Service explanations
+- Product comparisons
+- Industry-specific guides
+- Local search content
+- Educational resources
+- Frequently searched problems
+- Commercial research queries
+- Informational searches that naturally lead toward your services
+
+Every piece of content should have a clear purpose.
+
+Where appropriate, articles are internally linked toward relevant commercial pages so traffic can move from:
+
+**Google Search → Helpful Content → Product or Service Page → Enquiry or Sale**
+
+---
+
+# What We Measure
+
+SEO performance is measured using meaningful search and website data, including:
+
+- Organic website visitors
+- Google Search clicks
+- Search impressions
+- Click-through rate
+- Search queries
+- Landing-page performance
+- New keyword opportunities
+- Keyword visibility trends
+- Website engagement
+- Enquiries or conversions where tracking is available
+- Pages gaining visibility
+- Pages losing visibility
+- Content performance
+
+We focus on long-term organic growth rather than guaranteeing individual rankings.
+
+No legitimate SEO provider can guarantee a specific Google ranking, position, traffic level, or number of enquiries.
+
+Instead, our goal is to consistently improve the quality, relevance, visibility, and search performance of your website over time.

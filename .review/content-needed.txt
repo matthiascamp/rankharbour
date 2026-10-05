@@ -1,0 +1,51 @@
+RankHarbour redesign — content and integration gaps
+===================================================
+Generated: 2026-10-05
+
+INTEGRATIONS REQUIRED
+---------------------
+1. CONTACT FORM ENDPOINT
+   The form in Section 9 (#contact) has no delivery backend.
+   Current behaviour: JS intercepts submit and shows an in-page status message.
+   Needed: A real POST endpoint (e.g. Formspree, Netlify Forms, custom serverless function,
+   or CRM webhook) wired to the form action attribute. Once connected, remove the
+   "endpoint is pending" notice from rh-form__result.
+
+2. LOGO ASSETS
+   The redesign uses an SVG anchor icon + "RankHarbour" text as the wordmark.
+   If the original raster logomark and wordmark images can be extracted from the
+   bundled RankHarbour.html (UUIDs: bb54056c, 4973da16, ca69f433), replace the SVG
+   logo with the real PNG assets at assets/images/logo-icon.png and
+   assets/images/logo-wordmark.png and update the header and footer markup accordingly.
+
+CONTENT CLAIMS TO VERIFY BEFORE LAUNCH
+---------------------------------------
+- "1800 726 547" phone number appears in the original source; confirm it is the real number
+  before adding it to any customer-facing copy.
+- All FAQ answers use conditional language ("may", "typically", "can") — review with legal.
+- The three "Where we work" sector features use no client names or metrics — keep it this way
+  unless authentic verified case study material becomes available.
+
+ASSETS PRESENT (no action needed)
+----------------------------------
+- assets/images/harbour-hero-v1.png — used in hero background ✓
+- assets/images/search-sculpture-v1.png — used in AI section ✓
+
+SECTIONS REMOVED FROM ORIGINAL (intentionally excluded per brief)
+-----------------------------------------------------------------
+- Ticker/logo marquee strip ("Trusted by Australia's leading brands")
+- Hero stat cards (organic growth chart, AI visibility +847%, revenue $3.1M — unverified)
+- Full case-study grid (6 cards with placeholder data)
+- Numbers section (1,200 campaigns, 98% retention, 280 reviews — unverified)
+- Services 9-card grid
+- White-paper / lead-magnet section
+- Team section (portraits are placeholders; no verified real portraits)
+- Awards wall (unverified award claims)
+- Academy section
+- Reviews wall (280 reviews claim unverified; individual testimonials anonymous)
+- City/locations grid
+- Long review wall
+- Duplicate CTA / free masterplan sections
+
+If any of the above sections have real supporting evidence, they can be reintroduced
+as supplementary content or linked from secondary pages.
