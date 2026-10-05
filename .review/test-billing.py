@@ -10,7 +10,7 @@ with sync_playwright() as p:
     def billing(route):
         body=route.request.post_data_json;billing_calls.append(body)
         if state['error']: route.fulfill(status=503,json={'error':'Checkout is being connected.'})
-        elif body['action']=='status': route.fulfill(json={'subscriptions':state['subscriptions']})
+        elif body['action']=='status': route.fulfill(json={'subscriptions':state['subscriptions'],'preview':state.get('preview')})
         elif body['action']=='checkout': route.fulfill(json={'url':'https://buy.stripe.com/test_fixture?client_reference_id=fixture'})
         else: route.fulfill(json={'url':'https://billing.stripe.com/p/session/fixture'})
     context.route('**/functions/v1/billing',billing)
@@ -47,6 +47,16 @@ with sync_playwright() as p:
         page.set_viewport_size({'width':width,'height':1000})
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
     page.screenshot(path=str(OUT/'billing-account-mobile.png'),full_page=True)
+    state['subscriptions']=[]
+    state['preview']={'plan':'pro','amount':24900,'website':'https://example.test'}
+    page.locator('#billing-refresh').click()
+    expect(page.locator('#billing-records')).to_contain_text('Pro — active preview')
+    expect(page.locator('#billing-records')).to_contain_text('Your cost: $0')
+    expect(page.locator('#billing-records')).to_contain_text('example.test')
+    assert page.get_by_role('button',name='Manage subscription',exact=True).count()==0
+    page.locator('#dash-tab-pricing').click()
+    expect(page.locator('[data-subscribe=pro]')).to_have_text('Your plan · Free preview')
+    expect(page.locator('[data-subscribe=pro]')).to_be_disabled()
     page.locator('#header-logout').click()
     expect(page.locator('[data-view=signin]')).to_be_visible()
     expect(page.locator('#billing-records')).to_be_empty()

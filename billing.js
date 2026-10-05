@@ -5,10 +5,10 @@ export function initBilling(root) {
   const records=root.querySelector('#billing-records');
   const messages=[...root.querySelectorAll('[data-billing-message]')];
   const buttons=[...root.querySelectorAll('[data-subscribe]')];
-  let userId=null, generation=0, controller=null, loading=false, subscriptions=[], checked=false;
+  let userId=null, generation=0, controller=null, loading=false, subscriptions=[], checked=false, preview=null;
   const message=text=>messages.forEach(el=>{el.textContent=text;});
   const hasSubscription=()=>subscriptions.some(s=>!['canceled','incomplete_expired'].includes(s.status));
-  function renderButtons() {buttons.forEach(b=>{b.disabled=loading||!checked||hasSubscription(); b.textContent=hasSubscription()?'Manage in Account centre':`Choose ${NAMES[b.dataset.subscribe]}`;});}
+  function renderButtons() {buttons.forEach(b=>{b.disabled=loading||!checked||hasSubscription()||!!preview; b.textContent=preview?(preview.plan===b.dataset.subscribe?'Your plan · Free preview':'Preview account'):hasSubscription()?'Manage in Account centre':`Choose ${NAMES[b.dataset.subscribe]}`;});}
   async function request(body,signal) {
     const [{getSupabaseClient},{getAuthConfig}]=await Promise.all([import('./src/auth/client.js'),import('./src/auth/config.js')]);
     const {data:{session}}=await getSupabaseClient().auth.getSession();
@@ -22,6 +22,16 @@ export function initBilling(root) {
   function render() {
     records.replaceChildren();
     status.textContent=subscriptions.length?'Your subscription details are synced from Stripe.':'No subscription yet. Choose a plan in Plans & Pricing to get started.';
+    if(preview) {
+      status.textContent='Your complimentary plan preview is active. No payment is due.';
+      const box=document.createElement('div');box.className='dash-box';
+      const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[preview.plan]} — active preview`;
+      const tagline=document.createElement('p');tagline.className='dash-box__text';tagline.textContent=preview.plan==='pro'?'SEO + Content Growth':'';
+      const price=document.createElement('p');price.className='dash-box__text';price.textContent=`Plan value: ${new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD'}).format(preview.amount/100)} AUD every 28 days`;
+      const website=document.createElement('p');website.className='dash-box__text';website.textContent=`Website: ${preview.website.replace(/^https:\/\//,'').replace(/\/$/,'')}`;
+      const note=document.createElement('p');note.className='dash-box__text';note.textContent='Your cost: $0. No Stripe subscription, automatic renewal or scheduled charge. Paid checkout is disabled for this preview account.';
+      box.append(title,tagline,price,website,note);records.append(box);
+    }
     subscriptions.forEach(sub=>{
       const box=document.createElement('div');box.className='dash-box';
       const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[sub.plan]||sub.plan} — ${sub.status.replaceAll('_',' ')}`;
@@ -43,7 +53,7 @@ export function initBilling(root) {
     try {
       const data=await request({action:'status'},controller.signal);
       if(version!==generation) return;
-      subscriptions=data.subscriptions;checked=true;message('');render();
+      subscriptions=data.subscriptions;preview=data.preview||null;checked=true;message('');render();
     } catch(error) {
       if(version===generation && error.name!=='AbortError') {status.textContent='Subscription details could not be loaded.';message(error.message);}
     } finally {if(version===generation){loading=false;renderButtons();}}
@@ -71,7 +81,7 @@ export function initBilling(root) {
   return {
     setUser(id) {
       if(userId===id) return;
-      generation++;controller?.abort();userId=id;loading=false;subscriptions=[];checked=false;records.replaceChildren();message('');status.textContent=id?'Loading subscription details…':'';renderButtons();
+      generation++;controller?.abort();userId=id;loading=false;subscriptions=[];preview=null;checked=false;records.replaceChildren();message('');status.textContent=id?'Loading subscription details…':'';renderButtons();
       // Auth event callbacks must finish before calling the SDK again.
       if(id) setTimeout(refresh,0);
     },

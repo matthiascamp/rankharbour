@@ -241,3 +241,13 @@ Browser fixtures cover checkout, failure messages, status, portal navigation, mo
 layout and logout cleanup. Deno tests cover price validation and signature tampering
 and expiry. No live purchase, renewal or paid cancellation was submitted.
 
+
+## Complimentary account previews
+
+Administrators can assign a plan and website through `account_plan_previews`.
+RLS allows users to read only their own preview and denies client writes. The billing
+status response returns this separately from Stripe subscriptions. Previews display
+the normal plan value and a zero cost, without renewal dates or portal controls.
+The billing endpoint refuses checkout while a preview is assigned. Removing the
+preview administratively restores normal checkout; previews never call Stripe or
+create a customer, subscription, invoice or scheduled charge.
