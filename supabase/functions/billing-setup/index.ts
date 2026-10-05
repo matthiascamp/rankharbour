@@ -1,7 +1,7 @@
 // Temporary service-role-only provisioning helper. Remove deployed function after setup.
 const urls = ['https://buy.stripe.com/7sYbJ07Yd8Hy0wKcprasg01','https://buy.stripe.com/6oU5kC7Yd6zq1AO3SVasg02','https://buy.stripe.com/bJe8wOguJcXOa7k4WZasg03','https://buy.stripe.com/4gMcN4a6l5vmfrE2ORasg04','https://buy.stripe.com/5kQ7sKbap3ne4N04WZasg00'];
 async function stripe(path: string, body?: URLSearchParams) {
-  const r = await fetch('https://api.stripe.com/v1/'+path,{method:body?'POST':'GET',headers:{Authorization:`Bearer ${Deno.env.get('STRIPE_SECRET_KEY')}`,'Stripe-Version':'2025-02-24.acacia',...(body?{'Content-Type':'application/x-www-form-urlencoded'}:{})},body});
+  const r = await fetch('https://api.stripe.com/v1/'+path,{method:body?'POST':'GET',headers:{Authorization:`Bearer ${Deno.env.get('STRIPE_SECRET_KEY')?.trim()}`,'Stripe-Version':'2025-02-24.acacia',...(body?{'Content-Type':'application/x-www-form-urlencoded'}:{})},body});
   const j=await r.json(); if(!r.ok) throw new Error(`Stripe ${r.status}: ${j.error?.code || j.error?.type}`); return j;
 }
 Deno.serve(async req=>{
