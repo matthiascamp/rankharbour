@@ -206,7 +206,7 @@
             <button type="button" class="dash-shortcut" data-dash-go="pricing">
               <span class="dash-shortcut__kicker">Plans &amp; Pricing</span>
               <span class="dash-shortcut__title">Small Business and Enterprise SEO</span>
-              <span class="dash-shortcut__text">Five monthly plans from $99 to $799 AUD, full inclusions, a side-by-side comparison and how our process works.</span>
+              <span class="dash-shortcut__text">Five plans from $99 to $799 AUD every 28 days, full inclusions, a side-by-side comparison and how our process works.</span>
               <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
             </button>
             <button type="button" class="dash-shortcut" data-dash-go="seo">
@@ -218,7 +218,7 @@
             <button type="button" class="dash-shortcut" data-dash-go="account">
               <span class="dash-shortcut__kicker">Account centre</span>
               <span class="dash-shortcut__title">Your sign-in details</span>
-              <span class="dash-shortcut__text">See the name and email on your account, reset your password or log out.</span>
+              <span class="dash-shortcut__text">View your subscription, manage billing, update your password or log out.</span>
               <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
             </button>
           </div>
@@ -243,7 +243,7 @@
               <span class="dash-steps__num" aria-hidden="true">3</span>
               <div>
                 <p class="dash-steps__title">Check the bigger projects separately</p>
-                <p>Website rebuilds, custom software, integrations and similar work sit outside the monthly plans and are quoted individually.</p>
+                <p>Website rebuilds, custom software, integrations and similar work sit outside the subscription plans and are quoted individually.</p>
               </div>
             </li>
           </ol>
@@ -256,7 +256,9 @@
           <h2 class="dash-h2" id="dash-pricing-title" tabindex="-1">SEO Plans</h2>
           <p class="dash-lede">Our SEO plans are designed to continuously improve your website&rsquo;s visibility, attract more relevant visitors, and adapt to how people are actually searching.</p>
           <p class="dash-lede dash-lede--sub">Rather than simply setting a list of keywords once and leaving them unchanged, we continuously monitor search performance, emerging opportunities, competitor activity, and changing customer search behaviour. We then use that data to improve pages, update targeting, create new content, and prioritise the opportunities most likely to increase qualified organic traffic.</p>
-          <p class="plans-currency">All prices are per month in Australian dollars.</p>
+          <p class="plans-currency">All prices are in Australian dollars and billed every 28 days. This is a four-week billing cycle, not a calendar month.</p>
+          <p class="dash-note">Choose a plan to pay securely with Stripe. Your subscription is linked to this signed-in account after payment confirmation. Manage billing and cancellation in Account centre. The service inclusions below retain their stated monthly delivery schedule.</p>
+          <p class="dash-status" data-billing-message role="status" aria-live="polite"></p>
 
           <!-- All five plans share one responsive grid; each card names its category. -->
           <section class="plans-group" aria-labelledby="plans-title">
@@ -273,7 +275,7 @@
                   <p class="plan__group">Small Business SEO</p>
                   <h4 class="plan__name" id="plan-starter-name">Starter</h4>
                   <p class="plan__tagline">SEO Essentials</p>
-                  <p class="plan__price"><span class="plan__amount">$99</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__price"><span class="plan__amount">$99</span><span class="plan__per">AUD / 28 days</span></p>
                   <p class="plan__fit">Best for sole traders, startups, and small businesses that want their website properly monitored and maintained for search without the cost of a traditional SEO agency.</p>
                   <ul class="plan__list">
                     <li>5 priority search themes monitored</li>
@@ -309,17 +311,17 @@
                         <p class="plan__ideal"><strong>Ideal for:</strong> Businesses that want their website kept search-ready while gradually improving visibility.</p>
                       </div>
                     </details>
+                    <button type="button" class="btn-brass plan__cta" data-subscribe="starter" disabled>Choose Starter</button>
                     <button type="button" class="btn-chalk plan__cta" data-compare="starter">Compare inclusions</button>
                   </div>
                 </article>
               </li>
-              <li class="plan plan--featured" data-plan="growth" data-group="small">
+              <li class="plan" data-plan="growth" data-group="small">
                 <article class="plan__body" aria-labelledby="plan-growth-name">
-                  <p class="plan__badge" id="plan-growth-badge">Best Value</p>
                   <p class="plan__group">Small Business SEO</p>
                   <h4 class="plan__name" id="plan-growth-name">Growth</h4>
                   <p class="plan__tagline">Active SEO Growth</p>
-                  <p class="plan__price"><span class="plan__amount">$149</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__price"><span class="plan__amount">$149</span><span class="plan__per">AUD / 28 days</span></p>
                   <p class="plan__fit">Best for small businesses that want active, ongoing SEO rather than simple monitoring.</p>
                   <p class="plan__lead">Everything in Starter, plus:</p>
                   <ul class="plan__list">
@@ -359,16 +361,18 @@
                         <p class="plan__ideal"><strong>Ideal for:</strong> Small businesses that want their SEO to continually adapt rather than relying on a static keyword list.</p>
                       </div>
                     </details>
-                    <button type="button" class="btn-brass plan__cta" data-compare="growth">Compare inclusions</button>
+                    <button type="button" class="btn-brass plan__cta" data-subscribe="growth" disabled>Choose Growth</button>
+                    <button type="button" class="btn-chalk plan__cta" data-compare="growth">Compare inclusions</button>
                   </div>
                 </article>
               </li>
-              <li class="plan" data-plan="pro" data-group="small">
+              <li class="plan plan--featured" data-plan="pro" data-group="small">
                 <article class="plan__body" aria-labelledby="plan-pro-name">
+                  <p class="plan__badge" id="plan-pro-badge">Best Value</p>
                   <p class="plan__group">Small Business SEO</p>
                   <h4 class="plan__name" id="plan-pro-name">Pro</h4>
                   <p class="plan__tagline">SEO + Content Growth</p>
-                  <p class="plan__price"><span class="plan__amount">$249</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__price"><span class="plan__amount">$249</span><span class="plan__per">AUD / 28 days</span></p>
                   <p class="plan__fit">Best for established small businesses that want both ongoing SEO optimisation and new search-targeted content.</p>
                   <p class="plan__lead">Everything in Growth, plus:</p>
                   <ul class="plan__list">
@@ -413,7 +417,8 @@
                         </ul>
                       </div>
                     </details>
-                    <button type="button" class="btn-chalk plan__cta" data-compare="pro">Compare inclusions</button>
+                    <button type="button" class="btn-brass plan__cta" data-subscribe="pro" disabled>Choose Pro</button>
+                    <button type="button" class="btn-brass plan__cta" data-compare="pro">Compare inclusions</button>
                   </div>
                 </article>
               </li>
@@ -422,7 +427,7 @@
                   <p class="plan__group">Enterprise SEO</p>
                   <h4 class="plan__name" id="plan-enterprise-name">Enterprise</h4>
                   <p class="plan__tagline">Managed SEO</p>
-                  <p class="plan__price"><span class="plan__amount">$499</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__price"><span class="plan__amount">$499</span><span class="plan__per">AUD / 28 days</span></p>
                   <p class="plan__fit">Best for larger businesses, growing organisations, or websites where organic search is becoming an important customer-acquisition channel.</p>
                   <p class="plan__lead">Everything in Pro, plus:</p>
                   <ul class="plan__list">
@@ -467,6 +472,7 @@
                         <p class="plan__ideal"><strong>Ideal for:</strong> Businesses that want SEO actively managed across content, technical performance, competitors, and changing search demand.</p>
                       </div>
                     </details>
+                    <button type="button" class="btn-brass plan__cta" data-subscribe="enterprise" disabled>Choose Enterprise</button>
                     <button type="button" class="btn-chalk plan__cta" data-compare="enterprise">Compare inclusions</button>
                   </div>
                 </article>
@@ -476,7 +482,7 @@
                   <p class="plan__group">Enterprise SEO</p>
                   <h4 class="plan__name" id="plan-enterprise-plus-name">Enterprise Plus</h4>
                   <p class="plan__tagline">Advanced Search Growth</p>
-                  <p class="plan__price"><span class="plan__amount">$799</span><span class="plan__per">AUD / month</span></p>
+                  <p class="plan__price"><span class="plan__amount">$799</span><span class="plan__per">AUD / 28 days</span></p>
                   <p class="plan__fit">Best for organisations that want SEO treated as a major ongoing growth channel.</p>
                   <p class="plan__lead">Everything in Enterprise, plus:</p>
                   <ul class="plan__list">
@@ -521,6 +527,7 @@
                         <p class="plan__ideal"><strong>Ideal for:</strong> Businesses that want continuous research, content creation, optimisation, measurement, and strategic SEO management.</p>
                       </div>
                     </details>
+                    <button type="button" class="btn-brass plan__cta" data-subscribe="enterprise-plus" disabled>Choose Enterprise Plus</button>
                     <button type="button" class="btn-chalk plan__cta" data-compare="enterprise-plus">Compare inclusions</button>
                   </div>
                 </article>
@@ -555,7 +562,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="compare__price-row"><th scope="row">Monthly Price</th><td data-col="starter">$99</td><td data-col="growth">$149</td><td data-col="pro">$249</td><td data-col="enterprise" class="compare__ent-start">$499</td><td data-col="enterprise-plus">$799</td></tr>
+                  <tr class="compare__price-row"><th scope="row">Price every 28 days</th><td data-col="starter">$99</td><td data-col="growth">$149</td><td data-col="pro">$249</td><td data-col="enterprise" class="compare__ent-start">$499</td><td data-col="enterprise-plus">$799</td></tr>
                   <tr><th scope="row">Search Monitoring</th><td data-col="starter" class="is-yes"><span class="sr-only">Included</span></td><td data-col="growth" class="is-yes"><span class="sr-only">Included</span></td><td data-col="pro" class="is-yes"><span class="sr-only">Included</span></td><td data-col="enterprise" class="is-yes compare__ent-start"><span class="sr-only">Included</span></td><td data-col="enterprise-plus" class="is-yes"><span class="sr-only">Included</span></td></tr>
                   <tr><th scope="row">Search Opportunities Monitored</th><td data-col="starter">5</td><td data-col="growth">15</td><td data-col="pro">30+</td><td data-col="enterprise" class="compare__ent-start">75+</td><td data-col="enterprise-plus">150+</td></tr>
                   <tr><th scope="row">Continuous Search Opportunity Optimisation</th><td data-col="starter">Basic</td><td data-col="growth" class="is-yes"><span class="sr-only">Included</span></td><td data-col="pro">Advanced</td><td data-col="enterprise" class="compare__ent-start">Advanced</td><td data-col="enterprise-plus">Advanced</td></tr>
@@ -573,7 +580,7 @@
                 </tbody>
               </table>
             </div>
-            <p class="compare__note"><span class="compare__key"><span class="compare__tick" aria-hidden="true"></span> Included</span> <span class="compare__key"><span aria-hidden="true">&mdash;</span> Not included</span> Prices are per month in Australian dollars.</p>
+            <p class="compare__note"><span class="compare__key"><span class="compare__tick" aria-hidden="true"></span> Included</span> <span class="compare__key"><span aria-hidden="true">&mdash;</span> Not included</span> Prices are in Australian dollars, billed every 28 days.</p>
           </div>
 
           <!-- How the service works -->
@@ -742,7 +749,7 @@
           <aside class="custom-work" id="custom-work" aria-labelledby="custom-work-title">
             <div class="custom-work__intro">
               <h3 class="dash-h3" id="custom-work-title">Custom work, quoted separately</h3>
-              <p>Larger projects sit outside the monthly plans. We scope each one with you and provide a separate quote.</p>
+              <p>Larger projects sit outside the subscription plans. We scope each one with you and provide a separate quote.</p>
             </div>
             <ul class="custom-work__list">
               <li>Website rebuilds</li>
@@ -839,7 +846,14 @@
         <!-- Account -->
         <section class="dash-panel" role="tabpanel" id="dash-panel-account" aria-labelledby="dash-tab-account" tabindex="0" hidden>
           <h2 class="dash-h2" id="dash-account-title" tabindex="-1">Account centre</h2>
-          <p class="dash-lede">The details you use to sign in to RankHarbour.</p>
+          <p class="dash-lede">Your subscription, billing and sign-in details.</p>
+          <section class="dash-box" id="billing-summary" aria-labelledby="billing-heading">
+            <h3 class="dash-h3" id="billing-heading">Your subscription</h3>
+            <p class="dash-box__text" id="billing-status" role="status">Loading subscription details?</p>
+            <div id="billing-records"></div>
+            <button type="button" class="btn-chalk" id="billing-refresh">Refresh status</button>
+            <p class="dash-status" data-billing-message role="status" aria-live="polite"></p>
+          </section>
 
           <div class="dash-box">
             <dl class="auth-details dash-details">

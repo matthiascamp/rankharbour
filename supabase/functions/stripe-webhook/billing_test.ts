@@ -1,0 +1,24 @@
+import {verifySignature} from './signature.ts';
+import {validPrice,PLANS} from '../_shared/billing.ts';
+const assert=(value:unknown)=>{if(!value) throw new Error('Assertion failed');};
+Deno.test('Stripe signature rejects tampering, missing signatures and replay',async()=>{
+  const secret='test_webhook_secret',body='{"id":"evt_fixture"}',t=Math.floor(Date.now()/1000);
+  const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);
+  const bytes=await crypto.subtle.sign('HMAC',key,new TextEncoder().encode(t+'.'+body));
+  const hex=Array.from(new Uint8Array(bytes),b=>b.toString(16).padStart(2,'0')).join('');
+  const header=`t=${t},v1=${hex}`;
+  assert(await verifySignature(body,header,secret,t*1000));
+  assert(!await verifySignature(body+' ',header,secret,t*1000));
+  assert(!await verifySignature(body,header,'wrong',t*1000));
+  assert(!await verifySignature(body,header,secret,(t+301)*1000));
+  assert(!await verifySignature(body,'',secret,t*1000));
+});
+Deno.test('All five plans require their exact AUD four-week recurring price',()=>{
+  for(const [plan,details] of Object.entries(PLANS)) {
+    const price={unit_amount:details.amount,currency:'aud',recurring:{interval:'day',interval_count:28}};
+    assert(validPrice(price,plan));
+    assert(!validPrice({...price,unit_amount:1},plan));
+    assert(!validPrice({...price,currency:'usd'},plan));
+    assert(!validPrice({...price,recurring:{interval:'month',interval_count:1}},plan));
+  }
+});

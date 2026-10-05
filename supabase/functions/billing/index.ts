@@ -33,7 +33,9 @@ Deno.serve(async req=>{
       // Customer ownership is read from trusted records, never from browser input.
       const sub=subs.find(s=>s.stripe_subscription_id===input.subscriptionId);
       if(!sub) return reply({error:'No subscription found for this account.'},404);
-      const session=await stripe('billing_portal/sessions',new URLSearchParams({customer:sub.stripe_customer_id}));
+      const configuration=Deno.env.get('STRIPE_PORTAL_CONFIGURATION_ID');
+      if(!configuration) throw new Error('Portal not configured');
+      const session=await stripe('billing_portal/sessions',new URLSearchParams({customer:sub.stripe_customer_id,configuration}));
       return reply({url:session.url});
     }
     return reply({error:'Unknown billing action.'},400);

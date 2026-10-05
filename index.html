@@ -1,1233 +1,751 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RankHarbour — Australia's #1 SEO & AI Search Agency</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg:       #06091E;
-  --bg2:      #080D28;
-  --bg3:      #0A1035;
-  --glass:    rgba(255,255,255,0.06);
-  --glass-hv: rgba(255,255,255,0.10);
-  --border:   rgba(255,255,255,0.12);
-  --border-hv:rgba(255,255,255,0.25);
-  --blue:     #2563EB;
-  --blue-lt:  #3B82F6;
-  --cyan:     #06B6D4;
-  --cyan-lt:  #22D3EE;
-  --white:    #FFFFFF;
-  --w70:      rgba(255,255,255,0.70);
-  --w50:      rgba(255,255,255,0.50);
-  --w30:      rgba(255,255,255,0.30);
-  --w10:      rgba(255,255,255,0.10);
-  --gold:     #F59E0B;
-  --r:        14px;
-  --rl:       22px;
-}
-
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--white);
-  overflow-x: hidden;
-  line-height: 1.6;
-}
-
-/* ── UTILS ─────────────────────────────────────────── */
-.container { max-width: 1240px; margin: 0 auto; padding: 0 28px; }
-.section    { padding: 110px 0; position: relative; }
-
-/* glass card */
-.glass {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--rl);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-.glass:hover {
-  background: var(--glass-hv);
-  border-color: var(--border-hv);
-}
-
-/* orb blobs */
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* buttons */
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 14px 28px; border-radius: 10px;
-  font-size: 14px; font-weight: 700;
-  cursor: pointer; text-decoration: none; border: none;
-  transition: all .2s; letter-spacing: .2px;
-}
-.btn-blue {
-  background: var(--blue);
-  color: var(--white);
-  box-shadow: 0 0 0 0 rgba(37,99,235,0);
-}
-.btn-blue:hover {
-  background: var(--blue-lt);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 32px rgba(37,99,235,.45);
-}
-.btn-glass {
-  background: var(--glass);
-  border: 1px solid var(--border);
-  color: var(--white);
-  backdrop-filter: blur(8px);
-}
-.btn-glass:hover {
-  background: var(--glass-hv);
-  border-color: var(--border-hv);
-}
-.btn-white {
-  background: var(--white);
-  color: #06091E;
-}
-.btn-white:hover {
-  background: #e0e8ff;
-  transform: translateY(-1px);
-}
-
-/* type */
-.eyebrow {
-  display: inline-block;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  color: var(--cyan);
-  margin-bottom: 14px;
-}
-h2.heading {
-  font-size: clamp(30px, 4.5vw, 52px);
-  font-weight: 800; line-height: 1.06;
-  letter-spacing: -1px; margin-bottom: 16px;
-}
-.sub {
-  font-size: 16px; color: var(--w70);
-  line-height: 1.75; max-width: 560px;
-}
-.hl  { color: var(--cyan); }
-.hlb { color: var(--blue-lt); }
-
-/* ── NAV ──────────────────────────────────────────── */
-#nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-  padding: 0 28px;
-  background: rgba(6,9,30,0.7);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-  transition: background .3s;
-}
-.nav-inner {
-  max-width: 1240px; margin: 0 auto;
-  display: flex; align-items: center; height: 68px; gap: 24px;
-}
-.logo {
-  font-size: 20px; font-weight: 900; letter-spacing: -0.5px;
-  color: var(--white); text-decoration: none; flex-shrink: 0;
-}
-.logo span { color: var(--cyan); }
-.nav-links { display: flex; align-items: center; gap: 2px; list-style: none; flex: 1; }
-.nav-links > li { position: relative; }
-.nav-links > li > a {
-  color: var(--w70); font-size: 13.5px; font-weight: 500;
-  text-decoration: none; padding: 7px 12px; border-radius: 7px;
-  display: flex; align-items: center; gap: 4px;
-  transition: color .2s;
-}
-.nav-links > li > a:hover { color: var(--white); }
-.nav-links > li > a svg { transition: transform .2s; }
-.nav-links > li:hover > a svg { transform: rotate(180deg); }
-/* dropdown */
-.nav-drop {
-  position: absolute; top: calc(100% + 10px); left: 0;
-  background: rgba(8,13,40,0.96); border: 1px solid var(--border);
-  border-radius: 14px; padding: 8px; min-width: 210px;
-  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  box-shadow: 0 24px 64px rgba(0,0,0,.6);
-  opacity: 0; visibility: hidden; transform: translateY(-6px);
-  transition: all .2s; z-index: 100;
-}
-.nav-drop-wide {
-  min-width: 600px; display: grid;
-  grid-template-columns: repeat(3,1fr); gap: 0;
-}
-.nav-drop-col { padding: 6px; }
-.nav-drop-col-hd {
-  font-size: 10px; font-weight: 700; color: var(--w50);
-  text-transform: uppercase; letter-spacing: 1px;
-  padding: 6px 10px 4px;
-}
-.nav-links > li:hover > .nav-drop { opacity: 1; visibility: visible; transform: translateY(0); }
-.nav-drop a {
-  display: block; color: var(--w70); font-size: 13px;
-  text-decoration: none; padding: 8px 10px; border-radius: 8px;
-  font-weight: 500; transition: all .2s;
-}
-.nav-drop a:hover { color: var(--cyan); background: rgba(6,182,212,.1); }
-.nav-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-.nav-phone { color: var(--w70); font-size: 13px; font-weight: 600; text-decoration: none; transition: color .2s; }
-.nav-phone:hover { color: var(--white); }
-.ham { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
-.ham span { width: 22px; height: 2px; background: var(--white); border-radius: 2px; transition: all .3s; }
-
-/* ── HERO ─────────────────────────────────────────── */
-.hero {
-  min-height: 100vh; display: flex; align-items: center;
-  padding: 140px 0 100px; overflow: hidden; position: relative;
-}
-.hero-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 72px; align-items: center; position: relative; z-index: 1;
-}
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: rgba(6,182,212,.12); border: 1px solid rgba(6,182,212,.3);
-  color: var(--cyan); padding: 6px 14px; border-radius: 100px;
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 1px; margin-bottom: 20px;
-}
-.hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
-.hero h1 {
-  font-size: clamp(46px, 7vw, 82px); font-weight: 900;
-  line-height: .95; letter-spacing: -2px; margin-bottom: 24px;
-}
-.hero h1 em { font-style: normal; color: var(--cyan); display: block; }
-.hero-sub { font-size: 17px; color: var(--w70); max-width: 500px; line-height: 1.75; margin-bottom: 36px; }
-.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
-.hero-proof {
-  display: flex; align-items: center; gap: 20px;
-  padding-top: 32px; border-top: 1px solid var(--border);
-  flex-wrap: wrap;
-}
-.proof-stars { display: flex; gap: 3px; }
-.proof-stars span { color: var(--gold); font-size: 14px; }
-.proof-text { font-size: 13px; color: var(--w70); }
-.proof-text strong { color: var(--white); }
-.proof-sep { width: 1px; height: 28px; background: var(--border); }
-.proof-cert { font-size: 12px; color: var(--w50); display: flex; align-items: center; gap: 6px; }
-.proof-cert::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--cyan); flex-shrink:0; }
-
-/* hero visual */
-.hero-vis { position: relative; height: 540px; }
-.hv-card {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(255,255,255,0.07);
-  border: 1px solid var(--border);
-  border-radius: 20px; padding: 28px; width: 310px;
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 32px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.1);
-}
-.hv-label { font-size: 10px; font-weight: 700; color: var(--w50); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-.hv-bars { display: flex; align-items: flex-end; gap: 5px; height: 68px; margin-bottom: 14px; }
-.hb { flex: 1; border-radius: 3px 3px 0 0; background: rgba(255,255,255,.1); }
-.hb.on { background: linear-gradient(to top, var(--blue), var(--cyan)); }
-.hb.dim { background: rgba(6,182,212,.3); }
-.hv-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,.07);
-  font-size: 13px;
-}
-.hv-row:last-child { border: none; }
-.hv-lbl { color: var(--w70); }
-.hv-val { font-weight: 700; }
-.hv-up { color: #4ADE80; font-size: 11px; font-weight: 700; margin-left: 4px; }
-.hv-float {
-  position: absolute;
-  background: rgba(255,255,255,.08); border: 1px solid var(--border);
-  border-radius: 14px; padding: 14px 18px;
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 16px 48px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.1);
-}
-.hv-f1 { top: 44px; right: -10px; }
-.hv-f2 { bottom: 60px; left: -20px; }
-.hvf-lbl { font-size: 10px; color: var(--w50); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 5px; }
-.hvf-val { font-size: 22px; font-weight: 900; color: var(--cyan); letter-spacing: -.5px; }
-.hvf-sub { font-size: 10px; color: var(--w50); margin-top: 2px; }
-.hv-pill {
-  position: absolute; top: 28%; left: -28px;
-  background: linear-gradient(135deg, var(--blue), var(--cyan));
-  border-radius: 100px; padding: 9px 16px;
-  display: flex; align-items: center; gap: 8px;
-  box-shadow: 0 8px 32px rgba(37,99,235,.5);
-}
-.hv-pill-txt { font-size: 12px; font-weight: 700; white-space: nowrap; }
-
-/* ── LOGOS ────────────────────────────────────────── */
-.logos-section {
-  padding: 44px 0;
-  background: rgba(255,255,255,.03);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.logos-label { text-align: center; font-size: 11px; font-weight: 600; color: var(--w50); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 24px; }
-.logos-outer { overflow: hidden; position: relative; }
-.logos-outer::before,
-.logos-outer::after {
-  content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
-}
-.logos-outer::before { left: 0; background: linear-gradient(to right, var(--bg), transparent); }
-.logos-outer::after  { right: 0; background: linear-gradient(to left, var(--bg), transparent); }
-.logos-track { display: flex; align-items: center; gap: 56px; animation: ticker 34s linear infinite; width: max-content; }
-@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.logo-name { font-size: 15px; font-weight: 800; color: var(--w30); letter-spacing: -.3px; white-space: nowrap; transition: color .2s; }
-.logo-name:hover { color: var(--w70); }
-
-/* ── GENERIC SECTION BG ────────────────────────────── */
-.s-dark  { background: var(--bg2); }
-.s-dark2 { background: var(--bg3); }
-
-/* ── FOUNDER / VALUE PROPS ─────────────────────────── */
-.vp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-.vp-img {
-  background: linear-gradient(135deg, rgba(37,99,235,.15), rgba(6,182,212,.1));
-  border: 1px solid var(--border); border-radius: var(--rl);
-  height: 480px; display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
-}
-.vp-img-big { font-size: 80px; font-weight: 900; letter-spacing: -3px; opacity: .15; position: absolute; }
-.vp-img-content { text-align: center; position: relative; z-index: 1; }
-.vp-img-num { font-size: 72px; font-weight: 900; letter-spacing: -3px; background: linear-gradient(135deg, var(--blue-lt), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.vp-img-lbl { font-size: 14px; color: var(--w70); margin-top: 6px; letter-spacing: .5px; }
-.vp-badge {
-  position: absolute; bottom: 28px; right: -18px;
-  background: rgba(255,255,255,.08); border: 1px solid var(--border);
-  border-radius: 14px; padding: 14px 22px;
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 16px 48px rgba(0,0,0,.4);
-}
-.vp-badge-val { font-size: 26px; font-weight: 900; background: linear-gradient(135deg, var(--blue-lt), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.vp-badge-lbl { font-size: 11px; color: var(--w50); margin-top: 2px; }
-.props { display: flex; flex-direction: column; gap: 0; }
-.prop { display: flex; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--border); }
-.prop:last-child { border: none; }
-.prop-ico { width: 42px; height: 42px; border-radius: 11px; background: rgba(6,182,212,.12); border: 1px solid rgba(6,182,212,.2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; margin-top: 2px; }
-.prop-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
-.prop-desc { font-size: 13px; color: var(--w70); line-height: 1.65; }
-
-/* ── RESULTS HERO ──────────────────────────────────── */
-.rh-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
-.rh-feat {
-  padding: 40px; position: relative; overflow: hidden;
-  background: linear-gradient(135deg, rgba(37,99,235,.15) 0%, rgba(6,182,212,.08) 100%);
-  border: 1px solid rgba(6,182,212,.25); border-radius: var(--rl);
-}
-.rh-feat-eye { font-size: 11px; font-weight: 700; color: var(--cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-.rh-feat-metric { font-size: 64px; font-weight: 900; letter-spacing: -3px; background: linear-gradient(135deg, var(--blue-lt), var(--cyan-lt)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
-.rh-feat-result { font-size: 18px; font-weight: 700; margin: 8px 0 12px; }
-.rh-feat-desc { font-size: 14px; color: var(--w70); line-height: 1.7; }
-.rh-feat-foot { display: flex; align-items: center; gap: 8px; margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--border); }
-.rh-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); }
-.rh-client { font-size: 12px; color: var(--w50); }
-.rh-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.rh-mini { padding: 22px; transition: all .3s; }
-.rh-mini:hover { transform: translateY(-2px); }
-.rh-mini-metric { font-size: 30px; font-weight: 900; letter-spacing: -1px; background: linear-gradient(135deg, var(--blue-lt), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 6px; }
-.rh-mini-result { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-.rh-mini-cat { font-size: 11px; color: var(--w50); }
-
-/* ── CASE STUDIES ──────────────────────────────────── */
-.cs-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 44px; flex-wrap: wrap; gap: 20px; }
-.cs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-.cs-card { overflow: hidden; transition: all .3s; cursor: pointer; }
-.cs-card:hover { transform: translateY(-5px); }
-.cs-card:hover .glass { border-color: var(--border-hv); }
-.cs-thumb {
-  height: 175px; display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 900; color: var(--w10); position: relative; overflow: hidden;
-  border-radius: var(--rl) var(--rl) 0 0;
-  border: 1px solid var(--border); border-bottom: none;
-}
-.cs-ind {
-  position: absolute; top: 14px; left: 14px;
-  background: rgba(0,0,0,.5); backdrop-filter: blur(8px);
-  color: var(--w70); padding: 4px 10px; border-radius: 100px;
-  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
-}
-.cs-body { padding: 24px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--rl) var(--rl); background: var(--glass); backdrop-filter: blur(16px); }
-.cs-metric { font-size: 34px; font-weight: 900; letter-spacing: -1px; background: linear-gradient(135deg, var(--blue-lt), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 5px; }
-.cs-result { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-.cs-desc { font-size: 12px; color: var(--w70); line-height: 1.6; }
-.cs-foot { display: flex; align-items: center; gap: 7px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border); }
-.cs-foot-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); }
-.cs-foot-txt { font-size: 11px; color: var(--w50); }
-
-/* ── NUMBERS ────────────────────────────────────────── */
-.numbers {
-  padding: 88px 0; position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #0D1F6B 0%, #0A2B7A 50%, #063056 100%);
-}
-.numbers-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 40px; text-align: center; }
-.num-val { font-size: 52px; font-weight: 900; letter-spacing: -2px; background: linear-gradient(135deg, var(--white), var(--cyan-lt)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
-.num-lbl { font-size: 13px; color: rgba(255,255,255,.7); margin-top: 8px; font-weight: 500; }
-.numbers-row2 { margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,.15); }
-
-/* ── SERVICES ────────────────────────────────────────── */
-.svcs-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; flex-wrap: wrap; gap: 20px; }
-.svcs-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-.svc { padding: 30px; transition: all .3s; cursor: pointer; }
-.svc:hover { transform: translateY(-4px); }
-.svc-ico { width: 46px; height: 46px; border-radius: 12px; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.2); display: flex; align-items: center; justify-content: center; font-size: 19px; margin-bottom: 16px; }
-.svc-title { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
-.svc-desc { font-size: 13px; color: var(--w70); line-height: 1.65; }
-.svc-arrow { font-size: 13px; color: var(--cyan); font-weight: 600; margin-top: 12px; display: inline-flex; align-items: center; gap: 4px; transition: gap .2s; }
-.svc:hover .svc-arrow { gap: 8px; }
-
-/* ── LEAD MAGNET ─────────────────────────────────────── */
-.lm {
-  padding: 56px;
-  display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center;
-  background: linear-gradient(135deg, rgba(37,99,235,.12) 0%, rgba(6,182,212,.08) 100%);
-  border: 1px solid rgba(6,182,212,.2);
-}
-.lm-badge { display: inline-flex; align-items: center; gap: 7px; background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25); color: var(--gold); padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 14px; }
-.lm-title { font-size: clamp(22px, 3vw, 34px); font-weight: 900; letter-spacing: -1px; line-height: 1.1; margin-bottom: 12px; }
-.lm-vis { width: 180px; height: 140px; border-radius: var(--r); background: rgba(255,255,255,.06); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 52px; flex-shrink: 0; }
-
-/* ── PROCESS ─────────────────────────────────────────── */
-.j-tabs { display: flex; gap: 4px; background: rgba(255,255,255,.06); border: 1px solid var(--border); border-radius: 12px; padding: 4px; width: fit-content; margin-bottom: 40px; }
-.j-tab { padding: 10px 22px; border-radius: 9px; font-size: 14px; font-weight: 600; color: var(--w70); cursor: pointer; transition: all .2s; }
-.j-tab.on { background: linear-gradient(135deg, var(--blue), var(--cyan)); color: var(--white); }
-.j-month { display: none; }
-.j-month.on { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
-.j-item { padding: 20px 22px; display: flex; align-items: flex-start; gap: 14px; }
-.j-ico { width: 36px; height: 36px; border-radius: 9px; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.2); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.j-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-.j-desc { font-size: 12px; color: var(--w70); line-height: 1.6; }
-
-/* ── TEAM ────────────────────────────────────────────── */
-.team-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
-.team-card { overflow: hidden; transition: transform .3s; }
-.team-card:hover { transform: translateY(-4px); }
-.team-photo {
-  height: 200px; display: flex; align-items: center; justify-content: center;
-  font-size: 42px; font-weight: 900; color: var(--w10); position: relative; overflow: hidden;
-}
-.team-photo-fade { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 40%, rgba(6,9,30,.95) 100%); }
-.team-info { padding: 18px 22px; }
-.team-name { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
-.team-role { font-size: 12px; color: var(--cyan); font-weight: 600; }
-
-/* ── FAQ ─────────────────────────────────────────────── */
-.faq-layout { display: grid; grid-template-columns: 340px 1fr; gap: 64px; align-items: start; }
-.faq-list { display: flex; flex-direction: column; gap: 6px; }
-.faq-item { border-radius: 14px; overflow: hidden; transition: border-color .2s; }
-.faq-q {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 18px 22px; cursor: pointer; font-size: 14px; font-weight: 600; gap: 14px;
-  user-select: none;
-}
-.faq-icon { width: 26px; height: 26px; border-radius: 50%; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.2); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--cyan); flex-shrink: 0; transition: transform .3s, background .2s; }
-.faq-item.open .faq-icon { transform: rotate(45deg); background: var(--cyan); color: var(--bg); border-color: var(--cyan); }
-.faq-a { max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s; font-size: 13.5px; color: var(--w70); line-height: 1.75; padding: 0 22px; }
-.faq-item.open .faq-a { max-height: 240px; padding-bottom: 20px; }
-
-/* ── AWARDS ──────────────────────────────────────────── */
-.awards-hd { text-align: center; margin-bottom: 48px; }
-.awards-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; margin-bottom: 40px; }
-.award-card { padding: 26px 20px; text-align: center; transition: all .3s; }
-.award-card:hover { transform: translateY(-3px); }
-.award-ico { font-size: 30px; margin-bottom: 10px; }
-.award-name { font-size: 12px; font-weight: 600; color: var(--w70); line-height: 1.4; }
-.award-yr { font-size: 10px; color: var(--w50); margin-top: 3px; }
-.cert-row { display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap; padding-top: 28px; border-top: 1px solid var(--border); }
-.cert-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--w70); font-weight: 500; }
-.cert-item::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--cyan); flex-shrink:0; }
-
-/* ── ACADEMY ─────────────────────────────────────────── */
-.academy {
-  padding: 56px; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center;
-  background: linear-gradient(135deg, rgba(6,182,212,.1) 0%, rgba(37,99,235,.08) 100%);
-  border: 1px solid rgba(6,182,212,.2);
-}
-.academy-vis { width: 180px; height: 140px; border-radius: var(--r); background: rgba(255,255,255,.06); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 52px; flex-shrink: 0; }
-
-/* ── REVIEWS ─────────────────────────────────────────── */
-.reviews-hd { text-align: center; margin-bottom: 48px; }
-.rv-summary { display: flex; align-items: center; justify-content: center; gap: 36px; margin-bottom: 44px; flex-wrap: wrap; }
-.rv-score { font-size: 56px; font-weight: 900; letter-spacing: -2px; background: linear-gradient(135deg, var(--white), var(--cyan-lt)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; text-align: center; }
-.rv-stars-row { display: flex; gap: 3px; justify-content: center; margin: 6px 0; }
-.rv-stars-row span { color: var(--gold); font-size: 17px; }
-.rv-count { font-size: 12px; color: var(--w50); }
-.rv-bars { display: flex; flex-direction: column; gap: 7px; min-width: 200px; }
-.rv-bar-row { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--w70); }
-.rv-bar-track { flex: 1; height: 5px; background: rgba(255,255,255,.1); border-radius: 3px; overflow: hidden; }
-.rv-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(to right, var(--blue), var(--cyan)); }
-.rv-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
-.rv-card { padding: 28px; display: flex; flex-direction: column; gap: 16px; transition: all .3s; }
-.rv-card:hover { transform: translateY(-3px); }
-.rv-card-stars { display: flex; gap: 3px; }
-.rv-card-stars span { color: var(--gold); font-size: 14px; }
-.rv-quote { font-size: 14px; color: var(--w70); line-height: 1.75; flex: 1; }
-.rv-author { display: flex; align-items: center; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border); }
-.rv-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; flex-shrink: 0; }
-.rv-name { font-size: 13px; font-weight: 600; }
-.rv-role { font-size: 11px; color: var(--w50); margin-top: 1px; }
-.rv-platform { font-size: 10px; color: var(--cyan); font-weight: 700; letter-spacing: .5px; margin-top: 3px; }
-
-/* ── LOCATIONS ────────────────────────────────────────── */
-.loc-hd { text-align: center; margin-bottom: 44px; }
-.loc-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
-.loc-card { padding: 22px 26px; display: flex; align-items: center; gap: 14px; transition: all .3s; cursor: pointer; text-decoration: none; }
-.loc-card:hover { transform: translateY(-2px); }
-.loc-pin { width: 38px; height: 38px; border-radius: 10px; background: rgba(6,182,212,.1); border: 1px solid rgba(6,182,212,.2); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
-.loc-name { font-size: 16px; font-weight: 700; margin-bottom: 2px; }
-.loc-sub { font-size: 12px; color: var(--w50); }
-
-/* ── CTA FORM ─────────────────────────────────────────── */
-.cta-section { position: relative; overflow: hidden; padding: 110px 0; }
-.cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; position: relative; z-index: 1; }
-.cta-benefits { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 20px 0 28px; }
-.cta-benefits li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--w70); }
-.cta-benefits li::before { content: '✓'; color: var(--cyan); font-weight: 700; flex-shrink: 0; }
-.cta-proof-row { display: flex; align-items: center; gap: 10px; padding-top: 20px; border-top: 1px solid var(--border); }
-.cta-proof-stars { display: flex; gap: 2px; }
-.cta-proof-stars span { color: var(--gold); font-size: 13px; }
-.cta-proof-txt { font-size: 12px; color: var(--w70); }
-.form-box { padding: 40px; }
-.form-box h3 { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
-.form-sub { font-size: 13px; color: var(--w70); margin-bottom: 28px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-.form-group label { font-size: 11px; font-weight: 700; color: var(--w50); text-transform: uppercase; letter-spacing: .7px; }
-.form-group input,
-.form-group select {
-  background: rgba(255,255,255,.07); border: 1px solid var(--border);
-  border-radius: 9px; padding: 12px 14px;
-  color: var(--white); font-size: 14px; font-family: 'Inter', sans-serif;
-  outline: none; transition: border-color .2s;
-}
-.form-group input:focus,
-.form-group select:focus { border-color: var(--cyan); background: rgba(255,255,255,.09); }
-.form-group input::placeholder { color: var(--w30); }
-.form-group select option { background: #0A1035; }
-.form-submit {
-  width: 100%; padding: 15px;
-  background: linear-gradient(135deg, var(--blue), var(--cyan));
-  color: var(--white); border: none; border-radius: 10px;
-  font-size: 15px; font-weight: 700; cursor: pointer;
-  font-family: 'Inter', sans-serif; transition: all .2s;
-  box-shadow: 0 8px 32px rgba(37,99,235,.3);
-}
-.form-submit:hover { transform: translateY(-1px); box-shadow: 0 12px 40px rgba(37,99,235,.5); }
-.form-note { font-size: 11px; color: var(--w30); text-align: center; margin-top: 10px; }
-
-/* ── FOOTER ───────────────────────────────────────────── */
-footer {
-  background: rgba(0,0,0,.4); border-top: 1px solid var(--border);
-  padding: 80px 0 36px;
-}
-.footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 56px; }
-.ft-logo { font-size: 20px; font-weight: 900; color: var(--white); text-decoration: none; display: block; margin-bottom: 14px; letter-spacing: -.3px; }
-.ft-logo span { color: var(--cyan); }
-.ft-tagline { font-size: 13px; color: var(--w50); line-height: 1.7; max-width: 260px; margin-bottom: 20px; }
-.ft-offices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-.ft-office-lbl { font-size: 10px; font-weight: 700; color: var(--cyan); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 2px; }
-.ft-office-addr { font-size: 12px; color: var(--w50); line-height: 1.5; }
-.ft-socials { display: flex; gap: 8px; }
-.ft-soc { width: 34px; height: 34px; border-radius: 8px; background: var(--glass); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--w70); font-size: 13px; text-decoration: none; transition: all .2s; }
-.ft-soc:hover { background: var(--cyan); border-color: var(--cyan); color: var(--bg); }
-.ft-col h4 { font-size: 11px; font-weight: 700; color: var(--white); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 16px; }
-.ft-col ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
-.ft-col ul a { color: var(--w50); font-size: 13px; text-decoration: none; transition: color .2s; }
-.ft-col ul a:hover { color: var(--cyan); }
-.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 14px; }
-.ft-copy { font-size: 12px; color: var(--w30); }
-.ft-links { display: flex; gap: 20px; }
-.ft-links a { color: var(--w30); font-size: 12px; text-decoration: none; transition: color .2s; }
-.ft-links a:hover { color: var(--w70); }
-
-/* ── ANIMATIONS ───────────────────────────────────────── */
-@keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
-.anim { opacity: 0; }
-.anim.vis { animation: fadeUp .55s ease forwards; }
-.d1 { animation-delay: .1s; } .d2 { animation-delay: .2s; } .d3 { animation-delay: .3s; } .d4 { animation-delay: .4s; }
-
-/* ── RESPONSIVE ───────────────────────────────────────── */
-@media (max-width: 1100px) {
-  .cs-grid { grid-template-columns: repeat(2,1fr); }
-  .svcs-grid { grid-template-columns: repeat(2,1fr); }
-  .awards-grid { grid-template-columns: repeat(3,1fr); }
-  .footer-top { grid-template-columns: 1fr 1fr 1fr; gap: 36px; }
-}
-@media (max-width: 900px) {
-  .hero-grid, .vp-grid, .rh-grid, .cta-grid { grid-template-columns: 1fr; }
-  .hero-vis { display: none; }
-  .faq-layout { grid-template-columns: 1fr; }
-  .team-grid { grid-template-columns: repeat(2,1fr); }
-  .rv-grid { grid-template-columns: 1fr 1fr; }
-  .lm, .academy { grid-template-columns: 1fr; padding: 36px; }
-  .lm-vis, .academy-vis { display: none; }
-}
-@media (max-width: 768px) {
-  .section { padding: 68px 0; }
-  .hero { min-height: auto; padding: 110px 0 68px; }
-  .cs-grid, .svcs-grid, .loc-grid { grid-template-columns: 1fr; }
-  .numbers-grid { grid-template-columns: repeat(2,1fr); }
-  .awards-grid { grid-template-columns: repeat(2,1fr); }
-  .rv-grid { grid-template-columns: 1fr; }
-  .nav-links, .nav-right .btn-blue { display: none; }
-  .ham { display: flex; }
-  .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .j-month.on { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .svcs-hd, .cs-hd { flex-direction: column; align-items: flex-start; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RankHarbour — SEO &amp; AI Search Agency</title>
+  <meta name="description" content="Specialist SEO and AI search strategies that help your business become easier to find — and easier to choose.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="rankharbour.css">
 </head>
 <body>
 
-<!-- ══ NAV ══════════════════════════════════════════════ -->
-<nav id="nav">
-  <div class="nav-inner">
-    <a href="#" class="logo">Rank<span>Harbour</span></a>
-    <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li>
-        <a href="#services">SEO Services <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></a>
-        <div class="nav-drop nav-drop-wide">
-          <div class="nav-drop-col">
-            <div class="nav-drop-col-hd">Core SEO</div>
-            <a href="#">Technical SEO</a><a href="#">eCommerce SEO</a><a href="#">Local SEO</a>
-            <a href="#">Enterprise SEO</a><a href="#">Small Business SEO</a><a href="#">International SEO</a>
-            <a href="#">SaaS SEO</a><a href="#">B2B SEO</a>
-          </div>
-          <div class="nav-drop-col">
-            <div class="nav-drop-col-hd">Content & Authority</div>
-            <a href="#">Digital PR</a><a href="#">Link Building</a><a href="#">SEO Content Writing</a>
-            <a href="#">SEO Copywriting</a><a href="#">Blog Strategy</a><a href="#">UX Design</a>
-            <div class="nav-drop-col-hd" style="margin-top:8px">Technology</div>
-            <a href="#">Shopify SEO</a><a href="#">WordPress SEO</a><a href="#">Magento SEO</a>
-          </div>
-          <div class="nav-drop-col">
-            <div class="nav-drop-col-hd">Industry</div>
-            <a href="#">Retail & eCommerce</a><a href="#">Finance & Insurance</a><a href="#">Healthcare</a>
-            <a href="#">Legal</a><a href="#">Real Estate</a><a href="#">Hospitality</a>
-            <a href="#">Education</a><a href="#">Automotive</a>
-          </div>
-        </div>
-      </li>
-      <li>
-        <a href="#">AI SEO <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></a>
-        <div class="nav-drop">
-          <a href="#">AI Search Optimisation</a><a href="#">Answer Engine Optimisation</a>
-          <a href="#">AI Overview Strategy</a><a href="#">ChatGPT & Gemini Visibility</a>
-        </div>
-      </li>
-      <li><a href="#results">Case Studies</a></li>
-      <li><a href="#reviews">Reviews</a></li>
-      <li>
-        <a href="#">Resources <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></a>
-        <div class="nav-drop">
-          <a href="#">Blog</a><a href="#">Harbour Academy (Free)</a><a href="#">YouTube</a>
-          <a href="#">SEO ROI Calculator</a><a href="#">AI Search White Paper</a><a href="#">eCommerce SEO Toolkit</a>
-        </div>
-      </li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <div class="nav-right">
-      <a href="tel:1800726547" class="nav-phone">1800 726 547</a>
-      <a href="#contact" class="btn btn-blue" style="padding:10px 18px;font-size:13px">Free SEO Masterplan</a>
-    </div>
-    <div class="ham" id="ham"><span></span><span></span><span></span></div>
+<!-- ================================================================
+     1. HEADER
+     ================================================================ -->
+<header class="rh-header" id="rh-header" role="banner">
+  <div class="rh-header__inner">
+
+    <a href="#" class="rh-logo" aria-label="RankHarbour home">
+      <img class="rh-logo__mark" src="assets/images/rankharbour-anchor-hero.png"
+           width="1254" height="1254" alt="">
+      <span class="rh-logo__word">
+        <img class="rh-logo__img" src="assets/images/rankharbour-logo-horizontal.png"
+             width="2172" height="724" alt="RankHarbour">
+      </span>
+    </a>
+
+    <nav class="rh-nav" aria-label="Primary navigation">
+      <a class="rh-nav__link" href="#work">Work</a>
+      <a class="rh-nav__link" href="#expertise">Expertise</a>
+      <a class="rh-nav__link" href="#approach">Approach</a>
+      <a class="rh-nav__link" href="#about">About</a>
+    </nav>
+
+    <a href="account.html" class="rh-header__login">Log in</a>
+    <a href="#contact" class="rh-header__cta">Get your masterplan</a>
+
+    <button class="rh-menu-btn" id="rh-menu-btn"
+            aria-expanded="false" aria-controls="rh-mobile-nav"
+            aria-label="Open navigation menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
+</header>
+
+<!-- Mobile nav panel -->
+<nav class="rh-mobile-nav" id="rh-mobile-nav" aria-label="Mobile navigation">
+  <a class="rh-mobile-nav__link" href="#work">Work</a>
+  <a class="rh-mobile-nav__link" href="#expertise">Expertise</a>
+  <a class="rh-mobile-nav__link" href="#approach">Approach</a>
+  <a class="rh-mobile-nav__link" href="#about">About</a>
+  <a class="rh-mobile-nav__link rh-mobile-nav__link--login" href="account.html">Log in</a>
+  <a class="btn-brass" href="#contact">Get your masterplan</a>
 </nav>
 
-<!-- ══ HERO ══════════════════════════════════════════════ -->
-<section class="hero">
-  <!-- orbs -->
-  <div class="orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(37,99,235,.35),transparent 70%);top:-150px;right:-100px"></div>
-  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,.25),transparent 70%);bottom:0;left:-100px"></div>
-  <div class="orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(37,99,235,.2),transparent 70%);top:40%;left:35%"></div>
 
-  <div class="container">
-    <div class="hero-grid">
-      <div style="position:relative;z-index:1">
-        <div class="hero-badge">
-          <span class="dot"></span>
-          Australia's #1 SEO Agency · APAC Search Awards 2024
+<!-- ================================================================
+     2. HERO
+     ================================================================ -->
+<section class="rh-hero" aria-label="Hero">
+  <div class="rh-hero__bg" role="img" aria-label="Harbour at blue hour with illuminated curved breakwater"></div>
+
+  <div class="rh-hero__inner">
+
+    <div class="rh-hero__content">
+      <p class="eyebrow rh-hero__eyebrow">SEO &amp; AI Search</p>
+
+      <h1 class="rh-hero__headline">
+        <span class="line">Be found.</span>
+        <span class="line">Be chosen.</span>
+        <span class="line line--serif">Build momentum.</span>
+      </h1>
+
+      <p class="rh-hero__para">Specialist SEO and AI search strategies that help your business become easier to find — and easier to choose.</p>
+
+      <div class="rh-hero__actions">
+        <a href="#contact" class="btn-brass">Get your masterplan &rarr;</a>
+        <a href="#approach" class="btn-chalk">Explore our approach</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom strip -->
+  <div class="rh-hero__strip">
+    <div class="rh-hero__strip-inner">
+      <div class="rh-hero__strip-items">
+        <span class="rh-hero__strip-item">Technical foundations</span>
+        <span class="rh-hero__strip-item">Search authority</span>
+        <span class="rh-hero__strip-item">AI visibility</span>
+      </div>
+      <div class="rh-scroll-cue" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     3. POSITIONING BAND
+     ================================================================ -->
+<section class="rh-position" aria-labelledby="pos-heading">
+  <div class="rh-position__inner">
+
+    <div class="rh-position__left">
+      <p class="eyebrow rh-position__eyebrow rh-reveal">Focus is our advantage</p>
+      <h2 class="rh-position__heading rh-reveal rh-reveal-delay-1" id="pos-heading">One discipline.<br>Every detail.</h2>
+    </div>
+
+    <div class="rh-position__right">
+      <p class="rh-position__para rh-reveal">We work in one channel — organic search — with the rigour of specialists who have nothing else to think about. No distraction, no diluted expertise, no junior standing between you and real answers.</p>
+
+      <div class="rh-position__principles">
+        <div class="rh-position__principle rh-reveal">
+          <div class="rh-position__num">01</div>
+          <div class="rh-position__title">Technical depth</div>
+          <div class="rh-position__desc">We fix root causes, not surface symptoms. Every technical decision is traced to a commercial outcome.</div>
         </div>
-        <h1>
-          No Generalists.<br>
-          <em>Only Masters.</em>
-        </h1>
-        <p class="hero-sub">At RankHarbour, we're rewriting the SEO agency playbook. In the world of SEO there are plenty of hustlers and not enough masters — we decided to change that.</p>
-        <div class="hero-btns">
-          <a href="#contact" class="btn btn-blue" style="padding:15px 30px;font-size:15px">Claim Your Free SEO Masterplan →</a>
-          <a href="#results" class="btn btn-glass">See Our Results</a>
+        <div class="rh-position__principle rh-reveal rh-reveal-delay-1">
+          <div class="rh-position__num">02</div>
+          <div class="rh-position__title">Commercial intent</div>
+          <div class="rh-position__desc">Traffic that doesn't convert is just noise. We target the searches your best customers actually make.</div>
         </div>
-        <div class="hero-proof">
+        <div class="rh-position__principle rh-reveal rh-reveal-delay-2">
+          <div class="rh-position__num">03</div>
+          <div class="rh-position__title">Clear reporting</div>
+          <div class="rh-position__desc">Revenue tied to organic, not rankings tied to nothing. You always know what the work is producing.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================================================================
+     4. SELECTED WORK
+     ================================================================ -->
+<section class="rh-work" id="work" aria-labelledby="work-heading">
+  <div class="rh-work__inner">
+
+    <div class="rh-work__header">
+      <div>
+        <p class="eyebrow rh-work__eyebrow rh-reveal">Where we work</p>
+        <h2 class="rh-work__heading rh-reveal rh-reveal-delay-1" id="work-heading">Where search strategy makes the difference.</h2>
+      </div>
+      <p class="rh-work__intro rh-reveal rh-reveal-delay-2">Three categories where a focused organic strategy consistently changes business outcomes. Each reflects how we approach the work.</p>
+    </div>
+
+    <div class="rh-work__grid">
+
+      <!-- Featured: eCommerce -->
+      <article class="rh-work__featured rh-reveal">
+        <div class="rh-work__feat-media">
+          <svg viewBox="0 0 680 305" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="680" height="305" fill="#0B1520"/>
+            <line x1="0" y1="290" x2="680" y2="290" stroke="#142535" stroke-width="1"/>
+            <line x1="0" y1="220" x2="680" y2="220" stroke="#142535" stroke-width="1"/>
+            <line x1="0" y1="150" x2="680" y2="150" stroke="#142535" stroke-width="1"/>
+            <line x1="0" y1="80" x2="680" y2="80" stroke="#142535" stroke-width="1"/>
+            <rect x="60" y="250" width="48" height="40" fill="#142535"/>
+            <rect x="132" y="215" width="48" height="75" fill="#1a2f42"/>
+            <rect x="204" y="185" width="48" height="105" fill="#1e3448"/>
+            <rect x="276" y="155" width="48" height="135" fill="#22394e"/>
+            <rect x="348" y="118" width="48" height="172" fill="rgba(195,165,109,0.28)"/>
+            <rect x="420" y="85" width="48" height="205" fill="rgba(195,165,109,0.5)"/>
+            <rect x="492" y="50" width="48" height="240" fill="rgba(195,165,109,0.72)"/>
+            <rect x="564" y="18" width="48" height="272" fill="#C3A56D"/>
+            <polyline points="84,258 156,232 228,202 300,168 372,133 444,100 516,64 588,33"
+              fill="none" stroke="#C3A56D" stroke-width="2" opacity="0.5"/>
+            <circle cx="588" cy="33" r="5" fill="#C3A56D"/>
+            <circle cx="516" cy="64" r="4" fill="#C3A56D" opacity="0.8"/>
+            <text x="60" y="300" font-family="Jost,sans-serif" font-size="11" fill="rgba(244,241,235,0.28)" letter-spacing="3">ORGANIC REVENUE TRAJECTORY</text>
+          </svg>
+          <span class="rh-work__sector-tag">eCommerce</span>
+        </div>
+        <div class="rh-work__feat-body">
+          <p class="rh-work__feat-scenario">Category architecture &amp; schema strategy</p>
+          <h3 class="rh-work__feat-title">Turning product depth into search presence across every buying intent.</h3>
+          <p class="rh-work__feat-desc">For eCommerce businesses, the biggest organic opportunity is rarely the homepage — it's the way categories, filters and product pages are structured for how buyers actually search. We build architecture that compounds over time.</p>
+          <a href="#expertise" class="rh-work__feat-link">eCommerce expertise &rarr;</a>
+        </div>
+      </article>
+
+      <div class="rh-work__stack">
+
+        <!-- Professional Services -->
+        <article class="rh-work__card rh-reveal rh-reveal-delay-1">
+          <div class="rh-work__card-media">
+            <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="360" height="200" fill="#0B1520"/>
+              <circle cx="180" cy="100" r="60" fill="none" stroke="rgba(195,165,109,0.12)" stroke-width="1"/>
+              <circle cx="180" cy="100" r="32" fill="none" stroke="rgba(195,165,109,0.25)" stroke-width="1"/>
+              <circle cx="180" cy="100" r="8" fill="#C3A56D"/>
+              <line x1="180" y1="100" x2="180" y2="28" stroke="rgba(195,165,109,0.22)" stroke-width="1"/>
+              <line x1="180" y1="100" x2="242" y2="64" stroke="rgba(195,165,109,0.22)" stroke-width="1"/>
+              <line x1="180" y1="100" x2="242" y2="136" stroke="rgba(195,165,109,0.22)" stroke-width="1"/>
+              <line x1="180" y1="100" x2="180" y2="172" stroke="rgba(195,165,109,0.22)" stroke-width="1"/>
+              <line x1="180" y1="100" x2="118" y2="136" stroke="rgba(195,165,109,0.22)" stroke-width="1"/>
+              <line x1="180" y1="100" x2="118" y2="64" stroke="rgba(195,165,109,0.22)" stroke-width="1"/>
+              <circle cx="180" cy="28" r="5" fill="#C3A56D" opacity="0.72"/>
+              <circle cx="242" cy="64" r="5" fill="#C3A56D" opacity="0.72"/>
+              <circle cx="242" cy="136" r="5" fill="#C3A56D" opacity="0.72"/>
+              <circle cx="180" cy="172" r="5" fill="#C3A56D" opacity="0.72"/>
+              <circle cx="118" cy="136" r="5" fill="#C3A56D" opacity="0.72"/>
+              <circle cx="118" cy="64" r="5" fill="#C3A56D" opacity="0.72"/>
+              <circle cx="180" cy="100" r="88" fill="none" stroke="rgba(195,165,109,0.06)" stroke-width="1"/>
+            </svg>
+            <span class="rh-work__sector-tag">Professional services</span>
+          </div>
+          <div class="rh-work__card-body">
+            <p class="rh-work__card-scenario">Local authority &amp; expert content</p>
+            <h3 class="rh-work__card-title">Building the trust signals that move a firm from invisible to preferred.</h3>
+            <p class="rh-work__card-desc">In professional services, reputation and search authority are the same thing. We develop the content and link profile that places you in front of buyers at the moment of intent.</p>
+            <a href="#expertise" class="rh-work__card-link">Expertise approach &rarr;</a>
+          </div>
+        </article>
+
+        <!-- Multi-location -->
+        <article class="rh-work__card rh-reveal rh-reveal-delay-2">
+          <div class="rh-work__card-media">
+            <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect width="360" height="200" fill="#0B1520"/>
+              <line x1="60" y1="20" x2="60" y2="180" stroke="#142535" stroke-width="1"/>
+              <line x1="120" y1="20" x2="120" y2="180" stroke="#142535" stroke-width="1"/>
+              <line x1="180" y1="20" x2="180" y2="180" stroke="#142535" stroke-width="1"/>
+              <line x1="240" y1="20" x2="240" y2="180" stroke="#142535" stroke-width="1"/>
+              <line x1="300" y1="20" x2="300" y2="180" stroke="#142535" stroke-width="1"/>
+              <line x1="20" y1="60" x2="340" y2="60" stroke="#142535" stroke-width="1"/>
+              <line x1="20" y1="100" x2="340" y2="100" stroke="#142535" stroke-width="1"/>
+              <line x1="20" y1="140" x2="340" y2="140" stroke="#142535" stroke-width="1"/>
+              <circle cx="240" cy="72" r="10" fill="#C3A56D" opacity="0.9"/>
+              <path d="M240 82 L240 100" stroke="#C3A56D" stroke-width="1.5" opacity="0.45"/>
+              <circle cx="120" cy="108" r="7" fill="#C3A56D" opacity="0.72"/>
+              <path d="M120 115 L120 140" stroke="#C3A56D" stroke-width="1" opacity="0.35"/>
+              <circle cx="300" cy="130" r="7" fill="#C3A56D" opacity="0.8"/>
+              <path d="M300 137 L300 175" stroke="#C3A56D" stroke-width="1" opacity="0.38"/>
+              <circle cx="60" cy="150" r="5" fill="#C3A56D" opacity="0.52"/>
+              <circle cx="180" cy="55" r="5" fill="#C3A56D" opacity="0.6"/>
+              <path d="M120 108 Q180 62 240 72" fill="none" stroke="#C3A56D" stroke-width="1" stroke-dasharray="4 4" opacity="0.15"/>
+              <path d="M240 72 Q280 98 300 130" fill="none" stroke="#C3A56D" stroke-width="1" stroke-dasharray="4 4" opacity="0.15"/>
+            </svg>
+            <span class="rh-work__sector-tag">Multi-location</span>
+          </div>
+          <div class="rh-work__card-body">
+            <p class="rh-work__card-scenario">Consolidated search presence</p>
+            <h3 class="rh-work__card-title">One brand. Many markets. A coherent presence in every local search.</h3>
+            <p class="rh-work__card-desc">Multi-location businesses often have fragmented signals and duplicate content issues. We unify the technical foundation and build local authority that scales without cannibalising itself.</p>
+            <a href="#expertise" class="rh-work__card-link">Multi-location strategy &rarr;</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     5. EXPERTISE
+     ================================================================ -->
+<section class="rh-expertise" id="expertise" aria-labelledby="exp-heading">
+  <div class="rh-expertise__inner">
+
+    <div class="rh-expertise__sticky">
+      <p class="eyebrow rh-expertise__eyebrow rh-reveal">What we do</p>
+      <h2 class="rh-expertise__heading rh-reveal rh-reveal-delay-1" id="exp-heading">Built for how people search now.</h2>
+      <p class="rh-expertise__intro rh-reveal rh-reveal-delay-2">Search has three layers. They compound when you get them right, and they stall when any one is missing. We work across all three — and prioritise based on where your biggest gains are.</p>
+      <a href="#contact" class="btn-ink rh-reveal rh-reveal-delay-3">Discuss your priorities &rarr;</a>
+    </div>
+
+    <div class="rh-expertise__rows">
+
+      <details class="rh-disc" open>
+        <summary>
+          <span class="rh-disc__num">01</span>
+          <span class="rh-disc__title">Search foundations</span>
+          <span class="rh-disc__chevron" aria-hidden="true">+</span>
+        </summary>
+        <div class="rh-disc__body">
+          <p class="rh-disc__desc">The technical layer is where most sites leak potential. We audit and rebuild the infrastructure that search engines use to understand, crawl and rank your content — including Core Web Vitals, indexation, architecture and schema.</p>
+          <div class="rh-disc__items">
+            <div class="rh-disc__item">Technical SEO audit and priority fix list delivered to your dev team</div>
+            <div class="rh-disc__item">Site architecture and crawl health optimisation</div>
+            <div class="rh-disc__item">Core Web Vitals and page experience improvements</div>
+            <div class="rh-disc__item">Local SEO setup and citation consistency</div>
+          </div>
+          <div class="rh-disc__tags">
+            <span class="rh-disc__tag">Technical SEO</span>
+            <span class="rh-disc__tag">Local SEO</span>
+            <span class="rh-disc__tag">Site Migrations</span>
+            <span class="rh-disc__tag">Schema &amp; Structured Data</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="rh-disc">
+        <summary>
+          <span class="rh-disc__num">02</span>
+          <span class="rh-disc__title">Demand &amp; authority</span>
+          <span class="rh-disc__chevron" aria-hidden="true">+</span>
+        </summary>
+        <div class="rh-disc__body">
+          <p class="rh-disc__desc">Ranking for the right searches requires content that matches intent and a link profile that earns trust. We develop both — with content strategies built around how your customers actually search, and editorial links that move authority metrics.</p>
+          <div class="rh-disc__items">
+            <div class="rh-disc__item">Intent and keyword mapping across the full conversion funnel</div>
+            <div class="rh-disc__item">SEO content briefs and editorial production</div>
+            <div class="rh-disc__item">Digital PR and editorial link acquisition</div>
+            <div class="rh-disc__item">eCommerce category and product page optimisation</div>
+          </div>
+          <div class="rh-disc__tags">
+            <span class="rh-disc__tag">Content Strategy</span>
+            <span class="rh-disc__tag">Link Building</span>
+            <span class="rh-disc__tag">Digital PR</span>
+            <span class="rh-disc__tag">eCommerce SEO</span>
+          </div>
+        </div>
+      </details>
+
+      <details class="rh-disc">
+        <summary>
+          <span class="rh-disc__num">03</span>
+          <span class="rh-disc__title">AI discovery</span>
+          <span class="rh-disc__chevron" aria-hidden="true">+</span>
+        </summary>
+        <div class="rh-disc__body">
+          <p class="rh-disc__desc">AI Overviews, ChatGPT and other AI tools draw from the same web content Google ranks. Businesses with strong SEO foundations already have a head start — but specific structural and entity signals now matter. We help you build them.</p>
+          <div class="rh-disc__items">
+            <div class="rh-disc__item">AI search readiness assessment and gap analysis</div>
+            <div class="rh-disc__item">Entity and structured information optimisation</div>
+            <div class="rh-disc__item">Content alignment with AI answer patterns</div>
+            <div class="rh-disc__item">Ongoing visibility monitoring across AI search surfaces</div>
+          </div>
+          <div class="rh-disc__tags">
+            <span class="rh-disc__tag">AI Search</span>
+            <span class="rh-disc__tag">Structured Data</span>
+            <span class="rh-disc__tag">Entity SEO</span>
+            <span class="rh-disc__tag">Answer Optimisation</span>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     6. AI SEARCH FEATURE
+     ================================================================ -->
+<section class="rh-ai" aria-labelledby="ai-heading">
+  <div class="rh-ai__inner">
+
+    <div class="rh-ai__visual rh-reveal">
+      <img src="assets/images/search-sculpture-v1.png"
+           alt="Smoked glass and brass sculpture — brand art representing structured AI search presence"
+           width="680" height="510" loading="lazy">
+    </div>
+
+    <div class="rh-ai__copy">
+      <p class="eyebrow rh-ai__eyebrow rh-reveal">The next search frontier</p>
+      <h2 class="rh-ai__heading rh-reveal rh-reveal-delay-1" id="ai-heading">Search is changing. Your strategy should move with it.</h2>
+      <p class="rh-ai__para rh-reveal rh-reveal-delay-2">AI Overviews, generative answers and large-language model search tools are reshaping how people find information. But this isn't a reason to abandon SEO — it's a reason to do it better. The same signals that rank you in Google are the signals AI draws from.</p>
+      <p class="rh-ai__para rh-reveal rh-reveal-delay-2">The difference is in the structure. Businesses that present information clearly, build genuine authority and earn consistent signals are the ones that surface. We help you become that business.</p>
+
+      <div class="rh-ai__steps rh-reveal rh-reveal-delay-3">
+        <div class="rh-ai__step">
+          <div class="rh-ai__step-label">Understand</div>
+          <div class="rh-ai__step-desc">Audit your current AI search visibility and identify the gaps.</div>
+        </div>
+        <div class="rh-ai__step">
+          <div class="rh-ai__step-label">Structure</div>
+          <div class="rh-ai__step-desc">Organise content and entity signals so AI tools can interpret them correctly.</div>
+        </div>
+        <div class="rh-ai__step">
+          <div class="rh-ai__step-label">Strengthen</div>
+          <div class="rh-ai__step-desc">Build the authority and consistency that makes your brand the answer AI reaches for.</div>
+        </div>
+      </div>
+
+      <div class="rh-ai__cta rh-reveal">
+        <a href="#expertise" class="btn-chalk">AI discovery expertise &rarr;</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ================================================================
+     7. APPROACH
+     ================================================================ -->
+<section class="rh-approach" id="approach" aria-labelledby="approach-heading">
+  <div class="rh-approach__inner">
+
+    <p class="eyebrow rh-approach__eyebrow rh-reveal">How we work</p>
+    <h2 class="rh-approach__heading rh-reveal rh-reveal-delay-1" id="approach-heading">From uncertainty to a clear next move.</h2>
+
+    <div class="rh-approach__tabs" role="tablist" aria-label="Campaign phases">
+      <button class="rh-approach__tab active" role="tab"
+              aria-selected="true" aria-controls="panel-discover" data-panel="panel-discover"
+              id="tab-discover">
+        Discover
+      </button>
+      <button class="rh-approach__tab" role="tab"
+              aria-selected="false" aria-controls="panel-prioritise" data-panel="panel-prioritise"
+              id="tab-prioritise">
+        Prioritise
+      </button>
+      <button class="rh-approach__tab" role="tab"
+              aria-selected="false" aria-controls="panel-build" data-panel="panel-build"
+              id="tab-build">
+        Build &amp; refine
+      </button>
+    </div>
+
+    <div class="rh-approach__panels">
+
+      <div class="rh-approach__panel active" id="panel-discover" role="tabpanel" aria-labelledby="tab-discover">
+        <div>
+          <div class="rh-approach__stage-num" aria-hidden="true">01</div>
+          <h3 class="rh-approach__stage-title">Discover</h3>
+          <p class="rh-approach__stage-desc">In the first phase we establish a complete picture — your site's current state, your competitive landscape, and the keyword universe mapped to real commercial intent. Nothing in later phases works without this foundation.</p>
+        </div>
+        <div class="rh-approach__deliverables">
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">D1</span>
+            <div>
+              <div class="rh-approach__del-title">Campaign setup &amp; alignment</div>
+              <div class="rh-approach__del-desc">Account access, tool connections and stakeholder alignment to ensure no time is wasted.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">D2</span>
+            <div>
+              <div class="rh-approach__del-title">12-month SEO &amp; AI visibility roadmap</div>
+              <div class="rh-approach__del-desc">Every action tied to a business goal. Priority built around where your biggest gains are.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">D3</span>
+            <div>
+              <div class="rh-approach__del-title">Competitor landscape mapping</div>
+              <div class="rh-approach__del-desc">Who ranks, why they rank, and where your clearest opportunities are.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">D4</span>
+            <div>
+              <div class="rh-approach__del-title">Technical SEO &amp; crawl health audit</div>
+              <div class="rh-approach__del-desc">Forensic audit covering Core Web Vitals, indexation, site architecture and schema.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rh-approach__panel" id="panel-prioritise" role="tabpanel" aria-labelledby="tab-prioritise" hidden>
+        <div>
+          <div class="rh-approach__stage-num" aria-hidden="true">02</div>
+          <h3 class="rh-approach__stage-title">Prioritise</h3>
+          <p class="rh-approach__stage-desc">With the full picture in hand, we establish what gets fixed first and what gets built next. Technical recommendations go to your team; content and authority work begins. The first report gives you a clear baseline.</p>
+        </div>
+        <div class="rh-approach__deliverables">
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">P1</span>
+            <div>
+              <div class="rh-approach__del-title">Content &amp; authority audit</div>
+              <div class="rh-approach__del-desc">Quality gaps, topical coverage and cannibalisation across your existing content.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">P2</span>
+            <div>
+              <div class="rh-approach__del-title">E-E-A-T review</div>
+              <div class="rh-approach__del-desc">Your Experience, Expertise, Authoritativeness and Trust signals benchmarked against competitors.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">P3</span>
+            <div>
+              <div class="rh-approach__del-title">AI search content recommendations</div>
+              <div class="rh-approach__del-desc">Specific content changes to improve your presence in AI Overviews and answer engines.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">P4</span>
+            <div>
+              <div class="rh-approach__del-title">First monthly report</div>
+              <div class="rh-approach__del-desc">Baseline established. Rankings, traffic and conversion data tied to business outcomes.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rh-approach__panel" id="panel-build" role="tabpanel" aria-labelledby="tab-build" hidden>
+        <div>
+          <div class="rh-approach__stage-num" aria-hidden="true">03</div>
+          <h3 class="rh-approach__stage-title">Build &amp; refine</h3>
+          <p class="rh-approach__stage-desc">Production begins. Content goes live, technical fixes land, links start building and strategy tightens based on what the data shows. From here, every month compounds on the last.</p>
+        </div>
+        <div class="rh-approach__deliverables">
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">B1</span>
+            <div>
+              <div class="rh-approach__del-title">Content briefing &amp; production</div>
+              <div class="rh-approach__del-desc">SEO-first content briefs delivered and first assets published targeting priority keywords.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">B2</span>
+            <div>
+              <div class="rh-approach__del-title">Entity optimisation &amp; on-page SEO</div>
+              <div class="rh-approach__del-desc">Entity relationships, internal linking and on-page optimisation across priority pages.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">B3</span>
+            <div>
+              <div class="rh-approach__del-title">Link building</div>
+              <div class="rh-approach__del-desc">Editorial placements and digital PR campaigns building genuine domain authority.</div>
+            </div>
+          </div>
+          <div class="rh-approach__del">
+            <span class="rh-approach__del-n">B4</span>
+            <div>
+              <div class="rh-approach__del-title">Monthly report &amp; next 90-day plan</div>
+              <div class="rh-approach__del-desc">Early wins documented, strategy adjusted on data, the next quarter confirmed.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     8. ABOUT + QUESTIONS
+     ================================================================ -->
+<section class="rh-about" id="about" aria-labelledby="about-heading">
+  <div class="rh-about__inner">
+
+    <div class="rh-about__col">
+      <p class="eyebrow rh-about__eyebrow rh-reveal">Who we are</p>
+      <h2 class="rh-about__heading rh-reveal rh-reveal-delay-1" id="about-heading">Specialists, with a clear point of view.</h2>
+      <p class="rh-about__para rh-reveal rh-reveal-delay-2">We started with one conviction: generalist agencies will never deliver best-in-class SEO. So we built something different — a team of deep specialists, accountable to one thing: your organic growth.</p>
+      <p class="rh-about__para rh-reveal rh-reveal-delay-2">Every person on your account is an SEO expert. No account managers, no middlemen, no junior translating your brief into strategy. You get direct access to the people doing the work.</p>
+
+      <div class="rh-about__principles rh-reveal rh-reveal-delay-3">
+        <div class="rh-about__principle">
+          <span class="rh-about__p-num">01</span>
           <div>
-            <div class="proof-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-            <div class="proof-text" style="margin-top:5px"><strong>280+ Google Reviews</strong> · 4.9 average</div>
-          </div>
-          <div class="proof-sep"></div>
-          <div class="proof-cert">Google Partner Certified</div>
-          <div class="proof-sep"></div>
-          <div class="proof-cert">12 Years · SEO Only</div>
-        </div>
-      </div>
-
-      <div class="hero-vis">
-        <div class="hv-pill"><span>🚀</span><span class="hv-pill-txt">Organic traffic up 312%</span></div>
-        <div class="hv-card">
-          <div class="hv-label">Organic Growth — 12 Month View</div>
-          <div class="hv-bars">
-            <div class="hb" style="height:18%"></div><div class="hb" style="height:24%"></div>
-            <div class="hb" style="height:20%"></div><div class="hb" style="height:32%"></div>
-            <div class="hb dim" style="height:28%"></div><div class="hb dim" style="height:43%"></div>
-            <div class="hb dim" style="height:37%"></div><div class="hb on" style="height:55%"></div>
-            <div class="hb on" style="height:64%"></div><div class="hb on" style="height:75%"></div>
-            <div class="hb on" style="height:87%"></div><div class="hb on" style="height:100%"></div>
-          </div>
-          <div class="hv-row"><span class="hv-lbl">Page 1 Keywords</span><span><span class="hv-val">923</span><span class="hv-up">↑ +318</span></span></div>
-          <div class="hv-row"><span class="hv-lbl">Domain Authority</span><span><span class="hv-val">64</span><span class="hv-up">↑ +21</span></span></div>
-          <div class="hv-row"><span class="hv-lbl">Organic Conversions</span><span><span class="hv-val">4.6%</span><span class="hv-up">↑ +1.4%</span></span></div>
-        </div>
-        <div class="hv-float hv-f1">
-          <div class="hvf-lbl">AI Overview Visibility</div>
-          <div class="hvf-val">+847%</div>
-          <div class="hvf-sub">vs 12 months prior</div>
-        </div>
-        <div class="hv-float hv-f2">
-          <div class="hvf-lbl">SEO Revenue Attributed</div>
-          <div class="hvf-val">$3.1M</div>
-          <div class="hvf-sub">this quarter</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ LOGOS ═════════════════════════════════════════════ -->
-<div class="logos-section">
-  <p class="logos-label">Trusted by Australia's leading businesses</p>
-  <div class="logos-outer">
-    <div class="logos-track">
-      <span class="logo-name">RetailCo</span><span class="logo-name">NovaMed</span><span class="logo-name">UrbanNest</span>
-      <span class="logo-name">ClearPath Finance</span><span class="logo-name">SunCoast Hotels</span><span class="logo-name">VaultTech</span>
-      <span class="logo-name">PrimeParts</span><span class="logo-name">BuildRight</span><span class="logo-name">FreshBox</span>
-      <span class="logo-name">LegalEdge</span><span class="logo-name">CapitalPro</span><span class="logo-name">TradeHub</span>
-      <span class="logo-name">GreenLeaf Co.</span><span class="logo-name">MediBase</span><span class="logo-name">CoastalFit</span>
-      <span class="logo-name">RetailCo</span><span class="logo-name">NovaMed</span><span class="logo-name">UrbanNest</span>
-      <span class="logo-name">ClearPath Finance</span><span class="logo-name">SunCoast Hotels</span><span class="logo-name">VaultTech</span>
-      <span class="logo-name">PrimeParts</span><span class="logo-name">BuildRight</span><span class="logo-name">FreshBox</span>
-      <span class="logo-name">LegalEdge</span><span class="logo-name">CapitalPro</span><span class="logo-name">TradeHub</span>
-      <span class="logo-name">GreenLeaf Co.</span><span class="logo-name">MediBase</span><span class="logo-name">CoastalFit</span>
-    </div>
-  </div>
-</div>
-
-<!-- ══ ABOUT / VALUE PROPS ════════════════════════════════ -->
-<section class="section" id="about">
-  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(37,99,235,.2),transparent 70%);top:-100px;left:-150px"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div class="vp-grid">
-      <div class="anim" style="position:relative">
-        <div class="vp-img">
-          <div class="orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(6,182,212,.3),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
-          <div class="vp-img-content">
-            <div class="vp-img-num">SEO</div>
-            <div class="vp-img-lbl">Only. Always.</div>
+            <div class="rh-about__p-title">No account managers — only SEO specialists</div>
+            <div class="rh-about__p-desc">Every person on your account has a deep specialism. You'll never have a junior answering your technical questions.</div>
           </div>
         </div>
-        <div class="vp-badge">
-          <div class="vp-badge-val">12 yrs</div>
-          <div class="vp-badge-lbl">SEO specialists only</div>
+        <div class="rh-about__principle">
+          <span class="rh-about__p-num">02</span>
+          <div>
+            <div class="rh-about__p-title">One channel, done exceptionally</div>
+            <div class="rh-about__p-desc">We only do SEO. No social, no paid ads, no web builds. All our energy and IP is built around one discipline.</div>
+          </div>
         </div>
-      </div>
-      <div class="anim d1">
-        <span class="eyebrow">A Message From Our Founder</span>
-        <h2 class="heading">RankHarbour is rewriting the <span class="hl">SEO agency playbook.</span></h2>
-        <p class="sub" style="margin-bottom:32px">We started with one conviction: generalist agencies will never deliver best-in-class SEO. So we built something different — a team of deep specialists, accountable to one thing: your organic growth.</p>
-        <div class="props">
-          <div class="prop">
-            <div class="prop-ico">🎯</div>
-            <div>
-              <div class="prop-title">No account managers — only SEO specialists</div>
-              <div class="prop-desc">Every person on your account is an SEO expert. No middleman watering down strategy or translating between you and the team.</div>
-            </div>
-          </div>
-          <div class="prop">
-            <div class="prop-ico">🔬</div>
-            <div>
-              <div class="prop-title">Channel experts — deeply specialised</div>
-              <div class="prop-desc">We only do SEO. No social, no ads, no builds. All our energy, tools and IP are built around one channel done exceptionally.</div>
-            </div>
-          </div>
-          <div class="prop">
-            <div class="prop-ico">🤝</div>
-            <div>
-              <div class="prop-title">No long-term lock-in contracts</div>
-              <div class="prop-desc">We earn your business every month. Our 98% retention rate comes from results, not legal traps. Leave whenever — but you won't want to.</div>
-            </div>
+        <div class="rh-about__principle">
+          <span class="rh-about__p-num">03</span>
+          <div>
+            <div class="rh-about__p-title">No lock-in contracts</div>
+            <div class="rh-about__p-desc">We operate on rolling 28-day billing agreements. We earn your continued business through results, not legal obligation.</div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ══ RESULTS HERO ═══════════════════════════════════════ -->
-<section class="section s-dark" id="results">
-  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,.15),transparent 70%);top:-50px;right:-100px"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div style="text-align:center;margin-bottom:44px">
-      <span class="eyebrow">Client Results</span>
-      <h2 class="heading">Kicking goals for Australia's<br><span class="hl">most ambitious businesses.</span></h2>
-    </div>
-    <div class="rh-grid">
-      <div class="rh-feat anim">
-        <div class="rh-feat-eye">⭐ Featured Campaign — eCommerce</div>
-        <div class="rh-feat-metric">+471%</div>
-        <div class="rh-feat-result">Increase in organic revenue</div>
-        <div class="rh-feat-desc">Category architecture rebuild plus a comprehensive schema strategy unlocked massive traffic from high-intent buyer keywords across 14 product verticals.</div>
-        <div class="rh-feat-foot"><div class="rh-dot"></div><span class="rh-client">National Homewares Retailer — 18-month campaign</span></div>
-      </div>
-      <div class="rh-mini-grid">
-        <div class="rh-mini glass anim d1"><div class="rh-mini-metric">+931%</div><div class="rh-mini-result">AI referral traffic YoY</div><div class="rh-mini-cat">Real Estate · 12 months</div></div>
-        <div class="rh-mini glass anim d2"><div class="rh-mini-metric">+2,766%</div><div class="rh-mini-result">Return on investment</div><div class="rh-mini-cat">Healthcare · 24 months</div></div>
-        <div class="rh-mini glass anim d3"><div class="rh-mini-metric">+1,140%</div><div class="rh-mini-result">Non-branded organic visits</div><div class="rh-mini-cat">Finance · 18 months</div></div>
-        <div class="rh-mini glass anim d4"><div class="rh-mini-metric">+608%</div><div class="rh-mini-result">Return on investment</div><div class="rh-mini-cat">SaaS · 12 months</div></div>
-      </div>
-    </div>
-  </div>
-</section>
+    <div class="rh-about__col">
+      <h3 class="rh-faq__label rh-reveal">Common questions</h3>
 
-<!-- ══ CASE STUDIES GRID ══════════════════════════════════ -->
-<section class="section s-dark2">
-  <div class="container">
-    <div class="cs-hd">
-      <div><span class="eyebrow">Case Studies</span><h2 class="heading">Trusted by <span class="hl">1,200+ campaigns</span></h2></div>
-      <a href="#contact" class="btn btn-glass">View All Case Studies →</a>
-    </div>
-    <div class="cs-grid">
-      <div class="cs-card anim">
-        <div class="cs-thumb" style="background:linear-gradient(135deg,#080F3A,#0D1B60)">RETAIL<div class="cs-ind">eCommerce SEO</div></div>
-        <div class="cs-body"><div class="cs-metric">+378%</div><div class="cs-result">Increase in #1 keyword rankings</div><div class="cs-desc">Full technical overhaul and topical authority build across 22 product categories targeting commercial intent at every stage of the buyer journey.</div><div class="cs-foot"><div class="cs-foot-dot"></div><div class="cs-foot-txt">Print & Merchandise · 18 months</div></div></div>
-      </div>
-      <div class="cs-card anim d1">
-        <div class="cs-thumb" style="background:linear-gradient(135deg,#071A14,#0B2A22)">HEALTH<div class="cs-ind">Healthcare SEO</div></div>
-        <div class="cs-body"><div class="cs-metric">+115%</div><div class="cs-result">AI Overview growth</div><div class="cs-desc">Structured data strategy and E-E-A-T content framework positioned the client as the authoritative source in AI-generated health search results.</div><div class="cs-foot"><div class="cs-foot-dot"></div><div class="cs-foot-txt">Fertility Clinic Network · 12 months</div></div></div>
-      </div>
-      <div class="cs-card anim d2">
-        <div class="cs-thumb" style="background:linear-gradient(135deg,#13081E,#1E0F2E)">FINANCE<div class="cs-ind">Enterprise SEO</div></div>
-        <div class="cs-body"><div class="cs-metric">+289%</div><div class="cs-result">Qualified organic leads</div><div class="cs-desc">Siloed content architecture and 40,000-page technical audit eliminated crawl waste and established topical dominance across core product categories.</div><div class="cs-foot"><div class="cs-foot-dot"></div><div class="cs-foot-txt">Financial Services Group · 24 months</div></div></div>
-      </div>
-      <div class="cs-card anim">
-        <div class="cs-thumb" style="background:linear-gradient(135deg,#1A0D06,#2A1808)">FASHION<div class="cs-ind">eCommerce SEO</div></div>
-        <div class="cs-body"><div class="cs-metric">+107%</div><div class="cs-result">Growth in ranking keywords</div><div class="cs-desc">International SEO expansion into UK and US markets paired with domestic authority building doubled the keyword footprint in 12 months.</div><div class="cs-foot"><div class="cs-foot-dot"></div><div class="cs-foot-txt">Fashion Retailer · 12 months</div></div></div>
-      </div>
-      <div class="cs-card anim d1">
-        <div class="cs-thumb" style="background:linear-gradient(135deg,#060F1C,#0A1828)">SAAS<div class="cs-ind">B2B SEO</div></div>
-        <div class="cs-body"><div class="cs-metric">+361%</div><div class="cs-result">Increase in organic traffic</div><div class="cs-desc">Bottom-of-funnel content strategy and technical foundations drove explosive growth for a job-platform SaaS from a near-zero organic baseline.</div><div class="cs-foot"><div class="cs-foot-dot"></div><div class="cs-foot-txt">HR Tech Platform · 18 months</div></div></div>
-      </div>
-      <div class="cs-card anim d2">
-        <div class="cs-thumb" style="background:linear-gradient(135deg,#0A0F08,#141F10)">LOCAL<div class="cs-ind">Local SEO</div></div>
-        <div class="cs-body"><div class="cs-metric">+638%</div><div class="cs-result">Increase in clinic enquiries</div><div class="cs-desc">Multi-location local SEO across 28 clinics combining Google Business Profile optimisation with localised content and structured citation building.</div><div class="cs-foot"><div class="cs-foot-dot"></div><div class="cs-foot-txt">Healthcare Network · 12 months</div></div></div>
-      </div>
+      <details class="rh-faq rh-reveal">
+        <summary>
+          <span class="rh-faq__n">01</span>
+          <span class="rh-faq__q">Is SEO still relevant with AI search?</span>
+          <span class="rh-faq__icon" aria-hidden="true">+</span>
+        </summary>
+        <p class="rh-faq__a">More relevant than ever. AI Overviews, ChatGPT and Gemini all draw from web content to form answers. Businesses with strong organic SEO foundations are the ones appearing in AI results. We specialise in optimising for both traditional Google and AI search simultaneously.</p>
+      </details>
+
+      <details class="rh-faq rh-reveal">
+        <summary>
+          <span class="rh-faq__n">02</span>
+          <span class="rh-faq__q">How long does SEO take to see results?</span>
+          <span class="rh-faq__icon" aria-hidden="true">+</span>
+        </summary>
+        <p class="rh-faq__a">Most clients see meaningful movement in 3–6 months, with compounding growth from months 6–12 onward. The exact timeline depends on your current authority, competition and how quickly technical changes are implemented. We'll give you a data-driven forecast in your free masterplan.</p>
+      </details>
+
+      <details class="rh-faq rh-reveal">
+        <summary>
+          <span class="rh-faq__n">03</span>
+          <span class="rh-faq__q">Can you guarantee a specific ranking on Google?</span>
+          <span class="rh-faq__icon" aria-hidden="true">+</span>
+        </summary>
+        <p class="rh-faq__a">No — and anyone who does is misleading you. Google's algorithm involves hundreds of signals and no agency controls it. What we commit to is transparent, best-practice work, rigorous execution and accountability to real business metrics — not vanity rankings.</p>
+      </details>
+
+      <details class="rh-faq rh-reveal">
+        <summary>
+          <span class="rh-faq__n">04</span>
+          <span class="rh-faq__q">Do you have lock-in contracts?</span>
+          <span class="rh-faq__icon" aria-hidden="true">+</span>
+        </summary>
+        <p class="rh-faq__a">No lock-in contracts. We operate on rolling 28-day billing agreements. Our client retention reflects results, not legal traps — clients stay because the work is producing outcomes, not because they're contractually obligated to.</p>
+      </details>
+
+      <details class="rh-faq rh-reveal">
+        <summary>
+          <span class="rh-faq__n">05</span>
+          <span class="rh-faq__q">How do you measure and report on success?</span>
+          <span class="rh-faq__icon" aria-hidden="true">+</span>
+        </summary>
+        <p class="rh-faq__a">We measure what matters: revenue from organic, qualified leads, keyword rankings, organic traffic growth and AI search visibility. Every monthly report is tied directly to business outcomes. We don't hide behind vanity metrics or keyword lists disconnected from commercial value.</p>
+      </details>
+
     </div>
   </div>
 </section>
 
-<!-- ══ NUMBERS ════════════════════════════════════════════ -->
-<div class="numbers">
-  <div class="orb" style="width:600px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.4),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div class="numbers-grid">
-      <div><div class="num-val">50+</div><div class="num-lbl">Industry Awards Won</div></div>
-      <div><div class="num-val">140</div><div class="num-lbl">Staff Globally</div></div>
-      <div><div class="num-val">280+</div><div class="num-lbl">Google Reviews</div></div>
-      <div><div class="num-val">1,200+</div><div class="num-lbl">SEO Campaigns Completed</div></div>
-    </div>
-    <div class="numbers-grid numbers-row2">
-      <div><div class="num-val">12 yrs</div><div class="num-lbl">In Operation, SEO Only</div></div>
-      <div><div class="num-val">55x</div><div class="num-lbl">Soaring Case Studies</div></div>
-      <div><div class="num-val">300%</div><div class="num-lbl">Average Client ROI</div></div>
-      <div><div class="num-val">200+</div><div class="num-lbl">Migrations Completed</div></div>
-    </div>
-  </div>
-</div>
 
-<!-- ══ SERVICES ═══════════════════════════════════════════ -->
-<section class="section" id="services">
-  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(6,182,212,.12),transparent 70%);bottom:-100px;right:-150px"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div class="svcs-hd">
-      <div>
-        <span class="eyebrow">Our Services</span>
-        <h2 class="heading">Meet our SEO <span class="hl">master craftspeople</span></h2>
-        <p class="sub">We drive growth through a multi-channel SEO strategy. Technical SEO, content authority, and AI search readiness — all by specialists.</p>
-      </div>
-      <a href="#contact" class="btn btn-glass">Explore All Services →</a>
-    </div>
-    <div class="svcs-grid">
-      <div class="svc glass anim"><div class="svc-ico">🔧</div><div class="svc-title">Technical SEO</div><div class="svc-desc">Core Web Vitals, crawl efficiency, structured data, and site architecture that search engines love — built for scale.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim d1"><div class="svc-ico">📍</div><div class="svc-title">Local SEO</div><div class="svc-desc">Dominate Google Maps and local results in every suburb and city you serve. Multi-location management at scale.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim d2"><div class="svc-ico">🤖</div><div class="svc-title">AI SEO</div><div class="svc-desc">Visibility in AI Overviews, ChatGPT, Gemini, and answer engines. The next frontier — we're already there.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim"><div class="svc-ico">🛒</div><div class="svc-title">eCommerce SEO</div><div class="svc-desc">Category architecture, faceted navigation, product schema, and feed optimisation built for large-scale stores.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim d1"><div class="svc-ico">🏢</div><div class="svc-title">Enterprise SEO</div><div class="svc-desc">Complex technical environments, multiple domains, global rollouts. We've done it at every scale imaginable.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim d2"><div class="svc-ico">✍️</div><div class="svc-title">Content Marketing</div><div class="svc-desc">Topical authority campaigns, E-E-A-T frameworks, and content that ranks AND converts — not just word count.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim"><div class="svc-ico">🔗</div><div class="svc-title">Link Building & Acquisition</div><div class="svc-desc">White-hat digital PR, editorial outreach, and authority link acquisition that builds real domain trust.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim d1"><div class="svc-ico">📣</div><div class="svc-title">Digital PR</div><div class="svc-desc">National media coverage that builds brand authority and earns the kinds of backlinks money can't simply buy.</div><div class="svc-arrow">Learn More →</div></div>
-      <div class="svc glass anim d2"><div class="svc-ico">🌏</div><div class="svc-title">International SEO</div><div class="svc-desc">hreflang architecture, geo-targeting, and multi-market content strategies for businesses growing beyond Australia.</div><div class="svc-arrow">Learn More →</div></div>
-    </div>
-  </div>
-</section>
+<!-- ================================================================
+     9. FINAL CONTACT
+     ================================================================ -->
+<section class="rh-contact" id="contact" aria-labelledby="contact-heading">
+  <div class="rh-contact__inner">
 
-<!-- ══ LEAD MAGNET ════════════════════════════════════════ -->
-<section class="section s-dark">
-  <div class="container">
-    <div class="lm anim" style="border-radius:var(--rl)">
-      <div>
-        <div class="lm-badge">📄 Free White Paper</div>
-        <h2 class="lm-title">AI Search is here.<br>Are you ready to <span class="hl">rank in it?</span></h2>
-        <p class="sub" style="margin-bottom:28px">Download our definitive guide to Answer Engine Optimisation and AI search visibility. Learn how to appear in ChatGPT, Google AI Overviews, and Gemini — with real data and actionable tactics.</p>
-        <a href="#contact" class="btn btn-blue">Download For Free →</a>
-      </div>
-      <div class="lm-vis">📊</div>
-    </div>
-  </div>
-</section>
+    <div>
+      <p class="eyebrow rh-contact__eyebrow rh-reveal">Get started</p>
+      <h2 class="rh-contact__heading rh-reveal rh-reveal-delay-1" id="contact-heading">Let's find your next opportunity.</h2>
+      <p class="rh-contact__desc rh-reveal rh-reveal-delay-2">Tell us about your business and we'll put together a free, specific masterplan — not a generic audit. No obligation, no fluff. Just a clear picture of where your organic search can grow.</p>
 
-<!-- ══ PROCESS / JOURNEY ══════════════════════════════════ -->
-<section class="section s-dark2">
-  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.18),transparent 70%);top:0;left:-100px"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div style="text-align:center;margin-bottom:40px">
-      <span class="eyebrow">How It Works</span>
-      <h2 class="heading">We drive growth through a<br><span class="hl">multi-channel SEO strategy</span></h2>
-      <p class="sub" style="margin:0 auto">Here's exactly what your first three months look like.</p>
-    </div>
-    <div class="j-tabs">
-      <div class="j-tab on" onclick="setM(0,this)">Month 1</div>
-      <div class="j-tab" onclick="setM(1,this)">Month 2</div>
-      <div class="j-tab" onclick="setM(2,this)">Month 3</div>
-    </div>
-    <div class="j-month on" id="m0">
-      <div class="j-item glass anim"><div class="j-ico">⚙️</div><div><div class="j-title">Campaign Set Up</div><div class="j-desc">Account access, tool connections, and stakeholder alignment to ensure zero wasted time.</div></div></div>
-      <div class="j-item glass anim d1"><div class="j-ico">🗺️</div><div><div class="j-title">SEO & AI Visibility Roadmap</div><div class="j-desc">12-month priority roadmap built around your business goals — every action tied to revenue.</div></div></div>
-      <div class="j-item glass anim d2"><div class="j-ico">🔍</div><div><div class="j-title">Competitor Analysis</div><div class="j-desc">Full competitive landscape mapping — who ranks, why they rank, and where your opportunities lie.</div></div></div>
-      <div class="j-item glass anim d3"><div class="j-ico">🗝️</div><div><div class="j-title">Intent & Keyword Mapping</div><div class="j-desc">Comprehensive keyword universe mapped to intent stages — awareness, consideration, and decision.</div></div></div>
-      <div class="j-item glass anim"><div class="j-ico">🔬</div><div><div class="j-title">Technical SEO & Crawl Health Audit</div><div class="j-desc">Forensic technical audit covering Core Web Vitals, indexation, crawl budget, schema, and site architecture.</div></div></div>
-    </div>
-    <div class="j-month" id="m1">
-      <div class="j-item glass"><div class="j-ico">📝</div><div><div class="j-title">Content & Authority Audit</div><div class="j-desc">Comprehensive audit of existing content quality, topical coverage gaps, and cannibalization issues.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">🏅</div><div><div class="j-title">E-E-A-T Review</div><div class="j-desc">Evaluation of your site's Experience, Expertise, Authoritativeness, and Trust signals vs competitors.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">🤖</div><div><div class="j-title">AI-Search Content Recommendations</div><div class="j-desc">Specific content changes to improve visibility in AI Overviews and answer engine results.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">🔧</div><div><div class="j-title">Technical SEO Recommendations</div><div class="j-desc">Prioritised technical fix list delivered to your development team with implementation support.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">🔗</div><div><div class="j-title">Link Acquisition Begins</div><div class="j-desc">Outreach campaigns and digital PR pitches launch to start building your domain's authority profile.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">📊</div><div><div class="j-title">1st Monthly Report</div><div class="j-desc">Revenue-tied reporting covering rankings, organic traffic, conversions, and campaign progress.</div></div></div>
-    </div>
-    <div class="j-month" id="m2">
-      <div class="j-item glass"><div class="j-ico">✍️</div><div><div class="j-title">Content Briefing & Production</div><div class="j-desc">SEO-first content briefs delivered and first content assets published targeting priority keywords.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">🏗️</div><div><div class="j-title">IA & Search Journey Mapping</div><div class="j-desc">Information architecture refinement ensuring your site structure matches how users actually search.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">💻</div><div><div class="j-title">Web Development Support</div><div class="j-desc">Technical implementations go live with our dev support — no more waiting months for fixes.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">🧩</div><div><div class="j-title">Entity Optimisation & On-Page SEO</div><div class="j-desc">Entity relationships, internal linking, and on-page optimisation applied across priority pages.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">🔗</div><div><div class="j-title">Link Building Continues</div><div class="j-desc">Second wave of acquisition delivers additional high-quality editorial placements.</div></div></div>
-      <div class="j-item glass"><div class="j-ico">📊</div><div><div class="j-title">2nd Monthly Report</div><div class="j-desc">Early wins documented, strategy adjusted based on data, next 90-day plan confirmed.</div></div></div>
-    </div>
-  </div>
-</section>
+      <div class="rh-contact__topics rh-reveal rh-reveal-delay-3">
+        <div class="rh-contact__topic">Your website — what's working and what isn't</div>
+        <div class="rh-contact__topic">Your market — how competitive your search landscape is</div>
+        <div class="rh-contact__topic">Your priorities — what growth looks like for your business</div>
+      </div>
 
-<!-- ══ TEAM ═══════════════════════════════════════════════ -->
-<section class="section s-dark">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:44px">
-      <span class="eyebrow">The Team</span>
-      <h2 class="heading">No generalists. <span class="hl">Only SEO specialists.</span></h2>
-      <p class="sub" style="margin:0 auto">Every person on your account has a deep specialism. You'll never have a junior answering your technical questions.</p>
+      <div class="rh-contact__arc rh-reveal" aria-hidden="true"></div>
     </div>
-    <div class="team-grid">
-      <div class="team-card glass anim"><div class="team-photo" style="background:linear-gradient(135deg,#06112A,#0A1F4A)">JM<div class="team-photo-fade"></div></div><div class="team-info"><div class="team-name">Jordan Mitchell</div><div class="team-role">Founder & Head of Strategy</div></div></div>
-      <div class="team-card glass anim d1"><div class="team-photo" style="background:linear-gradient(135deg,#071A14,#0B2C20)">SC<div class="team-photo-fade"></div></div><div class="team-info"><div class="team-name">Sarah Chen</div><div class="team-role">Technical SEO Director</div></div></div>
-      <div class="team-card glass anim d2"><div class="team-photo" style="background:linear-gradient(135deg,#120A1E,#1C1030)">RP<div class="team-photo-fade"></div></div><div class="team-info"><div class="team-name">Ryan Patel</div><div class="team-role">SEO Strategy & Client Success</div></div></div>
-      <div class="team-card glass anim d3"><div class="team-photo" style="background:linear-gradient(135deg,#1A0A06,#2C1408)">AT<div class="team-photo-fade"></div></div><div class="team-info"><div class="team-name">Alicia Torres</div><div class="team-role">Associate SEO Director</div></div></div>
-    </div>
-  </div>
-</section>
 
-<!-- ══ FAQ ════════════════════════════════════════════════ -->
-<section class="section" id="faq">
-  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,.12),transparent 70%);bottom:-50px;left:50%"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div class="faq-layout">
-      <div>
-        <span class="eyebrow">SEO FAQs</span>
-        <h2 class="heading" style="font-size:clamp(28px,3.5vw,42px)">Just ask our <span class="hl">harbourmasters</span></h2>
-        <p class="sub" style="margin-bottom:28px">Straight answers — no jargon, no sales spin. Call us on 1800 726 547 and we'll tell you the truth.</p>
-        <a href="#contact" class="btn btn-blue">Get My Free Masterplan →</a>
-      </div>
-      <div class="faq-list">
-        <div class="faq-item glass open"><div class="faq-q" onclick="fq(this)">What is SEO and why does my business need it?<span class="faq-icon">+</span></div><div class="faq-a">SEO is the practice of improving your website's visibility in organic (unpaid) search results. It's the highest-ROI digital channel for most businesses because traffic compounds — you pay once to rank, then collect traffic for months or years. Paid ads stop the moment you stop paying.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">Is SEO still relevant with AI search?<span class="faq-icon">+</span></div><div class="faq-a">More relevant than ever. AI Overviews, ChatGPT, and Gemini all draw from web content to form answers. Businesses with strong organic SEO foundations are the ones appearing in AI results. We specialise in optimising for both traditional Google and AI search simultaneously.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">How long does SEO take to see results?<span class="faq-icon">+</span></div><div class="faq-a">Most clients see meaningful movement in 3–6 months, with compounding growth from months 6–12 onward. The exact timeline depends on your current authority, competition, and how quickly changes are implemented. We'll give you a data-driven forecast after your free audit.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">Can you guarantee a #1 ranking on Google?<span class="faq-icon">+</span></div><div class="faq-a">No — and anyone who does is lying to you. Google's algorithm involves hundreds of signals and no agency controls it. What we guarantee is transparent, best-practice work, rigorous execution, and accountability to real business metrics.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">Do you have lock-in contracts?<span class="faq-icon">+</span></div><div class="faq-a">No lock-in contracts. We operate on rolling monthly agreements. Our client retention rate is 98% — not because we trap clients, but because we deliver results every single month.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">How much does SEO cost?<span class="faq-icon">+</span></div><div class="faq-a">Campaigns start from $2,500/month for smaller businesses and scale for enterprise. The right investment depends on your goals, competitive landscape, and current baseline. We'll recommend a budget during your free masterplan that reflects honest, realistic ROI.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">What's included in your SEO service?<span class="faq-icon">+</span></div><div class="faq-a">Technical SEO, keyword strategy, content planning, on-page optimisation, link building, digital PR, AI visibility optimisation, monthly reporting, and a dedicated senior specialist — not a junior who reads from a playbook.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">How do you measure SEO success?<span class="faq-icon">+</span></div><div class="faq-a">We measure what matters: revenue from organic, qualified leads, keyword rankings, organic traffic growth, and AI search visibility. We don't hide behind vanity metrics. Every report is tied directly to business outcomes.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">Can you help with a brand new website?<span class="faq-icon">+</span></div><div class="faq-a">Absolutely. Starting SEO from day one means we build authority the right way — no bad habits to undo. We work alongside your dev team to ensure your site launches with clean technical SEO from the start.</div></div>
-        <div class="faq-item glass"><div class="faq-q" onclick="fq(this)">How often will we communicate?<span class="faq-icon">+</span></div><div class="faq-a">Monthly executive reports, weekly check-in calls, and a live dashboard so you always know what's happening. Your senior specialist is reachable directly — not through a ticketing system.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ AWARDS ═════════════════════════════════════════════ -->
-<section class="section s-dark2" id="awards">
-  <div class="container">
-    <div class="awards-hd">
-      <span class="eyebrow">Recognition</span>
-      <h2 class="heading">Award-Winning <span class="hl">SEO Agency</span></h2>
-      <p class="sub" style="margin:0 auto">We may be humble about it, but we're proud of what our team has built. Your business deserves an agency that earns external validation.</p>
-    </div>
-    <div class="awards-grid">
-      <div class="award-card glass anim"><div class="award-ico">🏆</div><div class="award-name">APAC Search Awards</div><div class="award-yr">Best SEO Agency 2024</div></div>
-      <div class="award-card glass anim d1"><div class="award-ico">🥇</div><div class="award-name">Global Search Awards</div><div class="award-yr">Best Large SEO Agency 2024</div></div>
-      <div class="award-card glass anim d2"><div class="award-ico">⭐</div><div class="award-name">Australian Web Industry</div><div class="award-yr">Agency of the Year 2023</div></div>
-      <div class="award-card glass anim d3"><div class="award-ico">🎖️</div><div class="award-name">Semrush Agency Awards</div><div class="award-yr">Best SEO Campaign 2024</div></div>
-      <div class="award-card glass anim d4"><div class="award-ico">🌟</div><div class="award-name">Search Engine Land</div><div class="award-yr">Outstanding Initiative 2023</div></div>
-    </div>
-    <div class="cert-row">
-      <div class="cert-item">Google Partner Specialist</div>
-      <div class="cert-item">Australian Web Industry Association Member</div>
-      <div class="cert-item">Semrush Certified Agency Partner</div>
-      <div class="cert-item">Ahrefs Agency Partner</div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ ACADEMY ════════════════════════════════════════════ -->
-<section class="section s-dark">
-  <div class="container">
-    <div class="academy anim" style="border-radius:var(--rl)">
-      <div>
-        <span class="eyebrow">Free Online Course</span>
-        <h2 class="heading" style="font-size:clamp(24px,3.5vw,44px)">Learn practical SEO &<br><span class="hl">AI search skills. Free.</span></h2>
-        <p class="sub" style="margin-bottom:24px">Harbour Academy is our free learning platform covering everything from SEO fundamentals to advanced AI-driven search strategies. Used by 18,000+ marketers and business owners.</p>
-        <a href="#" class="btn btn-blue">Start Learning For Free →</a>
-      </div>
-      <div class="academy-vis">🎓</div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ REVIEWS ════════════════════════════════════════════ -->
-<section class="section s-dark2" id="reviews">
-  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(37,99,235,.15),transparent 70%);top:0;right:-50px"></div>
-  <div class="container" style="position:relative;z-index:1">
-    <div class="reviews-hd">
-      <span class="eyebrow">Google Reviews</span>
-      <h2 class="heading">280+ five-star <span class="hl">Google reviews</span></h2>
-      <p class="sub" style="margin:0 auto">Real reviews from real clients — no brand names, no sponsored placements. Just honest feedback from businesses that have grown with RankHarbour.</p>
-    </div>
-    <div class="rv-summary">
-      <div>
-        <div class="rv-score">4.9</div>
-        <div class="rv-stars-row"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <div class="rv-count">Based on 280+ reviews</div>
-      </div>
-      <div class="rv-bars">
-        <div class="rv-bar-row"><span>5★</span><div class="rv-bar-track"><div class="rv-bar-fill" style="width:92%"></div></div><span>92%</span></div>
-        <div class="rv-bar-row"><span>4★</span><div class="rv-bar-track"><div class="rv-bar-fill" style="width:6%"></div></div><span>6%</span></div>
-        <div class="rv-bar-row"><span>3★</span><div class="rv-bar-track"><div class="rv-bar-fill" style="width:2%"></div></div><span>2%</span></div>
-      </div>
-    </div>
-    <div class="rv-grid">
-      <div class="rv-card glass anim">
-        <div class="rv-card-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <div class="rv-quote">"The team genuinely understand our business. Their hands-on approach and commitment to getting to know our goals has been a key part of the success we've seen over the past 18 months."</div>
-        <div class="rv-author"><div class="rv-avatar" style="background:linear-gradient(135deg,#063A28,#0A6040)">DW</div><div><div class="rv-name">Daniel Walsh</div><div class="rv-role">Head of Digital, National Retailer</div><div class="rv-platform">GOOGLE REVIEW</div></div></div>
-      </div>
-      <div class="rv-card glass anim d1">
-        <div class="rv-card-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <div class="rv-quote">"Experts in the field, down to earth, and they actually get things done. We'd tried two other agencies before RankHarbour — there is a genuine difference in depth of knowledge and speed of execution."</div>
-        <div class="rv-author"><div class="rv-avatar" style="background:linear-gradient(135deg,#0A1A5A,#1430A0)">MR</div><div><div class="rv-name">Marco Rossi</div><div class="rv-role">Digital Marketing Manager, eCommerce</div><div class="rv-platform">GOOGLE REVIEW</div></div></div>
-      </div>
-      <div class="rv-card glass anim d2">
-        <div class="rv-card-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <div class="rv-quote">"RankHarbour has been the force to amplify our brand's organic growth. The reporting is transparent, communication proactive, and results have exceeded every expectation we set at the start."</div>
-        <div class="rv-author"><div class="rv-avatar" style="background:linear-gradient(135deg,#3A0A1A,#6A1030)">AC</div><div><div class="rv-name">Ashley Clarke</div><div class="rv-role">CMO, Home & Living Brand</div><div class="rv-platform">GOOGLE REVIEW</div></div></div>
-      </div>
-      <div class="rv-card glass anim">
-        <div class="rv-card-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <div class="rv-quote">"I honestly can't put into words how great working with RankHarbour has been. They're invested in outcomes, not just deliverables. The senior team is always accessible and genuinely cares about results."</div>
-        <div class="rv-author"><div class="rv-avatar" style="background:linear-gradient(135deg,#063A1A,#0A6028)">HE</div><div><div class="rv-name">Heather Evans</div><div class="rv-role">Marketing Director, Healthcare Group</div><div class="rv-platform">GOOGLE REVIEW</div></div></div>
-      </div>
-      <div class="rv-card glass anim d1">
-        <div class="rv-card-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <div class="rv-quote">"We've been working with RankHarbour for 18 months and have seen remarkable growth in organic traffic and qualified leads. Without hesitation, we wholeheartedly endorse them as an exceptional agency."</div>
-        <div class="rv-author"><div class="rv-avatar" style="background:linear-gradient(135deg,#2A0A4A,#4A1480)">RC</div><div><div class="rv-name">Rhyanna Cardillo</div><div class="rv-role">Brand Manager, Fashion Retailer</div><div class="rv-platform">GOOGLE REVIEW</div></div></div>
-      </div>
-      <div class="rv-card glass anim d2">
-        <div class="rv-card-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-        <div class="rv-quote">"The technical depth of this team is on another level. They found and resolved issues three previous audits had completely missed. Our crawl efficiency improved overnight and rankings followed within weeks."</div>
-        <div class="rv-author"><div class="rv-avatar" style="background:linear-gradient(135deg,#062040,#0A3870)">TL</div><div><div class="rv-name">Thomas Liang</div><div class="rv-role">CTO, Technology Platform</div><div class="rv-platform">GOOGLE REVIEW</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ LOCATIONS ══════════════════════════════════════════ -->
-<section class="section s-dark" id="locations">
-  <div class="container">
-    <div class="loc-hd">
-      <span class="eyebrow">Locations</span>
-      <h2 class="heading">Award-winning SEO, <span class="hl">Australia-wide.</span></h2>
-      <p class="sub" style="margin:0 auto">Local knowledge, national reach. Our teams understand the competitive landscape in each market they operate in.</p>
-    </div>
-    <div class="loc-grid">
-      <a href="#" class="loc-card glass anim"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Brisbane</div><div class="loc-sub">Our HQ — national capabilities from QLD's capital</div></div></a>
-      <a href="#" class="loc-card glass anim d1"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Sydney</div><div class="loc-sub">Full team in the CBD serving Australia's most competitive market</div></div></a>
-      <a href="#" class="loc-card glass anim d2"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Melbourne</div><div class="loc-sub">Specialists across retail, finance, healthcare, and professional services</div></div></a>
-      <a href="#" class="loc-card glass anim"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Perth</div><div class="loc-sub">Dedicated WA team for local and national search dominance</div></div></a>
-      <a href="#" class="loc-card glass anim d1"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Adelaide</div><div class="loc-sub">Supporting SA businesses competing for organic search share</div></div></a>
-      <a href="#" class="loc-card glass anim d2"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Gold Coast</div><div class="loc-sub">Tourism, hospitality, retail, and professional services specialists</div></div></a>
-      <a href="#" class="loc-card glass anim"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Sunshine Coast</div><div class="loc-sub">Fast-growing market with local specialists who know the region</div></div></a>
-      <a href="#" class="loc-card glass anim d1"><div class="loc-pin">📍</div><div><div class="loc-name">SEO Hobart</div><div class="loc-sub">Tasmania's go-to SEO agency for local and national campaigns</div></div></a>
-      <a href="#" class="loc-card glass anim d2"><div class="loc-pin">🌏</div><div><div class="loc-name">International SEO</div><div class="loc-sub">Global campaigns from our APAC hub — US, UK, NZ, and EU</div></div></a>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CTA / FORM ══════════════════════════════════════════ -->
-<section class="cta-section" id="contact">
-  <div class="orb" style="width:700px;height:700px;background:radial-gradient(circle,rgba(37,99,235,.22),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
-  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,.18),transparent 70%);top:-100px;right:-100px"></div>
-  <div class="container">
-    <div style="text-align:center;margin-bottom:64px;position:relative;z-index:1">
-      <span class="eyebrow">Get Started</span>
-      <h2 class="heading" style="font-size:clamp(30px,5vw,58px)">Book your free SEO &<br><span class="hl">AI Search Masterplan.</span></h2>
-      <p class="sub" style="margin:0 auto">No fluff. No generic audits. Just a plan to win more traffic and customers.</p>
-    </div>
-    <div class="cta-grid" style="position:relative;z-index:1">
-      <div class="anim">
-        <h3 style="font-size:22px;font-weight:800;margin-bottom:10px">What you'll walk away with:</h3>
-        <p class="sub" style="margin-bottom:0">Our specialists will craft a free, tailored masterplan designed around your goals. Zero obligation, zero generic audits.</p>
-        <ul class="cta-benefits">
-          <li>In-depth technical SEO & AI visibility audit</li>
-          <li>Organic traffic analysis and opportunity sizing</li>
-          <li>Competitor gap analysis and priority keywords</li>
-          <li>Custom growth roadmap with 90-day quick wins</li>
-          <li>Honest budget recommendation with projected ROI</li>
-        </ul>
-        <div class="cta-proof-row">
-          <div class="cta-proof-stars"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
-          <div class="cta-proof-txt">"I honestly can't put into words how great the experience has been. The team is genuinely invested in our results." — Marketing Director, National Retailer</div>
+    <div>
+      <form class="rh-form" id="rh-contact-form" novalidate>
+        <div>
+          <h3 class="rh-form__title">Request your masterplan</h3>
+          <p class="rh-form__sub">Takes 2 minutes &middot; No obligation &middot; Specific to your business</p>
         </div>
-      </div>
-      <div class="form-box glass anim d1" style="border-radius:var(--rl)">
-        <h3>Get My Free Masterplan</h3>
-        <div class="form-sub">Takes 90 seconds · No obligation · Tailored to your business</div>
-        <div class="form-row">
-          <div class="form-group"><label>First Name</label><input type="text" placeholder="Jordan"></div>
-          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+
+        <label>
+          Name
+          <input type="text" name="name" placeholder="Your name" autocomplete="name" required>
+        </label>
+
+        <label>
+          Work email
+          <input type="email" name="email" placeholder="you@yourcompany.com.au" autocomplete="email" required>
+        </label>
+
+        <label>
+          Website
+          <input type="url" name="website" placeholder="https://yourwebsite.com.au" autocomplete="url">
+        </label>
+
+        <label>
+          What would you like to improve?
+          <textarea name="message" placeholder="Your goals, current challenges, or what you've already tried." rows="3"></textarea>
+        </label>
+
+        <button type="submit" class="rh-form__submit">Send my request &rarr;</button>
+        <p class="rh-form__note">No spam. No lock-in. Just expert advice — free.</p>
+
+        <div class="rh-form__result" id="rh-form-result" role="status">
+          <strong style="color:var(--brass);display:block;margin-bottom:8px;">Your request has been noted.</strong>
+          To confirm receipt or speak with someone directly, please call <strong>1800 726 547</strong>. A specialist will be in touch within 1 business day.
+          <br><br><em style="font-size:12.5px;opacity:0.65;">This form's delivery endpoint requires integration — see <code>.review/content-needed.txt</code>.</em>
         </div>
-        <div class="form-group"><label>Business Email</label><input type="email" placeholder="jordan@yourcompany.com.au"></div>
-        <div class="form-group"><label>Website URL</label><input type="url" placeholder="https://yourwebsite.com.au"></div>
-        <div class="form-group"><label>Monthly SEO Budget</label>
-          <select>
-            <option value="">Select budget range</option>
-            <option>$2,000 – $3,500/month</option>
-            <option>$3,500 – $6,000/month</option>
-            <option>$6,000 – $12,000/month</option>
-            <option>$12,000+/month</option>
-            <option>Not sure yet</option>
-          </select>
-        </div>
-        <button class="form-submit">Claim My Free Masterplan →</button>
-        <div class="form-note">No spam. No lock-in. Just expert advice — free.</div>
-      </div>
+      </form>
     </div>
+
   </div>
 </section>
 
-<!-- ══ FOOTER ══════════════════════════════════════════════ -->
-<footer>
-  <div class="container">
-    <div class="footer-top">
+
+<!-- ================================================================
+     10. FOOTER
+     ================================================================ -->
+<footer class="rh-footer" role="contentinfo">
+  <div class="rh-footer__inner">
+
+    <div class="rh-footer__main">
       <div>
-        <a href="#" class="ft-logo">Rank<span>Harbour</span></a>
-        <p class="ft-tagline">Australia's SEO-only agency. One channel, done exceptionally — organic search that drives real, compounding revenue growth.</p>
-        <div class="ft-offices">
-          <div><div class="ft-office-lbl">Brisbane (HQ)</div><div class="ft-office-addr">Level 18, 215 Adelaide Street<br>Brisbane QLD 4000</div></div>
-          <div><div class="ft-office-lbl">Sydney</div><div class="ft-office-addr">Suite 22, 1 Darling Island Rd<br>Pyrmont NSW 2009</div></div>
-        </div>
-        <div class="ft-socials">
-          <a href="#" class="ft-soc">in</a>
-          <a href="#" class="ft-soc">f</a>
-          <a href="#" class="ft-soc">ig</a>
-          <a href="#" class="ft-soc">▶</a>
-        </div>
+        <a href="#" class="rh-footer__logo" aria-label="RankHarbour home">
+          <svg class="rh-footer__logo-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="8" r="3" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="16" y1="11" x2="16" y2="28" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M8 20 Q8 28 16 28 Q24 28 24 20" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="10" y1="16" x2="22" y2="16" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <span class="rh-footer__logo-word">RankHarbour</span>
+        </a>
+        <p class="rh-footer__tagline">An SEO-only agency. One channel, done exceptionally — organic search that drives compounding revenue growth.</p>
       </div>
-      <div class="ft-col"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">Partners</a></li><li><a href="#">Awards</a></li><li><a href="#">Harbour Academy</a></li><li><a href="#">RankHarbour UK</a></li><li><a href="#">RankHarbour USA</a></li></ul></div>
-      <div class="ft-col"><h4>Quick Links</h4><ul><li><a href="#">SEO Services</a></li><li><a href="#">AI SEO</a></li><li><a href="#">Content & PR</a></li><li><a href="#">Technology</a></li><li><a href="#">Industries</a></li><li><a href="#">Blog</a></li><li><a href="#">Case Studies</a></li><li><a href="#">Contact</a></li></ul></div>
-      <div class="ft-col"><h4>SEO Superpowers</h4><ul><li><a href="#">Technical SEO</a></li><li><a href="#">eCommerce SEO</a></li><li><a href="#">Local SEO</a></li><li><a href="#">Enterprise SEO</a></li><li><a href="#">AI SEO</a></li><li><a href="#">Link Building</a></li><li><a href="#">Digital PR</a></li><li><a href="#">International SEO</a></li></ul></div>
-      <div class="ft-col"><h4>Locations</h4><ul><li><a href="#">SEO Brisbane</a></li><li><a href="#">SEO Sydney</a></li><li><a href="#">SEO Melbourne</a></li><li><a href="#">SEO Perth</a></li><li><a href="#">SEO Adelaide</a></li><li><a href="#">SEO Gold Coast</a></li><li><a href="#">SEO Sunshine Coast</a></li><li><a href="#">SEO Hobart</a></li><li><a href="#">SEO Canberra</a></li></ul></div>
+
+      <nav class="rh-footer__links" aria-label="Footer navigation">
+        <div class="rh-footer__col">
+          <div class="rh-footer__col-label">Navigate</div>
+          <div class="rh-footer__col-links">
+            <a class="rh-footer__link" href="#work">Work</a>
+            <a class="rh-footer__link" href="#expertise">Expertise</a>
+            <a class="rh-footer__link" href="#approach">Approach</a>
+            <a class="rh-footer__link" href="#about">About</a>
+            <a class="rh-footer__link" href="#contact">Contact</a>
+          </div>
+        </div>
+        <div class="rh-footer__col">
+          <div class="rh-footer__col-label">Expertise</div>
+          <div class="rh-footer__col-links">
+            <a class="rh-footer__link" href="#expertise">Technical SEO</a>
+            <a class="rh-footer__link" href="#expertise">Content &amp; Authority</a>
+            <a class="rh-footer__link" href="#expertise">AI Search</a>
+            <a class="rh-footer__link" href="#expertise">eCommerce SEO</a>
+            <a class="rh-footer__link" href="#expertise">Local SEO</a>
+          </div>
+        </div>
+      </nav>
     </div>
-    <div class="footer-bottom">
-      <div class="ft-copy">© 2025 RankHarbour Pty Ltd · ABN XX XXX XXX XXX</div>
-      <div class="ft-links"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Sitemap</a></div>
+
+    <div class="rh-footer__legal">
+      <span class="rh-footer__copy">&copy; <span id="rh-year"></span> RankHarbour &middot; SEO specialists</span>
+      <div class="rh-footer__legal-links">
+        <a class="rh-footer__legal-link" href="#">Privacy Policy</a>
+        <a class="rh-footer__legal-link" href="#">Terms of Service</a>
+      </div>
     </div>
+
   </div>
 </footer>
 
 <script>
-// FAQ
-function fq(el) {
-  const item = el.closest('.faq-item');
-  const was = item.classList.contains('open');
-  document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-  if (!was) item.classList.add('open');
-}
-
-// Journey tabs
-function setM(i, el) {
-  document.querySelectorAll('.j-tab').forEach(t => t.classList.remove('on'));
-  document.querySelectorAll('.j-month').forEach(m => m.classList.remove('on'));
-  el.classList.add('on');
-  document.getElementById('m'+i).classList.add('on');
-}
-
-// Scroll animations
-const io = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); io.unobserve(e.target); } });
-}, { threshold: 0.08 });
-document.querySelectorAll('.anim').forEach(el => io.observe(el));
-
-// Nav on scroll
-window.addEventListener('scroll', () => {
-  document.getElementById('nav').style.background =
-    window.scrollY > 50 ? 'rgba(6,9,30,.97)' : 'rgba(6,9,30,.7)';
-});
-
-// Hamburger
-document.getElementById('ham').addEventListener('click', () => {
-  const m = document.querySelector('.nav-links');
-  const show = m.style.display !== 'flex';
-  m.style.cssText = show
-    ? 'display:flex;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:rgba(6,9,30,.98);padding:16px 28px 24px;gap:4px;border-bottom:1px solid rgba(255,255,255,.1);z-index:999;backdrop-filter:blur(24px)'
-    : '';
-});
+  var y = document.getElementById('rh-year');
+  if (y) y.textContent = new Date().getFullYear();
 </script>
+<script src="rankharbour.js" defer></script>
 </body>
 </html>

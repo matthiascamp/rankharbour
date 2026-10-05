@@ -176,3 +176,68 @@ Forms can call `signUp`, `signInWithPassword`, `signInWithOAuth`,
 
 8. Review Supabase security and performance advisors after every schema change.
 
+# Stripe subscriptions — October 2026
+
+Plans bill in AUD every 28 days: Starter $99, Growth $149, Pro $249,
+Enterprise $499, Enterprise Plus $799. Service inclusions retain their stated
+monthly delivery schedule; billing uses a four-week cycle.
+
+## Customer flow
+
+1. Sign in, open Plans & Pricing and choose a plan.
+2. The authenticated `billing` function validates the live Payment Link and price,
+   checks for an existing subscription and creates a random reference tied to the
+   Supabase user. Stripe opens in a new tab with this reference and prefilled email.
+3. After checkout, return to Account centre. Status refreshes on window focus or
+   with Refresh status. Browser state or a redirect never activates a subscription.
+4. `stripe-webhook` verifies Stripe's signature, retrieves the current subscription,
+   validates its plan and stores ownership, status, price, period end and cancellation.
+5. Manage subscription opens Stripe's portal for a customer ID read from that user's
+   trusted record. Customers can update payment details, view invoices and cancel at
+   period end. Plan switching is not enabled in the portal configuration.
+
+Purchases must start in the signed-in dashboard to carry an account reference.
+Bare links shared elsewhere cannot automatically identify an account. Existing
+purchases require an explicit administrative association; email alone is not proof
+of ownership. Reused referenced links can create another purchase; all are associated
+and displayed. The dashboard blocks checkout for known active/pending subscriptions,
+but reusable Payment Links cannot prevent two simultaneous purchases.
+
+## Deployed configuration
+
+Project: `gczopudgxfciatvtxhll`.
+
+- `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` are server-only Supabase secrets.
+- `STRIPE_PORTAL_CONFIGURATION_ID`: `bpc_1UNBgNAn6lmj2fYVQCa5gCap`.
+- Webhook URL: `https://gczopudgxfciatvtxhll.supabase.co/functions/v1/stripe-webhook`.
+- Endpoint ID: `we_1UNBgGAn6lmj2fYVVF3cBFbK`.
+- Snapshot and outgoing Stripe API version: `2025-02-24.acacia`.
+- Events: `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
+  `customer.subscription.created`, `customer.subscription.updated`,
+  `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`.
+
+The Edge gateway JWT check is disabled because each function authenticates requests
+itself: `billing` validates the user through Supabase Auth; `stripe-webhook` verifies
+HMAC on the raw body and rejects timestamps older than five minutes. The temporary
+provisioning endpoint and token were removed. No Stripe secrets belong in this repo.
+
+`billing_checkout_intents` is server-only. RLS permits users to read only their own
+`billing_subscriptions`, with no browser writes. A service-role-only database function
+updates snapshots atomically, ignores older snapshots and handles repeat deliveries.
+Failed writes return an error so Stripe retries. Unrelated subscriptions without a
+dashboard reference are ignored.
+
+Use Stripe Workbench delivery logs to investigate failures and resend affected events.
+Update the Supabase webhook secret when rotating the endpoint signing secret. Billing
+records do not automatically perform the purchased SEO service.
+
+## Validation
+
+All five live Payment Links and account-reference handoffs were verified. A signed
+webhook connection check returned 200; an unsigned request returned 400. Synthetic
+database users verified ownership isolation, denied browser writes, stale/repeat
+handling and reused-reference ownership, then were removed with their records.
+Browser fixtures cover checkout, failure messages, status, portal navigation, mobile
+layout and logout cleanup. Deno tests cover price validation and signature tampering
+and expiry. No live purchase, renewal or paid cancellation was submitted.
+

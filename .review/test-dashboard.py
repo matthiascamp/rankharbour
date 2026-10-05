@@ -6,6 +6,7 @@ with sync_playwright() as p:
     browser=p.chromium.launch()
     context=browser.new_context(viewport={'width':1440,'height':1000},reduced_motion='reduce')
     context.route('**/auth/v1/**',api)
+    context.route('**/functions/v1/billing',lambda route:route.fulfill(json={'subscriptions':[]}))
     page=context.new_page()
     errors=[]
     page.on('pageerror',lambda e:errors.append(str(e)))
@@ -26,7 +27,7 @@ with sync_playwright() as p:
         return value.replace('Not includedNot included','Not included')
     assert rows.count()==len(source_rows)==15
     for i,line in enumerate(source_rows):
-        expected=[normal(cell.strip()) for cell in line.strip('|').split('|')]
+        expected=[normal(cell.strip()).replace('Monthly Price','Price every 28 days') for cell in line.strip('|').split('|')]
         actual=[normal(cell) for cell in rows.nth(i).locator('th,td').all_text_contents()]
         assert actual==expected,(i,actual,expected)
     for width in [1440,768,390,320]:

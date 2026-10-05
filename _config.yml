@@ -1,0 +1,20 @@
+# Publish website assets; backend code and development files stay in GitHub only.
+exclude:
+  - supabase
+  - node_modules
+  - AUTH_ARCHITECTURE.md
+  - README.md
+  - package.json
+  - package-lock.json
+  - deno.lock
+  - SEO-PLANS.txt
+  - CLAUDE-RANKHARBOUR-REDESIGN.txt
+  - .env.example
+  - auth-ui-check.cjs
+  - dashboard-check.cjs
+  - measure-heights.cjs
+  - nav-check.cjs
+  - tablet-check.cjs
+  - verify-screenshots.cjs
+  - verify2.cjs
+  - verify-screenshots.mjs

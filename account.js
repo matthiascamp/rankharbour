@@ -5,6 +5,7 @@
    ================================================================ */
 
 import { initDashboard } from './dashboard.js';
+import { initBilling } from './billing.js';
 
 window.__rhAuthBooted = true; // tells the inline watchdog in account.html that this module ran
 
@@ -13,6 +14,7 @@ const views = Array.from(document.querySelectorAll('[data-view]'));
 const notice = $('#auth-notice');
 const headerNav = $('#header-nav');
 const dashboard = initDashboard($('[data-view="account"]'), headerNav.querySelector('[role="tablist"]'));
+const billing = initBilling($('[data-view="account"]'));
 const resetStatus = $('#dash-reset-status');
 const headerLogout = $('#header-logout');
 const logoutButtons = Array.from(document.querySelectorAll('[data-logout]'));
@@ -79,6 +81,7 @@ function setResetStatus(message = '', tone = 'success') {
 }
 
 function fillAccount(user) {
+  billing.setUser(user.id);
   if (user.id !== shownUserId) {
     // A different person: start from a clean dashboard.
     dashboard.reset();
@@ -95,6 +98,7 @@ function fillAccount(user) {
 
 // Signed out (or session lost): remove every personal value and reset the dashboard.
 function clearAccount() {
+  billing.setUser(null);
   shownUserId = null;
   $('#account-title').textContent = 'Welcome';
   $('#account-email').textContent = '';
