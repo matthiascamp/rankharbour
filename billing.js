@@ -18,7 +18,7 @@ export function initBilling(root) {
         b.textContent=hasAddon?'Manage in Account centre':!checked?'Loading account…':!activeBase?'Choose an SEO plan first':'Add Google Business Posts';
       } else {
         b.disabled=loading||!checked||hasSubscription();
-        b.textContent=hasSubscription()?'Manage in Account centre':preview?.plan===b.dataset.subscribe?'Current plan · View checkout':preview?`View ${NAMES[b.dataset.subscribe]} checkout`:`Choose ${NAMES[b.dataset.subscribe]}`;
+        b.textContent=hasSubscription()?'Manage in Account centre':preview?.plan===b.dataset.subscribe?'Current plan':`Choose ${NAMES[b.dataset.subscribe]}`;
       }
     });
   }
@@ -42,7 +42,7 @@ export function initBilling(root) {
       const tagline=document.createElement('p');tagline.className='dash-box__text';tagline.textContent=preview.plan==='pro'?'SEO + Content Growth':'';
       const price=document.createElement('p');price.className='dash-box__text';price.textContent=`Plan value: ${new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD'}).format(preview.amount/100)} AUD every 28 days`;
       const website=document.createElement('p');website.className='dash-box__text';website.textContent=`Website: ${preview.website.replace(/^https:\/\//,'').replace(/\/$/,'')}`;
-      const note=document.createElement('p');note.className='dash-box__text';note.textContent='Complimentary access · $0 charged. Your plan stays active without automatic billing.';
+      const note=document.createElement('p');note.className='dash-box__text';note.textContent='Billing: $0';
       box.append(title,tagline,price,website,note);records.append(box);
     }
     subscriptions.forEach(sub=>{
@@ -88,7 +88,14 @@ export function initBilling(root) {
     } catch(error) {tab?.close();if(version===generation&&error.name!=='AbortError') message(error.message);}
     finally {if(version===generation){loading=false;button.disabled=false;renderButtons();}}
   }
-  buttons.forEach(b=>b.addEventListener('click',()=>openBilling({action:'checkout',plan:b.dataset.subscribe},b)));
+  buttons.forEach(b=>b.addEventListener('click',()=>{
+    if(preview?.plan===b.dataset.subscribe) {
+      document.getElementById('dash-tab-account').click();
+      document.getElementById('dash-account-title').focus({preventScroll:true});
+      return;
+    }
+    openBilling({action:'checkout',plan:b.dataset.subscribe},b);
+  }));
   root.querySelector('#billing-refresh').addEventListener('click',refresh);
   window.addEventListener('focus',()=>{if(userId) refresh();});
   return {
