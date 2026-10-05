@@ -21,6 +21,7 @@ const logoutButtons = Array.from(document.querySelectorAll('[data-logout]'));
 
 // Every email link returns here. Resolving a relative path drops any query/hash,
 // so this is always the exact same-origin account.html URL.
+const entryParams = new URLSearchParams(window.location.search);
 const ACCOUNT_URL = new URL('account.html', window.location.href).href;
 const LOAD_TIMEOUT_MS = 15000;
 
@@ -87,6 +88,11 @@ function fillAccount(user) {
     dashboard.reset();
     setResetStatus('');
     shownUserId = user.id;
+    if (['seo','pricing'].includes(entryParams.get('tab'))) dashboard.open(entryParams.get('tab'));
+    const website = entryParams.get('website');
+    if (website) {
+      try { const url = new URL(website); if (['http:','https:'].includes(url.protocol)) $('#seo-url').value = url.href; } catch { /* Keep the field empty for invalid links. */ }
+    }
   }
   const name = (user.user_metadata?.display_name || '').trim();
   $('#account-title').textContent = name ? `Welcome, ${name}` : 'Welcome';

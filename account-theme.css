@@ -1,0 +1,330 @@
+/* Shared product design: mint, lilac and clear white surfaces. */
+:root {
+  --navy: #202329;
+  --navy-2: #eeedf5;
+  --navy-3: #e6e4ef;
+  --parchment: #f8f8fb;
+  --chalk: #202329;
+  --brass: #7950ad;
+  --brass-dk: #633994;
+  --ink: #202329;
+  --ink-2: #50545f;
+  --muted: #656773;
+}
+body.auth-page {
+  font-family: "DM Sans", Arial, sans-serif;
+  background: #f5f5fa;
+  color: #202329;
+}
+.auth-bg {
+  background: linear-gradient(150deg, #daf0e8 0%, #e9e6fa 54%, #f8f8fb 100%);
+}
+.auth-bg::before,
+.auth-bg::after {
+  display: none;
+}
+.auth-header {
+  background: #ffffffed;
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid #e4e4eb;
+  box-shadow: none;
+}
+.rh-logo__mark,
+.rh-logo__img {
+  filter: brightness(0);
+}
+.auth-header__logout {
+  background: #fff;
+  color: #33313d;
+  border: 1px solid #d4cfdf;
+  border-radius: 100px;
+  padding: 10px 20px;
+  font-size: 13px;
+}
+.auth-header__logout:hover {
+  background: #eee6fa;
+  border-color: #b799dc;
+}
+.auth-card {
+  background: white;
+  border: 1px solid #e4e1ed;
+  box-shadow: 0 16px 55px #6d528e12;
+  backdrop-filter: none;
+  padding: 36px;
+  border-radius: 20px;
+  max-width: 440px;
+}
+.auth-title,
+.dash-h2,
+.dash-h3,
+.dash-shortcut__title,
+.plan__name,
+.plan__amount,
+.seo-h3,
+.seo-h4 {
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+.auth-title {
+  font-size: 34px;
+}
+.auth-eyebrow {
+  font-family: inherit;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+.auth-form input {
+  background: #faf9fd;
+  color: #202329;
+  border: 1px solid #dcd8e6;
+  border-radius: 9px;
+}
+.auth-form input:focus {
+  border-color: #9872c7;
+  box-shadow: 0 0 0 3px #b98afa20;
+}
+.btn-brass,
+.btn-chalk {
+  font-family: inherit;
+  border-radius: 100px;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+.btn-brass {
+  color: #271938;
+  background: #bd94f3;
+  border: 1px solid #bd94f3;
+}
+.btn-brass:hover {
+  background: #cba8fa;
+  color: #271938;
+}
+.btn-chalk {
+  color: #373141;
+  border: 1px solid #c9c2d6;
+  background: transparent;
+}
+.btn-chalk:hover {
+  background: #f0eafa;
+  color: #4b2d71;
+  border-color: #a684ce;
+}
+.btn-brass:disabled,
+.btn-chalk:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+.auth-card a:not(.btn-brass):not(.btn-chalk) {
+  color: #70429f;
+}
+.auth-notice,
+.auth-status,
+.dash-status {
+  color: #70429f;
+}
+.auth-notice[data-tone="error"],
+.auth-status[data-tone="error"],
+.dash-status[data-tone="error"] {
+  color: #a02e43;
+  background: #fff1f3;
+  border-color: #f0c8d1;
+}
+[data-auth-view="account"] .auth-bg {
+  background: linear-gradient(150deg, #edf7f3 0, #f1eef9 60%, #f8f8fb);
+}
+[data-auth-view="account"] .auth-card {
+  max-width: none;
+  background: white;
+  border-color: #e3dfec;
+  border-radius: 16px;
+  box-shadow: 0 12px 35px #49346206;
+  padding: 0;
+}
+.dash {
+  --dash-line: #e4e1ed;
+  --dash-soft: #5b5d69;
+  --dash-faint: #6b6d7a;
+  --dash-well: #faf9fd;
+}
+.dash__head {
+  background: linear-gradient(110deg, #edf7f2, #f1eafd);
+  border-radius: 16px 16px 0 0;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+.dash__title {
+  font-size: 30px;
+}
+.dash-h2 {
+  font-size: 30px;
+}
+.dash-h3 {
+  font-size: 21px;
+}
+.dash-tab {
+  color: #686371;
+  font-size: 13px;
+  font-weight: 500;
+}
+.dash-tab:hover {
+  background: #f4f0f9;
+  color: #583e7a;
+}
+.dash-tab[aria-selected="true"] {
+  background: #ede3fb;
+  color: #573080;
+}
+.dash-tab[aria-selected="true"]::before {
+  background: #a078d2;
+}
+.dash-shortcut {
+  background: #fbfafd;
+  border-radius: 12px;
+}
+.dash-shortcut:hover {
+  background: #f4eefc;
+  border-color: #c8a8ed;
+}
+.dash-shortcut__title {
+  font-size: 22px;
+}
+.dash-box {
+  border-radius: 12px;
+}
+.dash-box .dash-box {
+  background: white;
+}
+.dash-box__text {
+  line-height: 1.7;
+}
+.plan__body {
+  background: white;
+  border-color: #dfdce7;
+  border-radius: 12px;
+  padding-top: 30px;
+}
+.plan--featured .plan__body {
+  background: linear-gradient(#f5edff, #fff 70%);
+  border-color: #b185e6;
+  box-shadow: 0 6px 22px #9d73cc15;
+}
+.plan--enterprise .plan__body {
+  background: #fbfafd;
+}
+.plan__badge {
+  color: #301945;
+  background: #c7a1f7;
+  border-radius: 30px;
+  letter-spacing: 0.08em;
+  padding: 4px 11px;
+  top: -13px;
+}
+.plan__amount {
+  font-size: 37px;
+}
+.plan__tagline {
+  font-family: inherit;
+  font-size: 15px;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  color: #7856a0;
+}
+.plan__cta {
+  border-radius: 100px;
+  font-size: 12px;
+}
+.plan__more {
+  margin-bottom: 3px;
+}
+.plan__group {
+  letter-spacing: 0.09em;
+}
+.compare__table thead th,
+.compare__table tbody th {
+  background: #f6f4fa;
+}
+.compare__table tbody tr:nth-child(even) td {
+  background: #faf9fc;
+}
+.compare__table .is-highlight {
+  background: #eee2ff !important;
+}
+.compare__table .compare__tick {
+  color: #6a438d;
+}
+.custom-work {
+  background: linear-gradient(130deg, #edf6f1, #f3edfc);
+  border-color: #ddd5e9;
+  border-radius: 12px;
+}
+.custom-work__cta {
+  max-width: 310px;
+}
+.custom-work__cta .dash-note {
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 13px;
+}
+.seo {
+  --seo-pass: #177353;
+  --seo-warn: #91640e;
+  --seo-fail: #b4394c;
+  --seo-pass-bg: #eaf7f0;
+  --seo-warn-bg: #fff5df;
+  --seo-fail-bg: #fff0f2;
+}
+.seo-form__input {
+  background: white;
+  border-color: #d6d0e0;
+  color: #202329;
+  border-radius: 8px;
+}
+.seo-score__value,
+.seo-count__num {
+  font-family: inherit;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+}
+.seo-score {
+  background: linear-gradient(145deg, #edf8f0, #f2eafa);
+}
+.seo-status[data-tone="error"] {
+  background: #fff0f2;
+  color: #a33349;
+}
+.seo-status[data-tone="success"] {
+  color: #276a51;
+}
+.seo-status[data-tone="info"] {
+  color: #624784;
+}
+@media (max-width: 650px) {
+  .auth-card {
+    padding: 28px 24px;
+  }
+  .auth-header__logout {
+    padding: 9px 13px;
+  }
+  .auth-title {
+    font-size: 29px;
+  }
+  .dash-h2 {
+    font-size: 27px;
+  }
+  .dash-h3 {
+    font-size: 20px;
+  }
+  .dash__title {
+    font-size: 27px;
+  }
+  .dash-tab {
+    font-size: 12px;
+  }
+  .custom-work__cta {
+    max-width: none;
+  }
+}

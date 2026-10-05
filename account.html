@@ -8,11 +8,12 @@
   <title>Account — RankHarbour</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,600&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="rankharbour.css">
-  <link rel="stylesheet" href="account.css">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="seo-evaluation.css">
+  <link rel="stylesheet" href="account.css?v=20261006">
+  <link rel="stylesheet" href="dashboard.css?v=20261006">
+  <link rel="stylesheet" href="seo-evaluation.css?v=20261006">
+  <link rel="stylesheet" href="account-theme.css?v=20261006">
   <!-- Pinned, locally vendored Supabase SDK. src/auth/client.js imports the bare specifier. -->
   <script type="importmap">
     { "imports": { "@supabase/supabase-js": "./vendor/supabase-js@2.117.2/supabase.mjs" } }
@@ -869,7 +870,7 @@
           <p class="dash-lede">Your subscription, billing and sign-in details.</p>
           <section class="dash-box" id="billing-summary" aria-labelledby="billing-heading">
             <h3 class="dash-h3" id="billing-heading">Your subscription</h3>
-            <p class="dash-box__text" id="billing-status" role="status">Loading subscription details?</p>
+            <p class="dash-box__text" id="billing-status" role="status">Loading subscription details&hellip;</p>
             <div id="billing-records"></div>
             <button type="button" class="btn-chalk" id="billing-refresh">Refresh status</button>
             <p class="dash-status" data-billing-message role="status" aria-live="polite"></p>
@@ -914,7 +915,7 @@
   </div>
 </main>
 
-<script type="module" src="account.js"></script>
+<script type="module" src="account.js?v=20261006"></script>
 <script>
   // Fallback if account.js cannot load at all (blocked, 404, or no module support).
   setTimeout(function () {

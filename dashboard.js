@@ -112,6 +112,7 @@ export function initDashboard(root, tablist) {
   });
 
   return {
+    open(name) { if (tabByName(name)) openPanel(name); },
     /** Abandons in-flight work (e.g. an SEO evaluation) before signing out. */
     cancel() {
       seo.cancel();
