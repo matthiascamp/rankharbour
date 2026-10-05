@@ -9,11 +9,10 @@ export const PLANS: Record<string,{name:string;amount:number;url:string}> = {
 };
 export const ADDON_PLAN='google-business-posts';
 export function checkoutError(plan:string,subs:Array<{plan:string;status:string}>,preview:unknown) {
-  if(preview) return 'Your account has a complimentary plan preview. Paid checkout is disabled while this preview is enabled.';
   const current=subs.filter(s=>!['canceled','incomplete_expired'].includes(s.status));
   if(plan===ADDON_PLAN) {
     if(current.some(s=>s.plan===ADDON_PLAN)) return 'You already have Google Business Posts. Manage it in Account centre.';
-    if(!current.some(s=>s.plan!==ADDON_PLAN && ['active','trialing'].includes(s.status))) return 'An active SEO plan is required before adding Google Business Posts.';
+    if(!preview && !current.some(s=>s.plan!==ADDON_PLAN && ['active','trialing'].includes(s.status))) return 'An active SEO plan is required before adding Google Business Posts.';
   } else if(current.some(s=>s.plan!==ADDON_PLAN)) return 'You already have an SEO subscription. Manage it before starting another plan.';
   return null;
 }
@@ -62,4 +61,8 @@ export async function syncSubscription(id:string,checkout?:any) {
   const end=sub.current_period_end || item.current_period_end;
   const result=await client.rpc('sync_billing_subscription',{intent_id:intent.id,snapshot:{id:sub.id,customer:sub.customer,status:sub.status,amount:item.price.unit_amount,currency:item.price.currency,period_end:end?new Date(end*1000).toISOString():null,cancel_at_period_end:sub.cancel_at_period_end,observed_at}});
   if(result.error) throw result.error;
+  if(intent.plan!==ADDON_PLAN && ['active','trialing'].includes(sub.status)) {
+    const cleared=await client.from('account_plan_previews').delete().eq('user_id',intent.user_id);
+    if(cleared.error) throw cleared.error;
+  }
 }

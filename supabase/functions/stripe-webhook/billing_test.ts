@@ -22,14 +22,15 @@ Deno.test('All plans and add-ons require their exact AUD four-week recurring pri
     assert(!validPrice({...price,recurring:{interval:'month',interval_count:1}},plan));
   }
 });
-Deno.test('Add-on eligibility, duplicate prevention and preview protection',()=>{
+Deno.test('Add-on eligibility, duplicate prevention and preview checkout access',()=>{
   const base={plan:'pro',status:'active'},addon={plan:ADDON_PLAN,status:'active'};
   assert(checkoutError(ADDON_PLAN,[],null));
   assert(checkoutError(ADDON_PLAN,[{...base,status:'past_due'}],null));
   assert(checkoutError(ADDON_PLAN,[base],null)===null);
   assert(checkoutError(ADDON_PLAN,[base,addon],null));
   assert(checkoutError(ADDON_PLAN,[base,{...addon,status:'canceled'}],null)===null);
-  assert(checkoutError(ADDON_PLAN,[base],{plan:'pro'}));
+  assert(checkoutError(ADDON_PLAN,[],{plan:'pro'})===null);
+  assert(checkoutError('pro',[],{plan:'pro'})===null);
   assert(checkoutError('growth',[base,addon],null));
   assert(checkoutError('growth',[addon],null)===null);
 });

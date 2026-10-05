@@ -248,16 +248,16 @@ Administrators can assign a plan and website through `account_plan_previews`.
 RLS allows users to read only their own preview and denies client writes. The billing
 status response returns this separately from Stripe subscriptions. Previews display
 the normal plan value and a zero cost, without renewal dates or portal controls.
-The billing endpoint refuses checkout while a preview is assigned. Removing the
-preview administratively restores normal checkout; previews never call Stripe or
-create a customer, subscription, invoice or scheduled charge.
+Preview accounts can open checkout voluntarily. Assigning a preview never creates
+a customer, subscription, invoice or scheduled charge. Completing checkout purchases
+a paid subscription; opening it alone does not charge. A verified active/trialing paid
+base subscription removes the free preview. An add-on purchase leaves it intact.
 
 ## Google Business Posts add-on
 
 `google-business-posts` uses the supplied live Payment Link and costs AUD29 every
-28 days. Checkout requires an active or trialing base SEO plan and rejects an
-existing nonterminal subscription for the same add-on. Free-preview accounts remain
-blocked from all paid checkouts. The webhook validates the exact price and stores
+28 days. Checkout requires an active/trialing base SEO plan or an assigned preview,
+and rejects an existing nonterminal subscription for the same add-on. The webhook validates the exact price and stores
 the add-on as a separate subscription owned by the same account. Both subscriptions
 have their own portal controls and billing dates. Cancellation is independent;
 cancelling the base plan does not cancel the add-on. The dashboard states this before
