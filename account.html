@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="account.css?v=20261006">
   <link rel="stylesheet" href="dashboard.css?v=20261006">
   <link rel="stylesheet" href="seo-evaluation.css?v=20261006">
-  <link rel="stylesheet" href="account-theme.css?v=20261006">
+  <link rel="stylesheet" href="account-theme.css?v=20261006b">
   <!-- Pinned, locally vendored Supabase SDK. src/auth/client.js imports the bare specifier. -->
   <script type="importmap">
     { "imports": { "@supabase/supabase-js": "./vendor/supabase-js@2.117.2/supabase.mjs" } }
@@ -61,6 +61,18 @@
 </header>
 
 <main class="auth-main">
+  <aside class="account-intro" aria-label="Your RankHarbour workspace">
+    <p class="workspace-kicker">YOUR NEXT CHAPTER IN SEARCH</p>
+    <h2>A little clarity.<br>A lot of possibility.</h2>
+    <p>Your website, your next steps, your growth. Bring it all together in one place.</p>
+    <div class="intro-art" aria-hidden="true">
+      <div class="intro-art__orbit"></div>
+      <div class="intro-art__card"><span class="intro-art__icon">&#8599;</span><strong>Make your next<br>move a clear one.</strong><span>CHECK. UNDERSTAND. IMPROVE.</span></div>
+      <span class="intro-art__chip intro-art__chip--one">On-page insights</span>
+      <span class="intro-art__chip intro-art__chip--two">A plan for your business</span>
+    </div>
+    <div class="intro-foot"><span>01 &nbsp; Explore your opportunities</span><span>02 &nbsp; Build your momentum</span></div>
+  </aside>
   <div class="auth-card">
 
     <!-- Shared live region for errors, confirmations and progress. -->
@@ -87,7 +99,7 @@
     <!-- Sign in -->
     <section class="auth-view" data-view="signin" aria-labelledby="signin-title" hidden>
       <p class="eyebrow auth-eyebrow">Client account</p>
-      <h1 class="auth-title" id="signin-title" tabindex="-1">Welcome back</h1>
+      <h1 class="auth-title" id="signin-title" tabindex="-1">Welcome back.</h1><p class="auth-lede">Your next step in search starts here.</p>
       <form class="auth-form" id="signin-form" method="post" action="#" novalidate>
         <fieldset disabled>
           <legend class="sr-only">Sign in with email and password</legend>
@@ -111,7 +123,7 @@
     <!-- Sign up -->
     <section class="auth-view" data-view="signup" aria-labelledby="signup-title" hidden>
       <p class="eyebrow auth-eyebrow">Client account</p>
-      <h1 class="auth-title" id="signup-title" tabindex="-1">Create an account</h1>
+      <h1 class="auth-title" id="signup-title" tabindex="-1">Let&rsquo;s get started.</h1><p class="auth-lede">Create your workspace. Explore the tools and find the right plan for your business.</p>
       <form class="auth-form" id="signup-form" method="post" action="#" novalidate>
         <fieldset disabled>
           <legend class="sr-only">Create an account</legend>
@@ -193,38 +205,49 @@
       <header class="dash__head">
         <p class="eyebrow auth-eyebrow">Client account</p>
         <h1 class="auth-title dash__title" id="account-title" tabindex="-1">Welcome</h1>
-        <p class="dash__session-note">You&rsquo;ll stay signed in on this browser until you log out.</p>
+        <p class="dash__session-note">Your workspace for a more discoverable business.</p>
       </header>
 
       <div class="dash__main">
 
         <!-- Overview -->
         <section class="dash-panel" role="tabpanel" id="dash-panel-overview" aria-labelledby="dash-tab-overview" tabindex="0">
-          <h2 class="dash-h2" id="dash-overview-title" tabindex="-1">Getting started</h2>
-          <p class="dash-lede">Your RankHarbour account is ready. From here you can compare our Small Business and Enterprise SEO plans, run an on-page SEO evaluation of a public web page, and keep your sign-in details up to date.</p>
-
+          <div class="overview-feature">
+            <div><p class="workspace-kicker">YOUR SEARCH STARTS HERE</p>
+              <h2 class="dash-h2" id="dash-overview-title" tabindex="-1">Small steps.<br><em>More momentum.</em></h2>
+              <p class="dash-lede">Find out what your website needs next. Start with a page evaluation, turn the findings into a plan, and keep moving forward.</p>
+              <button type="button" class="btn-brass" data-dash-go="seo">Evaluate your website <span aria-hidden="true">&#8599;</span></button>
+            </div>
+            <div class="overview-map" aria-label="Your workflow: evaluate, prioritise, improve">
+              <span class="workspace-kicker">A CLEARER WAY FORWARD</span>
+              <div><b>01</b><span><strong>Evaluate</strong><small>See what your page is missing</small></span><span aria-hidden="true">&#8599;</span></div>
+              <div><b>02</b><span><strong>Prioritise</strong><small>Understand the fixes that matter</small></span><span aria-hidden="true">&#8599;</span></div>
+              <div><b>03</b><span><strong>Improve</strong><small>Make changes. Check your progress.</small></span><span aria-hidden="true">&#8599;</span></div>
+            </div>
+          </div>
+          <div class="section-heading"><h3 class="dash-h3">Make yourself at home.</h3><span>Everything you need, in one workspace.</span></div>
           <div class="dash-shortcuts">
             <button type="button" class="dash-shortcut" data-dash-go="pricing">
               <span class="dash-shortcut__kicker">Plans &amp; Pricing</span>
-              <span class="dash-shortcut__title">Small Business and Enterprise SEO</span>
+              <span class="dash-shortcut__title">Find your next level.</span>
               <span class="dash-shortcut__text">Five plans from $99 to $799 AUD every 28 days, full inclusions, a side-by-side comparison and how our process works.</span>
               <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
             </button>
             <button type="button" class="dash-shortcut" data-dash-go="seo">
               <span class="dash-shortcut__kicker">SEO Evaluation</span>
-              <span class="dash-shortcut__title">Check a page&rsquo;s on-page SEO</span>
+              <span class="dash-shortcut__title">See your site more clearly.</span>
               <span class="dash-shortcut__text">Enter a public URL and get a checklist of on-page passes, warnings and failures with recommended fixes.</span>
               <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
             </button>
             <button type="button" class="dash-shortcut" data-dash-go="account">
               <span class="dash-shortcut__kicker">Account centre</span>
-              <span class="dash-shortcut__title">Your sign-in details</span>
+              <span class="dash-shortcut__title">The details, taken care of.</span>
               <span class="dash-shortcut__text">View your subscription, manage billing, update your password or log out.</span>
               <span class="dash-shortcut__arrow" aria-hidden="true">&rarr;</span>
             </button>
           </div>
 
-          <h3 class="dash-h3">How to compare our services</h3>
+          <h3 class="dash-h3">A plan that fits your ambitions.</h3>
           <ol class="dash-steps">
             <li>
               <span class="dash-steps__num" aria-hidden="true">1</span>
@@ -254,9 +277,9 @@
 
         <!-- Plans & Pricing -->
         <section class="dash-panel" role="tabpanel" id="dash-panel-pricing" aria-labelledby="dash-tab-pricing" tabindex="0" hidden>
-          <h2 class="dash-h2" id="dash-pricing-title" tabindex="-1">SEO Plans</h2>
+          <p class="workspace-kicker">INVEST IN YOUR NEXT CHAPTER</p><h2 class="dash-h2" id="dash-pricing-title" tabindex="-1">Room to grow. A plan to get there.</h2>
           <p class="dash-lede">Our SEO plans are designed to continuously improve your website&rsquo;s visibility, attract more relevant visitors, and adapt to how people are actually searching.</p>
-          <p class="dash-lede dash-lede--sub">Rather than simply setting a list of keywords once and leaving them unchanged, we continuously monitor search performance, emerging opportunities, competitor activity, and changing customer search behaviour. We then use that data to improve pages, update targeting, create new content, and prioritise the opportunities most likely to increase qualified organic traffic.</p>
+          <details class="pricing-approach"><summary>How we approach your SEO</summary><p class="dash-lede">Rather than simply setting a list of keywords once and leaving them unchanged, we continuously monitor search performance, emerging opportunities, competitor activity, and changing customer search behaviour. We then use that data to improve pages, update targeting, create new content, and prioritise the opportunities most likely to increase qualified organic traffic.</p></details>
           <p class="plans-currency">All prices are in Australian dollars and billed every 28 days. This is a four-week billing cycle, not a calendar month.</p>
           <p class="dash-note">Choose a plan to pay securely with Stripe. Your subscription is linked to this signed-in account after payment confirmation. Manage billing and cancellation in Account centre. The service inclusions below retain their stated monthly delivery schedule.</p>
           <p class="dash-status" data-billing-message role="status" aria-live="polite"></p>
@@ -264,7 +287,7 @@
           <!-- All five plans share one responsive grid; each card names its category. -->
           <section class="plans-group" aria-labelledby="plans-title">
             <div class="plans-group__head">
-              <h3 class="dash-h3" id="plans-title">Monthly SEO plans</h3>
+              <h3 class="dash-h3" id="plans-title">Choose your level of support</h3>
               <ul class="plans-legend" aria-label="Plan categories">
                 <li class="plans-legend__item"><span class="plans-legend__name">Small Business SEO</span> Starter &middot; Growth &middot; Pro</li>
                 <li class="plans-legend__item plans-legend__item--ent"><span class="plans-legend__name">Enterprise SEO</span> Enterprise &middot; Enterprise Plus</li>
@@ -786,13 +809,13 @@
 
         <!-- SEO Evaluation. Results are built by seo-evaluation.js with textContent only. -->
         <section class="dash-panel seo" role="tabpanel" id="dash-panel-seo" aria-labelledby="dash-tab-seo" tabindex="0" hidden>
-          <h2 class="dash-h2" id="dash-seo-title" tabindex="-1">SEO Evaluation</h2>
+          <p class="workspace-kicker">YOUR WEBSITE, UNDER THE LENS</p><h2 class="dash-h2" id="dash-seo-title" tabindex="-1">Good SEO starts with a clearer picture.</h2>
           <p class="dash-lede">Check one public web page against an on-page SEO checklist: titles, descriptions, headings, content, images and links. Each result comes with the evidence we found and a recommended fix.</p>
 
           <div class="seo__layout">
             <div class="seo__work">
               <form class="seo-form" id="seo-form" novalidate>
-                <label class="seo-form__label" for="seo-url">Page URL</label>
+                <p class="tool-kicker">01 / START WITH A PAGE</p><label class="seo-form__label" for="seo-url">Page URL</label>
                 <div class="seo-form__row">
                   <input class="seo-form__input" id="seo-url" name="url" type="text" inputmode="url"
                          autocomplete="url" spellcheck="false" autocapitalize="off" maxlength="2048"
@@ -804,6 +827,12 @@
                 <p class="seo-status" id="seo-status" role="status" aria-live="polite"></p>
               </form>
 
+              <div class="evaluation-empty">
+                <div class="evaluation-empty__symbol" aria-hidden="true">&#8599;</div>
+                <h3>Your next opportunity is in the details.</h3>
+                <p>Add a URL above to see what&rsquo;s working and what needs attention. Your results and recommended fixes will appear here.</p>
+                <ul><li>Titles &amp; descriptions</li><li>Headings &amp; content</li><li>Images &amp; links</li></ul>
+              </div>
               <div class="seo-results" id="seo-results" aria-labelledby="seo-results-title" hidden>
                 <div class="seo-results__head">
                   <h3 class="dash-h3 dash-h3--flush" id="seo-results-title" tabindex="-1">Evaluation results</h3>
@@ -866,18 +895,18 @@
 
         <!-- Account -->
         <section class="dash-panel" role="tabpanel" id="dash-panel-account" aria-labelledby="dash-tab-account" tabindex="0" hidden>
-          <h2 class="dash-h2" id="dash-account-title" tabindex="-1">Account centre</h2>
+          <p class="workspace-kicker">ALL THE ESSENTIALS</p><h2 class="dash-h2" id="dash-account-title" tabindex="-1">Your account. Nicely organised.</h2>
           <p class="dash-lede">Your subscription, billing and sign-in details.</p>
-          <section class="dash-box" id="billing-summary" aria-labelledby="billing-heading">
+          <div class="account-settings-grid"><section class="dash-box" id="billing-summary" aria-labelledby="billing-heading">
             <h3 class="dash-h3" id="billing-heading">Your subscription</h3>
             <p class="dash-box__text" id="billing-status" role="status">Loading subscription details&hellip;</p>
             <div id="billing-records"></div>
-            <button type="button" class="btn-chalk" id="billing-refresh">Refresh status</button>
+            <button type="button" class="btn-chalk" id="billing-refresh">Refresh status</button><div class="billing-help"><h4>Find the right support.</h4><p>Explore all five SEO plans, compare what is included, and add Google Business Posts to your service.</p><button type="button" class="btn-brass" data-dash-go="pricing">Explore plans &amp; add-ons <span aria-hidden="true">&#8599;</span></button></div>
             <p class="dash-status" data-billing-message role="status" aria-live="polite"></p>
           </section>
 
           <div class="dash-box">
-            <dl class="auth-details dash-details">
+            <h3 class="dash-h3 dash-h3--flush">Your profile</h3><p class="dash-box__text">The details associated with your account.</p><dl class="auth-details dash-details">
               <div class="auth-details__row" id="account-name-row" hidden>
                 <dt>Name</dt>
                 <dd id="account-name"></dd>
@@ -906,6 +935,7 @@
             <div class="auth-actions dash-actions">
               <button type="button" class="btn-brass" id="signout-btn" data-logout data-label="Log out" data-busy="Logging out&hellip;">Log out</button>
             </div>
+          </div>
           </div>
         </section>
 
