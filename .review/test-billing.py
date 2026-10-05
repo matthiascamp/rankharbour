@@ -23,7 +23,7 @@ with sync_playwright() as p:
     page.locator('#signin-form button[type=submit]').click()
     page.locator('#dash-tab-pricing').click()
     expect(page.locator('[data-subscribe=starter]')).to_be_enabled()
-    assert page.locator('.plan__per').all_text_contents()==['AUD / 28 days']*5
+    assert page.locator('.plan__per').all_text_contents()==['AUD /month*']*5
     for plan in ['starter','growth','pro','enterprise','enterprise-plus']:
         with context.expect_page() as popup: page.locator('[data-subscribe="'+plan+'"]').click()
         tab=popup.value;tab.wait_for_url('https://buy.stripe.com/**');tab.close()
