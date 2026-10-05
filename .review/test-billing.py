@@ -60,12 +60,13 @@ with sync_playwright() as p:
     state['subscriptions']=[]
     state['preview']={'plan':'pro','amount':24900,'website':'https://example.test'}
     page.locator('#billing-refresh').click()
-    expect(page.locator('#billing-records')).to_contain_text('Pro — active preview')
-    expect(page.locator('#billing-records')).to_contain_text('Your preview costs $0')
+    expect(page.locator('#billing-records')).to_contain_text('Pro — active')
+    expect(page.locator('#billing-status')).to_have_text('Your Pro plan is active.')
+    expect(page.locator('#billing-records')).to_contain_text('$0 charged')
     expect(page.locator('#billing-records')).to_contain_text('example.test')
     assert page.get_by_role('button',name='Manage subscription',exact=True).count()==0
     page.locator('#dash-tab-pricing').click()
-    expect(page.locator('[data-subscribe=pro]')).to_have_text('View Pro checkout')
+    expect(page.locator('[data-subscribe=pro]')).to_have_text('Current plan · View checkout')
     expect(page.locator('[data-subscribe=pro]')).to_be_enabled()
     expect(addon).to_be_enabled()
     with context.expect_page() as popup: page.locator('[data-subscribe=pro]').click()

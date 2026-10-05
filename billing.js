@@ -18,7 +18,7 @@ export function initBilling(root) {
         b.textContent=hasAddon?'Manage in Account centre':!checked?'Loading account…':!activeBase?'Choose an SEO plan first':'Add Google Business Posts';
       } else {
         b.disabled=loading||!checked||hasSubscription();
-        b.textContent=hasSubscription()?'Manage in Account centre':preview?`View ${NAMES[b.dataset.subscribe]} checkout`:`Choose ${NAMES[b.dataset.subscribe]}`;
+        b.textContent=hasSubscription()?'Manage in Account centre':preview?.plan===b.dataset.subscribe?'Current plan · View checkout':preview?`View ${NAMES[b.dataset.subscribe]} checkout`:`Choose ${NAMES[b.dataset.subscribe]}`;
       }
     });
   }
@@ -36,13 +36,13 @@ export function initBilling(root) {
     records.replaceChildren();
     status.textContent=subscriptions.length?'Your subscription details are synced from Stripe.':'No subscription yet. Choose a plan in Plans & Pricing to get started.';
     if(preview) {
-      status.textContent='Your complimentary plan preview is active.';
+      status.textContent=`Your ${NAMES[preview.plan]} plan is active.`;
       const box=document.createElement('div');box.className='dash-box';
-      const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[preview.plan]} — active preview`;
+      const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[preview.plan]} — active`;
       const tagline=document.createElement('p');tagline.className='dash-box__text';tagline.textContent=preview.plan==='pro'?'SEO + Content Growth':'';
       const price=document.createElement('p');price.className='dash-box__text';price.textContent=`Plan value: ${new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD'}).format(preview.amount/100)} AUD every 28 days`;
       const website=document.createElement('p');website.className='dash-box__text';website.textContent=`Website: ${preview.website.replace(/^https:\/\//,'').replace(/\/$/,'')}`;
-      const note=document.createElement('p');note.className='dash-box__text';note.textContent='Your preview costs $0 and does not renew or charge you. You can view Stripe checkout; completing a purchase creates a separate paid subscription.';
+      const note=document.createElement('p');note.className='dash-box__text';note.textContent='Complimentary access · $0 charged. Your plan stays active without automatic billing.';
       box.append(title,tagline,price,website,note);records.append(box);
     }
     subscriptions.forEach(sub=>{
