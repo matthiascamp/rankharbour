@@ -480,3 +480,34 @@ body.auth-page {
   .auth-main { align-items: flex-start; padding-top: 96px; }
   .seo__about { position: static; }
 }
+/* Quieter surfaces and a consistent hierarchy throughout the workspace. */
+.auth-card, .intro-art__card, .intro-art__chip, .overview-map, .dash-shortcut, .plan__body, .plan--featured .plan__body { box-shadow: none; }
+.intro-art__chip { display: none; }
+.intro-art__card { transform: none; }
+.intro-foot { display: none; }
+.workspace-kicker { letter-spacing: .1em; font-size: 10px; }
+.dash__head { padding-bottom: 22px; }
+.dash__session-note { display: none; }
+.dash__head .auth-eyebrow { display: none; }
+.overview-feature { padding: clamp(26px,3vw,44px); gap: 36px; }
+.overview-feature .dash-h2 { font-size: clamp(36px,4vw,56px); }
+.overview-map { background: #ffffff90; border-color: #ffffffa0; }
+.dash-shortcut { border-color: #e6e3eb; min-height: 190px; }
+.dash-shortcut__kicker { margin-bottom: 12px; }
+.dash-shortcut__title { font-size: 22px; }
+.dash-h2 { font-size: clamp(28px,2.8vw,38px); }
+.dash-panel > .workspace-kicker { margin-bottom: 10px; }
+.plan__tagline { font-style: normal; font-size: 13px; }
+.plan__group { letter-spacing: .07em; }
+.plan__body { border-radius: 14px; }
+.plan--featured .plan__body { background: #f0e7fc; }
+.section-heading > span { display: none; }
+.seo__about, .seo-results, .account-settings-grid > .dash-box { border-radius: 14px; }
+.evaluation-empty { background: transparent; }
+.auth-page .btn-brass:hover, .auth-page .btn-chalk:hover { transform: none; }
+@media (max-width: 760px) { .overview-feature { gap: 24px; } .dash-shortcut { min-height: 0; } }
+.backlinks-addon + .compare { margin-top: 28px; }
+.plan:not(.plan--featured) .plan__foot > .btn-brass { background: #fff; border-color: #d4c9df; color: #493958; }
+.plan:not(.plan--featured) .plan__foot > .btn-brass:hover { background: #f4eefb; }
+.plan__foot > [data-compare] { background: transparent; border-color: transparent; color: #796588; }
+.plan__foot > [data-compare]:hover { background: #f4eefb; }

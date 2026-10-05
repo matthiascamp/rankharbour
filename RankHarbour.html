@@ -70,8 +70,9 @@
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="homepage.css?v=20261006c" />
-  </head>
+    <link rel="stylesheet" href="homepage.css?v=20261006d" />
+    <link rel="stylesheet" href="backlinks-addon.css?v=20261006">
+</head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <header class="site-header">
@@ -485,22 +486,21 @@
             >
           </article>
         </div>
+<aside class="backlinks-addon" aria-labelledby="backlinks-title">
+  <div class="backlinks-addon__copy">
+    <h3 id="backlinks-title">Backlinks <span>Optional add-on</span></h3>
+    <p id="backlinks-description">Backlinks are links from other websites to yours. Relevant links can help people discover your business and support your site&rsquo;s credibility.</p>
+  </div>
+  <div class="backlinks-addon__control">
+    <div class="backlinks-addon__price"><strong>+A$29</strong><span>every 28 days</span></div>
+    <input class="backlinks-switch" type="checkbox" role="switch" aria-label="Add backlinks" aria-describedby="backlinks-description backlinks-availability" disabled>
+    <span class="backlinks-addon__availability" id="backlinks-availability">Available soon</span>
+  </div>
+</aside>
         <p class="pricing-note">
           Billing is every 28 days. Content and page optimisation allowances
           follow the monthly delivery schedule listed in each plan.
         </p>
-        <div class="addon-strip">
-          <div>
-            <h3>A little extra for your Google presence.</h3>
-            <p>
-              Google Business Posts: two approved posts per billing cycle for
-              one profile. +A$29 every 28 days, billed separately.
-            </p>
-          </div>
-          <a class="text-link" href="account.html?tab=pricing"
-            >Explore the add-on ↗</a
-          >
-        </div>
       </section>
       <section class="faq wrap">
         <div class="faq-grid">
@@ -532,8 +532,7 @@
               <p>
                 Plans renew every 28 days through Stripe. View your
                 subscription, invoices and cancellation options in Account
-                centre. Google Business Posts is a separate subscription and is
-                managed separately.
+                centre. Optional add-ons are billed separately when available.
               </p>
             </details>
             <details>

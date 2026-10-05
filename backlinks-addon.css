@@ -1,0 +1,18 @@
+﻿/* One compact add-on row shared by public and account pricing. */
+.backlinks-addon { display: flex; align-items: center; justify-content: space-between; gap: 28px; margin-top: 20px; padding: 22px 26px; background: #f0eafa; border: 1px solid #e3d9ee; border-radius: 14px; }
+.backlinks-addon__copy { min-width: 0; max-width: 650px; }
+.backlinks-addon h3 { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 0 0 7px; font: 600 18px/1.4 'DM Sans', sans-serif; letter-spacing: -.025em; color: #282331; }
+.backlinks-addon h3 span { font-size: 11px; font-weight: 400; letter-spacing: 0; color: #76677f; }
+.backlinks-addon p { margin: 0; font-size: 13px; line-height: 1.65; color: #655d6f; }
+.backlinks-addon__control { display: grid; grid-template-columns: auto 48px; align-items: center; column-gap: 18px; row-gap: 5px; flex-shrink: 0; }
+.backlinks-addon__price strong { display: block; font-size: 19px; font-weight: 600; color: #342a41; letter-spacing: -.035em; }
+.backlinks-addon__price span { font-size: 11px; color: #76677f; }
+.backlinks-addon__availability { grid-column: 1 / -1; text-align: right; color: #76677f; font-size: 11px; }
+.backlinks-switch { appearance: none; -webkit-appearance: none; position: relative; width: 48px; height: 28px; border: 1px solid #c9bfd6; background: #d8cfdf; border-radius: 30px; margin: 0; }
+.backlinks-switch::before { content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .2s; }
+.backlinks-switch:checked { background: #ae81de; border-color: #ae81de; }
+.backlinks-switch:checked::before { transform: translateX(20px); }
+.backlinks-switch:focus-visible { outline: 2px solid #755291; outline-offset: 4px; }
+.backlinks-switch:disabled { cursor: not-allowed; }
+@media (max-width: 600px) { .backlinks-addon { align-items: flex-start; flex-direction: column; gap: 18px; padding: 22px; } .backlinks-addon__control { width: 100%; } .backlinks-addon__availability { text-align: left; } }
+@media (prefers-reduced-motion: reduce) { .backlinks-switch::before { transition: none; } }

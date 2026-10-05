@@ -1123,3 +1123,10 @@ p {
   .menu-toggle { min-width: 44px; min-height: 44px; }
   .site-header nav { max-height: calc(100svh - 88px); overflow-y: auto; }
 }
+/* Refined surfaces preserve the mint/lilac identity without extra ornament. */
+.product-preview { box-shadow: 0 16px 50px #493e6512; }
+.public-plan { border-radius: 14px; }
+.public-plan--featured { background: #f1e9fc; }
+.value-badge { background: #2c2635; color: #fff; }
+.visual, .mini-window, .step { box-shadow: none; }
+.button:hover { transform: none; }
