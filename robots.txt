@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Account pages carry a noindex meta tag; allow crawling so it can be read.
+Sitemap: https://rankharbour.com.au/sitemap.xml
