@@ -1,21 +1,27 @@
 // All subscription ownership and checkout references are issued by the server.
-const ADDON='google-business-posts';
-const NAMES = {starter:'Starter',growth:'Growth',pro:'Pro',enterprise:'Enterprise','enterprise-plus':'Enterprise Plus',[ADDON]:'Google Business Posts'};
+const ADDON='backlinks';
+const isAddon=plan=>plan===ADDON||plan==='google-business-posts';
+const NAMES = {starter:'Starter',growth:'Growth',pro:'Pro',enterprise:'Enterprise','enterprise-plus':'Enterprise Plus',[ADDON]:'Backlinks','google-business-posts':'Google Business Posts'};
 export function initBilling(root) {
   const status=root.querySelector('#billing-status');
   const records=root.querySelector('#billing-records');
   const messages=[...root.querySelectorAll('[data-billing-message]')];
   const buttons=[...root.querySelectorAll('[data-subscribe]')];
+  const addonSwitch=root.querySelector('#backlinks-toggle');
+  const addonStatus=root.querySelector('#backlinks-availability');
   let userId=null, generation=0, controller=null, loading=false, subscriptions=[], checked=false, preview=null;
   const message=text=>messages.forEach(el=>{el.textContent=text;});
-  const hasSubscription=()=>subscriptions.some(s=>s.plan!==ADDON&&!['canceled','incomplete_expired'].includes(s.status));
+  const hasSubscription=()=>subscriptions.some(s=>!isAddon(s.plan)&&!['canceled','incomplete_expired'].includes(s.status));
   function renderButtons() {
-    const activeBase=!!preview||subscriptions.some(s=>s.plan!==ADDON&&['active','trialing'].includes(s.status));
+    const activeBase=!!preview||subscriptions.some(s=>!isAddon(s.plan)&&['active','trialing'].includes(s.status));
     const hasAddon=subscriptions.some(s=>s.plan===ADDON&&!['canceled','incomplete_expired'].includes(s.status));
+    addonSwitch.checked=hasAddon;
+    addonSwitch.disabled=loading||!checked||(!activeBase&&!hasAddon);
+    addonStatus.textContent=hasAddon?'Added. Manage in Account centre.':!checked?'Loading account...':!activeBase?'Choose an SEO plan first.':'Add to your SEO plan';
     buttons.forEach(b=>{
       if(b.dataset.subscribe===ADDON) {
         b.disabled=loading||!checked||hasAddon||!activeBase;
-        b.textContent=hasAddon?'Manage in Account centre':!checked?'Loading account…':!activeBase?'Choose an SEO plan first':'Add Google Business Posts';
+        b.textContent=hasAddon?'Manage in Account centre':!checked?'Loading account…':!activeBase?'Choose an SEO plan first':'Add Backlinks';
       } else {
         b.disabled=loading||!checked||hasSubscription();
         b.textContent=hasSubscription()?'Manage in Account centre':preview?.plan===b.dataset.subscribe?'Current plan':`Choose ${NAMES[b.dataset.subscribe]}`;
@@ -47,7 +53,7 @@ export function initBilling(root) {
     }
     subscriptions.forEach(sub=>{
       const box=document.createElement('div');box.className='dash-box';
-      const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[sub.plan]||sub.plan}${sub.plan===ADDON?' (add-on)':''} — ${sub.status.replaceAll('_',' ')}`;
+      const title=document.createElement('h4');title.className='dash-h3';title.textContent=`${NAMES[sub.plan]||sub.plan}${isAddon(sub.plan)?' (add-on)':''} — ${sub.status.replaceAll('_',' ')}`;
       const detail=document.createElement('p');detail.className='dash-box__text';
       detail.textContent=new Intl.NumberFormat('en-AU',{style:'currency',currency:'AUD'}).format(sub.amount/100)+' AUD every 28 days';
       const date=document.createElement('p');date.className='dash-box__text';
@@ -96,6 +102,12 @@ export function initBilling(root) {
     }
     openBilling({action:'checkout',plan:b.dataset.subscribe},b);
   }));
+  addonSwitch.addEventListener('change',()=>{
+    const existing=subscriptions.some(s=>s.plan===ADDON&&!['canceled','incomplete_expired'].includes(s.status));
+    renderButtons();
+    if(existing) { document.getElementById('dash-tab-account').click();document.getElementById('dash-account-title').focus({preventScroll:true});return; }
+    openBilling({action:'checkout',plan:ADDON},addonSwitch);
+  });
   root.querySelector('#billing-refresh').addEventListener('click',refresh);
   window.addEventListener('focus',()=>{if(userId) refresh();});
   return {

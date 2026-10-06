@@ -5,15 +5,19 @@ export const PLANS: Record<string,{name:string;amount:number;url:string}> = {
   pro:{name:'Pro',amount:24900,url:'https://buy.stripe.com/bJe8wOguJcXOa7k4WZasg03'},
   enterprise:{name:'Enterprise',amount:49900,url:'https://buy.stripe.com/4gMcN4a6l5vmfrE2ORasg04'},
   'enterprise-plus':{name:'Enterprise Plus',amount:79900,url:'https://buy.stripe.com/5kQ7sKbap3ne4N04WZasg00'},
+  backlinks:{name:'Backlinks',amount:2900,url:'https://buy.stripe.com/3cIdR85Q58Hya7k0GJasg06'},
   'google-business-posts':{name:'Google Business Posts',amount:2900,url:'https://buy.stripe.com/aFacN47YdcXOenA757asg05'},
 };
-export const ADDON_PLAN='google-business-posts';
+export const ADDON_PLAN='backlinks';
+// Keep historical records manageable without selling the retired add-on.
+export const isAddon=(plan:string)=>plan===ADDON_PLAN||plan==='google-business-posts';
 export function checkoutError(plan:string,subs:Array<{plan:string;status:string}>,preview:unknown) {
+  if(plan==='google-business-posts') return 'This add-on is no longer available. Choose Backlinks instead.';
   const current=subs.filter(s=>!['canceled','incomplete_expired'].includes(s.status));
   if(plan===ADDON_PLAN) {
-    if(current.some(s=>s.plan===ADDON_PLAN)) return 'You already have Google Business Posts. Manage it in Account centre.';
-    if(!preview && !current.some(s=>s.plan!==ADDON_PLAN && ['active','trialing'].includes(s.status))) return 'An active SEO plan is required before adding Google Business Posts.';
-  } else if(current.some(s=>s.plan!==ADDON_PLAN)) return 'You already have an SEO subscription. Manage it before starting another plan.';
+    if(current.some(s=>s.plan===ADDON_PLAN)) return 'You already have Backlinks. Manage it in Account centre.';
+    if(!preview && !current.some(s=>!isAddon(s.plan) && ['active','trialing'].includes(s.status))) return 'An active SEO plan is required before adding Backlinks.';
+  } else if(current.some(s=>!isAddon(s.plan))) return 'You already have an SEO subscription. Manage it before starting another plan.';
   return null;
 }
 export const db = () => createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false,autoRefreshToken:false}});
@@ -61,7 +65,7 @@ export async function syncSubscription(id:string,checkout?:any) {
   const end=sub.current_period_end || item.current_period_end;
   const result=await client.rpc('sync_billing_subscription',{intent_id:intent.id,snapshot:{id:sub.id,customer:sub.customer,status:sub.status,amount:item.price.unit_amount,currency:item.price.currency,period_end:end?new Date(end*1000).toISOString():null,cancel_at_period_end:sub.cancel_at_period_end,observed_at}});
   if(result.error) throw result.error;
-  if(intent.plan!==ADDON_PLAN && ['active','trialing'].includes(sub.status)) {
+  if(!isAddon(intent.plan) && ['active','trialing'].includes(sub.status)) {
     const cleared=await client.from('account_plan_previews').delete().eq('user_id',intent.user_id);
     if(cleared.error) throw cleared.error;
   }

@@ -18,7 +18,7 @@
   <script type="importmap">
     { "imports": { "@supabase/supabase-js": "./vendor/supabase-js@2.117.2/supabase.mjs" } }
   </script>
-  <link rel="stylesheet" href="backlinks-addon.css?v=20261006">
+  <link rel="stylesheet" href="backlinks-addon.css?v=20261006e">
 </head>
 <body class="auth-page">
 
@@ -567,9 +567,10 @@
   </div>
   <div class="backlinks-addon__control">
     <div class="backlinks-addon__price"><strong>+A$29</strong><span>/month*</span></div>
-    <input class="backlinks-switch" type="checkbox" role="switch" aria-label="Add backlinks" aria-describedby="backlinks-description backlinks-availability" disabled>
-    <span class="backlinks-addon__availability" id="backlinks-availability">Available soon</span>
+    <input id="backlinks-toggle" class="backlinks-switch" type="checkbox" role="switch" aria-label="Add backlinks" aria-describedby="backlinks-description backlinks-availability" disabled>
+    <span class="backlinks-addon__availability" id="backlinks-availability">Loading account&hellip;</span>
   </div>
+<p class="backlinks-addon__terms">Billed separately every 28 days. Manage or cancel in Account centre, including if you cancel your SEO plan.</p>
 </aside>
 
           <p class="plans-currency" style="margin-top: 14px;">* A month is defined by 28 days.</p>
@@ -940,7 +941,7 @@
   </div>
 </main>
 
-<script type="module" src="account.js?v=20261006"></script>
+<script type="module" src="account.js?v=20261006e"></script>
 <script>
   // Fallback if account.js cannot load at all (blocked, 404, or no module support).
   setTimeout(function () {

@@ -16,3 +16,7 @@
 .backlinks-switch:disabled { cursor: not-allowed; }
 @media (max-width: 600px) { .backlinks-addon { align-items: flex-start; flex-direction: column; gap: 18px; padding: 22px; } .backlinks-addon__control { width: 100%; } .backlinks-addon__availability { text-align: left; } }
 @media (prefers-reduced-motion: reduce) { .backlinks-switch::before { transition: none; } }
+
+.backlinks-addon { flex-wrap: wrap; }
+.backlinks-addon__terms { flex-basis: 100%; font-size: 11px !important; margin-top: -12px !important; }
+.backlinks-switch:not(:disabled) { cursor: pointer; }

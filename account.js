@@ -5,7 +5,7 @@
    ================================================================ */
 
 import { initDashboard } from './dashboard.js';
-import { initBilling } from './billing.js';
+import { initBilling } from './billing.js?v=20261006e';
 
 window.__rhAuthBooted = true; // tells the inline watchdog in account.html that this module ran
 

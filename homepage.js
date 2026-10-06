@@ -44,3 +44,9 @@ document.querySelector("#website-start").addEventListener("submit", (e) => {
     field.focus();
   }
 });
+
+// Account checkout creates the ownership reference before opening Stripe.
+document.querySelector(".backlinks-switch").addEventListener("change", event => {
+  event.target.checked = false;
+  location.assign("account.html?tab=pricing");
+});

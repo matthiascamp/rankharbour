@@ -34,3 +34,10 @@ Deno.test('Add-on eligibility, duplicate prevention and preview checkout access'
   assert(checkoutError('growth',[base,addon],null));
   assert(checkoutError('growth',[addon],null)===null);
 });
+
+Deno.test('Retired add-on cannot be bought or treated as an SEO plan',()=>{
+  const legacy={plan:'google-business-posts',status:'active'};
+  assert(checkoutError('google-business-posts',[{plan:'pro',status:'active'}],null));
+  assert(checkoutError(ADDON_PLAN,[legacy],null));
+  assert(checkoutError('pro',[legacy],null)===null);
+});
