@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "test:site-editor": "node --test site-editor.test.js",
     "supabase:status": "supabase status",
     "supabase:pull": "supabase db pull",
     "supabase:push": "supabase db push",

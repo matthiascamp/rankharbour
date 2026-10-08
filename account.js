@@ -88,7 +88,7 @@ function fillAccount(user) {
     dashboard.reset();
     setResetStatus('');
     shownUserId = user.id;
-    if (['seo','pricing'].includes(entryParams.get('tab'))) dashboard.open(entryParams.get('tab'));
+    if (['seo','pricing','editor'].includes(entryParams.get('tab'))) dashboard.open(entryParams.get('tab'));
     const website = entryParams.get('website');
     if (website) {
       try { const url = new URL(website); if (['http:','https:'].includes(url.protocol)) $('#seo-url').value = url.href; } catch { /* Keep the field empty for invalid links. */ }

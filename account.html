@@ -19,6 +19,7 @@
     { "imports": { "@supabase/supabase-js": "./vendor/supabase-js@2.117.2/supabase.mjs" } }
   </script>
   <link rel="stylesheet" href="backlinks-addon.css?v=20261006e">
+  <link rel="stylesheet" href="site-editor.css?v=20261008">
 </head>
 <body class="auth-page">
 
@@ -48,6 +49,10 @@
         <button type="button" class="dash-tab" role="tab" id="dash-tab-seo" aria-controls="dash-panel-seo" aria-selected="false" tabindex="-1">
           <svg class="dash-tab__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5M8 10.5l1.8 1.8 3.2-3.4"/></svg>
           <span>SEO<span class="dash-tab__more dash-tab__more--xs"> Evaluation</span></span>
+        </button>
+        <button type="button" class="dash-tab" role="tab" id="dash-tab-editor" aria-controls="dash-panel-editor" aria-selected="false" tabindex="-1">
+          <svg class="dash-tab__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></svg>
+          <span>Site editor</span>
         </button>
         <button type="button" class="dash-tab" role="tab" id="dash-tab-account" aria-controls="dash-panel-account" aria-selected="false" tabindex="-1">
           <svg class="dash-tab__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg>
@@ -889,6 +894,45 @@
           </div>
         </section>
 
+        <section class="dash-panel site-editor" role="tabpanel" id="dash-panel-editor" aria-labelledby="dash-tab-editor" tabindex="0" hidden>
+          <p class="workspace-kicker">TURN INSIGHTS INTO CHANGES</p>
+          <h2 class="dash-h2" tabindex="-1">Your website, ready to improve.</h2>
+          <p class="dash-lede">Connect a client&rsquo;s GitHub repository, edit SEO tags or source code, and submit a pull request for review.</p>
+          <form id="editor-connect" class="editor-card">
+            <h3>1. Connect a website</h3>
+            <div class="editor-grid">
+              <div><label for="editor-repo">GitHub repository</label><input id="editor-repo" placeholder="owner/website" required autocomplete="off" pattern="[A-Za-z0-9_.\-]+/[A-Za-z0-9_.\-]+"></div>
+              <div><label for="editor-token">Repository access token</label><input id="editor-token" type="password" required autocomplete="off" spellcheck="false" placeholder="github_pat_…"></div>
+            </div>
+            <p class="editor-help">Use an expiring fine-grained token for a repository you own or can access as an organisation member, with <strong>Contents: read and write</strong> and <strong>Pull requests: read and write</strong>. Select only the client&rsquo;s repository; organisation approval may be required.</p>
+            <details class="editor-help"><summary>Accessing a client&rsquo;s repository as an outside collaborator?</summary><p>Ask the client to invite your GitHub account with write access. GitHub currently requires a classic token with <strong>repo</strong> scope for this arrangement. Classic tokens can access all repositories available to your account, so use a dedicated agency account and set an expiry.</p><a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener noreferrer">Create a classic token ↗</a></details>
+            <p class="editor-help">Access is held only for this session and cleared on disconnect or sign-out.</p>
+            <div class="editor-actions"><button class="btn-brass" type="submit">Connect repository</button><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Create a fine-grained token ↗</a></div>
+          </form>
+          <p id="editor-status" role="status" aria-live="polite"></p>
+          <div id="editor-workspace" hidden>
+            <section class="editor-card">
+              <h3 id="editor-repository"></h3>
+              <label for="editor-file">Website source file</label><select id="editor-file"></select>
+              <div class="editor-actions"><button id="editor-load" class="btn-brass" type="button">Load file</button><button id="editor-disconnect" class="btn-chalk" type="button">Disconnect</button></div>
+            </section>
+            <section class="editor-card">
+              <h3>2. Edit your page</h3><p id="editor-loaded" class="editor-help"></p>
+              <div id="editor-tags" hidden>
+                <div class="editor-grid"><div><label for="editor-title">Page title</label><input id="editor-title"></div><div><label for="editor-description">Meta description</label><textarea id="editor-description" rows="3"></textarea></div></div>
+                <div class="editor-actions"><button id="editor-apply-tags" class="btn-chalk" type="button">Apply SEO tags to source</button></div>
+                <p class="editor-help">The tag fields update an HTML file&rsquo;s head section. For framework components, edit the metadata in the source below.</p>
+              </div>
+              <label for="editor-code">Source code</label><textarea id="editor-code" class="editor-code" spellcheck="false" autocomplete="off" wrap="off" aria-describedby="editor-code-help"></textarea>
+              <p id="editor-code-help" class="editor-help">Edit titles, schema, headings, links or other source code. One file per pull request, up to 200 KB. Hidden files, credentials, workflows and generated folders are excluded.</p>
+              <form id="editor-publish-form">
+                <h3>3. Submit for review</h3><label for="editor-summary">Change summary</label><input id="editor-summary" required maxlength="120" placeholder="Improve homepage title and description">
+                <p class="editor-help">Your changes are committed to a new branch. Review and merge on GitHub to trigger the client&rsquo;s normal deployment process.</p>
+                <div class="editor-actions"><button id="editor-publish" class="btn-brass" type="submit" disabled>Create pull request</button><a id="editor-result" hidden target="_blank" rel="noopener noreferrer"></a></div>
+              </form>
+            </section>
+          </div>
+        </section>
         <!-- Account -->
         <section class="dash-panel" role="tabpanel" id="dash-panel-account" aria-labelledby="dash-tab-account" tabindex="0" hidden>
           <p class="workspace-kicker">ALL THE ESSENTIALS</p><h2 class="dash-h2" id="dash-account-title" tabindex="-1">Account centre</h2>

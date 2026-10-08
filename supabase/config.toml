@@ -424,3 +424,7 @@ enabled = true
 verify_jwt = false
 [functions.stripe-webhook]
 verify_jwt = false
+
+# The site editor validates the Supabase session inside the handler.
+[functions.site-editor]
+verify_jwt = false
