@@ -7,7 +7,6 @@
    ================================================================ */
 
 import { initSeoEvaluation } from './seo-evaluation.js';
-import { initSiteEditor } from './site-editor.js';
 
 const PLAN_NAMES = {
   starter: 'Starter',
@@ -31,7 +30,6 @@ export function initDashboard(root, tablist) {
   const scrollBehavior = () => (reducedMotion.matches ? 'auto' : 'smooth');
 
   const seo = initSeoEvaluation(root.querySelector('#dash-panel-seo'));
-  const editor = initSiteEditor(root.querySelector('#dash-panel-editor'));
 
   // A newly opened panel starts at the top of the page, just under the fixed header.
   function scrollToTop() {
@@ -118,7 +116,6 @@ export function initDashboard(root, tablist) {
     /** Abandons in-flight work (e.g. an SEO evaluation) before signing out. */
     cancel() {
       seo.cancel();
-      editor.cancel();
     },
     /** Back to a clean first-visit state (used on sign-out or a user change). */
     reset() {
@@ -126,7 +123,6 @@ export function initDashboard(root, tablist) {
       scroller.scrollLeft = 0;
       root.querySelectorAll('details[open]').forEach((details) => { details.open = false; });
       seo.reset();
-      editor.reset();
       selectTab(tabs[0]);
     },
   };

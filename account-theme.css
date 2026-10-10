@@ -12,6 +12,7 @@
   --muted: #656773;
 }
 body.auth-page {
+  color-scheme: light;
   font-family: "DM Sans", Arial, sans-serif;
   background: #f5f5fa;
   color: #202329;
@@ -83,6 +84,28 @@ body.auth-page {
 .auth-form input:focus {
   border-color: #9872c7;
   box-shadow: 0 0 0 3px #b98afa20;
+}
+/* Keep native controls and saved-password autofill on the light surface. */
+.auth-page input:not([type="checkbox"]):not([type="radio"]),
+.auth-page textarea,
+.auth-page select {
+  color-scheme: light;
+  background-color: #fff;
+  color: #202329;
+  caret-color: #202329;
+}
+.auth-page input:autofill {
+  background-color: #fff;
+  color: #202329;
+  box-shadow: 0 0 0 1000px #fff inset;
+}
+.auth-page input:-webkit-autofill,
+.auth-page input:-webkit-autofill:hover,
+.auth-page input:-webkit-autofill:focus,
+.auth-page input:-webkit-autofill:active {
+  -webkit-text-fill-color: #202329;
+  caret-color: #202329;
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
 }
 .btn-brass,
 .btn-chalk {

@@ -163,7 +163,7 @@
 .auth-field input[aria-invalid="true"] { border-color: rgba(232, 133, 120, 0.8); }
 .auth-field input:-webkit-autofill {
   -webkit-text-fill-color: var(--chalk);
-  -webkit-box-shadow: 0 0 0 40px #13212f inset;
+  -webkit-box-shadow: 0 0 0 40px #fff inset;
   caret-color: var(--chalk);
 }
 .auth-hint {
