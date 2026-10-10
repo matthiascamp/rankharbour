@@ -1,4 +1,5 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.117.2';
+import {matchesCheckout} from './checkout.ts';
 export const PLANS: Record<string,{name:string;amount:number;url:string}> = {
   starter:{name:'Starter',amount:9900,url:'https://buy.stripe.com/7sYbJ07Yd8Hy0wKcprasg01'},
   growth:{name:'Growth',amount:14900,url:'https://buy.stripe.com/6oU5kC7Yd6zq1AO3SVasg02'},
@@ -21,8 +22,9 @@ export function checkoutError(plan:string,subs:Array<{plan:string;status:string}
   return null;
 }
 export const db = () => createClient(Deno.env.get('SUPABASE_URL')!,Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,{auth:{persistSession:false,autoRefreshToken:false}});
-export async function stripe(path:string, body?:URLSearchParams) {
-  const response=await fetch('https://api.stripe.com/v1/'+path,{method:body?'POST':'GET',signal:AbortSignal.timeout(12000),headers:{Authorization:`Bearer ${Deno.env.get('STRIPE_SECRET_KEY')?.trim()}`,'Stripe-Version':'2025-02-24.acacia',...(body?{'Content-Type':'application/x-www-form-urlencoded'}:{})},body});
+export const stripeLiveMode=()=>!/^(sk|rk)_test_/.test(Deno.env.get('STRIPE_SECRET_KEY')?.trim() || '');
+export async function stripe(path:string, body?:URLSearchParams, idempotencyKey?:string) {
+  const response=await fetch('https://api.stripe.com/v1/'+path,{method:body?'POST':'GET',signal:AbortSignal.timeout(12000),headers:{Authorization:`Bearer ${Deno.env.get('STRIPE_SECRET_KEY')?.trim()}`,'Stripe-Version':'2025-02-24.acacia',...(body?{'Content-Type':'application/x-www-form-urlencoded'}:{}),...(idempotencyKey?{'Idempotency-Key':idempotencyKey}:{})},body});
   const result=await response.json();
   if(!response.ok) throw new Error('Stripe request failed: '+response.status);
   return result;
@@ -38,7 +40,7 @@ export async function findLink(plan:string) {
     if(link) {
       const items=await stripe(`payment_links/${link.id}/line_items`);
       if(items.data.length!==1 || items.data[0].quantity!==1 || !validPrice(items.data[0].price,plan)) throw new Error('Payment link price mismatch');
-      return link;
+      return {...link,price:items.data[0].price};
     }
     if(!list.has_more) break; cursor=list.data.at(-1).id;
   }
@@ -51,21 +53,24 @@ export async function syncSubscription(id:string,checkout?:any) {
   let intent=known;
   if(!intent) {
     const session=checkout || (await stripe('checkout/sessions?subscription='+encodeURIComponent(id)+'&limit=1')).data[0];
-    if(!session?.client_reference_id || !session.payment_link || session.mode!=='subscription') return;
+    if(!session?.client_reference_id || session.mode!=='subscription') return;
     if(!/^[0-9a-f-]{36}$/i.test(session.client_reference_id)) return;
     const found=await client.from('billing_checkout_intents').select('*').eq('id',session.client_reference_id).maybeSingle();
     if(found.error) throw found.error;
     intent=found.data;
-    if(!intent || intent.payment_link_id!==session.payment_link || session.subscription!==id || !session.livemode) return;
+    // A webhook can arrive between Checkout creation and persisting its ID.
+    // Retry that delivery instead of acknowledging a session we cannot bind yet.
+    if(intent && !intent.payment_link_id && !intent.checkout_session_id) throw new Error('Checkout session binding pending');
+    if(!matchesCheckout(session,intent,id)) return;
   }
   const observed_at=new Date().toISOString();
   const sub=await stripe('subscriptions/'+encodeURIComponent(id));
   const item=sub.items?.data?.[0];
-  if(!sub.livemode || sub.items.data.length!==1 || item.quantity!==1 || !validPrice(item.price,intent.plan)) throw new Error('Subscription plan mismatch');
+  if(sub.livemode!==stripeLiveMode() || sub.livemode!==intent.livemode || sub.items.data.length!==1 || item.quantity!==1 || !validPrice(item.price,intent.plan) || (intent.price_id && item.price.id!==intent.price_id) || (intent.stripe_customer_id && sub.customer!==intent.stripe_customer_id)) throw new Error('Subscription plan mismatch');
   const end=sub.current_period_end || item.current_period_end;
-  const result=await client.rpc('sync_billing_subscription',{intent_id:intent.id,snapshot:{id:sub.id,customer:sub.customer,status:sub.status,amount:item.price.unit_amount,currency:item.price.currency,period_end:end?new Date(end*1000).toISOString():null,cancel_at_period_end:sub.cancel_at_period_end,observed_at}});
+  const result=await client.rpc('sync_billing_subscription',{intent_id:intent.id,snapshot:{id:sub.id,customer:sub.customer,status:sub.status,amount:item.price.unit_amount,currency:item.price.currency,period_end:end?new Date(end*1000).toISOString():null,cancel_at_period_end:sub.cancel_at_period_end,observed_at,livemode:sub.livemode}});
   if(result.error) throw result.error;
-  if(!isAddon(intent.plan) && ['active','trialing'].includes(sub.status)) {
+  if(sub.livemode && !isAddon(intent.plan) && ['active','trialing'].includes(sub.status)) {
     const cleared=await client.from('account_plan_previews').delete().eq('user_id',intent.user_id);
     if(cleared.error) throw cleared.error;
   }

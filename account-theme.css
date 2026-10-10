@@ -17,6 +17,9 @@ body.auth-page {
   background: #f5f5fa;
   color: #202329;
 }
+.saved-payment-methods { list-style: none; margin: 16px 0; padding: 0; }
+.saved-payment-methods li { padding: 12px 0; border-bottom: 1px solid #e4e0eb; overflow-wrap: anywhere; }
+.payment-methods-note { margin-top: 16px; font-size: 12px; }
 .auth-bg {
   background: linear-gradient(150deg, #daf0e8 0%, #e9e6fa 54%, #f8f8fb 100%);
 }

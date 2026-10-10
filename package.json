@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "test:site-editor": "node --test site-editor.test.js",
+    "test:payments": "node --test saved-payments.test.js",
     "supabase:status": "supabase status",
     "supabase:pull": "supabase db pull",
     "supabase:push": "supabase db push",

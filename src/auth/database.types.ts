@@ -1,4 +1,4 @@
-export type Json =
+﻿export type Json =
   | string
   | number
   | boolean
@@ -39,6 +39,138 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_plan_previews: {
+        Row: {
+          created_at: string
+          plan: string
+          user_id: string
+          website: string
+        }
+        Insert: {
+          created_at?: string
+          plan: string
+          user_id: string
+          website: string
+        }
+        Update: {
+          created_at?: string
+          plan?: string
+          user_id?: string
+          website?: string
+        }
+        Relationships: []
+      }
+      billing_checkout_intents: {
+        Row: {
+          checkout_session_id: string | null
+          closed_at: string | null
+          created_at: string
+          expires_at: string | null
+          id: string
+          livemode: boolean
+          payment_link_id: string | null
+          plan: string
+          price_id: string | null
+          stripe_customer_id: string | null
+          subscription_id: string | null
+          user_id: string
+        }
+        Insert: {
+          checkout_session_id?: string | null
+          closed_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          livemode?: boolean
+          payment_link_id?: string | null
+          plan: string
+          price_id?: string | null
+          stripe_customer_id?: string | null
+          subscription_id?: string | null
+          user_id: string
+        }
+        Update: {
+          checkout_session_id?: string | null
+          closed_at?: string | null
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          livemode?: boolean
+          payment_link_id?: string | null
+          plan?: string
+          price_id?: string | null
+          stripe_customer_id?: string | null
+          subscription_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      billing_customers: {
+        Row: {
+          created_at: string
+          livemode: boolean
+          stripe_customer_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          livemode: boolean
+          stripe_customer_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          livemode?: boolean
+          stripe_customer_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      billing_subscriptions: {
+        Row: {
+          amount: number
+          cancel_at_period_end: boolean
+          currency: string
+          current_period_end: string | null
+          livemode: boolean
+          observed_at: string
+          plan: string
+          status: string
+          stripe_customer_id: string
+          stripe_subscription_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          cancel_at_period_end?: boolean
+          currency: string
+          current_period_end?: string | null
+          livemode?: boolean
+          observed_at: string
+          plan: string
+          status: string
+          stripe_customer_id: string
+          stripe_subscription_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          cancel_at_period_end?: boolean
+          currency?: string
+          current_period_end?: string | null
+          livemode?: boolean
+          observed_at?: string
+          plan?: string
+          status?: string
+          stripe_customer_id?: string
+          stripe_subscription_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       boosts: {
         Row: {
           active: boolean | null
@@ -256,6 +388,10 @@ export type Database = {
         Returns: boolean
       }
       insert_campaign_visits: { Args: never; Returns: undefined }
+      sync_billing_subscription: {
+        Args: { intent_id: string; snapshot: Json }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role: "client" | "staff" | "admin"

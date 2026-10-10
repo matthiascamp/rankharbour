@@ -5,14 +5,19 @@ const NAMES = {starter:'Starter',growth:'Growth',pro:'Pro',enterprise:'Enterpris
 export function initBilling(root) {
   const status=root.querySelector('#billing-status');
   const records=root.querySelector('#billing-records');
+  const cards=root.querySelector('#payment-methods-list');
+  const cardsStatus=root.querySelector('#payment-methods-status');
+  const saveCard=root.querySelector('#save-payment-method');
   const messages=[...root.querySelectorAll('[data-billing-message]')];
   const buttons=[...root.querySelectorAll('[data-subscribe]')];
   const addonSwitch=root.querySelector('#backlinks-toggle');
   const addonStatus=root.querySelector('#backlinks-availability');
-  let userId=null, generation=0, controller=null, loading=false, subscriptions=[], checked=false, preview=null;
+  let userId=null, generation=0, controller=null, loading=false, subscriptions=[], checked=false, preview=null, paymentMethods=[], testMode=false;
   const message=text=>messages.forEach(el=>{el.textContent=text;});
   const hasSubscription=()=>subscriptions.some(s=>!isAddon(s.plan)&&!['canceled','incomplete_expired'].includes(s.status));
   function renderButtons() {
+    saveCard.disabled=loading||!checked||!userId;
+    saveCard.textContent=paymentMethods.length?'Add another card':'Save a payment method';
     const activeBase=!!preview||subscriptions.some(s=>!isAddon(s.plan)&&['active','trialing'].includes(s.status));
     const hasAddon=subscriptions.some(s=>s.plan===ADDON&&!['canceled','incomplete_expired'].includes(s.status));
     addonSwitch.checked=hasAddon;
@@ -40,6 +45,13 @@ export function initBilling(root) {
   }
   function render() {
     records.replaceChildren();
+    cards.replaceChildren();
+    cardsStatus.textContent=(testMode?'Test mode · ':'')+(paymentMethods.length?'Saved securely with Stripe. Select your card when checking out.':'No saved payment methods yet.');
+    paymentMethods.forEach(card=>{
+      const item=document.createElement('li');
+      item.textContent=`${String(card.brand).toUpperCase()} ending ${card.last4} · Expires ${String(card.expMonth).padStart(2,'0')}/${card.expYear}`;
+      cards.append(item);
+    });
     status.textContent=subscriptions.length?'Your subscription details are synced from Stripe.':'No subscription yet. Choose a plan in Plans & Pricing to get started.';
     if(preview) {
       status.textContent=`Your ${NAMES[preview.plan]} plan is active.`;
@@ -72,9 +84,9 @@ export function initBilling(root) {
     try {
       const data=await request({action:'status'},controller.signal);
       if(version!==generation) return;
-      subscriptions=data.subscriptions;preview=data.preview||null;checked=true;message('');render();
+      subscriptions=data.subscriptions;preview=data.preview||null;paymentMethods=data.paymentMethods||[];testMode=!!data.testMode;checked=true;message('');render();
     } catch(error) {
-      if(version===generation && error.name!=='AbortError') {status.textContent='Subscription details could not be loaded.';message(error.message);}
+      if(version===generation && error.name!=='AbortError') {status.textContent='Subscription details could not be loaded.';cardsStatus.textContent='Payment methods could not be loaded. Refresh status to try again.';message(error.message);}
     } finally {if(version===generation){loading=false;renderButtons();}}
   }
   async function openBilling(body,button) {
@@ -88,9 +100,9 @@ export function initBilling(root) {
       const data=await request(body,controller.signal);
       if(version!==generation) {tab?.close();return;}
       const url=new URL(data.url);
-      if(url.protocol!=='https:'||!['buy.stripe.com','billing.stripe.com'].includes(url.hostname)) throw new Error('Unexpected checkout destination.');
+      if(url.protocol!=='https:'||!['buy.stripe.com','checkout.stripe.com','billing.stripe.com'].includes(url.hostname)) throw new Error('Unexpected checkout destination.');
       if(tab&&!tab.closed) tab.location.href=url.href;else window.location.assign(url.href);
-      message('Complete the steps in Stripe, then return here and refresh status. Your subscription appears after Stripe confirms it.');
+      message(body.action==='save-payment-method'?'Save your card in Stripe, then return here and refresh status. You will not be charged.':'Complete the steps in Stripe, then return here and refresh status. Your subscription appears after Stripe confirms it.');
     } catch(error) {tab?.close();if(version===generation&&error.name!=='AbortError') message(error.message);}
     finally {if(version===generation){loading=false;button.disabled=false;renderButtons();}}
   }
@@ -109,11 +121,12 @@ export function initBilling(root) {
     openBilling({action:'checkout',plan:ADDON},addonSwitch);
   });
   root.querySelector('#billing-refresh').addEventListener('click',refresh);
+  saveCard.addEventListener('click',()=>openBilling({action:'save-payment-method'},saveCard));
   window.addEventListener('focus',()=>{if(userId) refresh();});
   return {
     setUser(id) {
       if(userId===id) return;
-      generation++;controller?.abort();userId=id;loading=false;subscriptions=[];preview=null;checked=false;records.replaceChildren();message('');status.textContent=id?'Loading subscription details…':'';renderButtons();
+      generation++;controller?.abort();userId=id;loading=false;subscriptions=[];preview=null;paymentMethods=[];testMode=false;checked=false;records.replaceChildren();cards.replaceChildren();message('');status.textContent=id?'Loading subscription details…':'';cardsStatus.textContent=id?'Loading payment methods…':'';renderButtons();
       // Auth event callbacks must finish before calling the SDK again.
       if(id) setTimeout(refresh,0);
     },

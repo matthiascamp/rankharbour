@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="account.css?v=20261010">
   <link rel="stylesheet" href="dashboard.css?v=20261010">
   <link rel="stylesheet" href="seo-evaluation.css?v=20261006">
-  <link rel="stylesheet" href="account-theme.css?v=20261010">
+  <link rel="stylesheet" href="account-theme.css?v=20261010b">
   <!-- Pinned, locally vendored Supabase SDK. src/auth/client.js imports the bare specifier. -->
   <script type="importmap">
     { "imports": { "@supabase/supabase-js": "./vendor/supabase-js@2.117.2/supabase.mjs" } }
@@ -913,6 +913,14 @@
             <button type="button" class="btn-chalk" id="billing-refresh">Refresh status</button><div class="billing-help"><h4>Find the right support.</h4><p>Explore all five SEO plans, compare what is included, and explore optional backlinks support.</p><button type="button" class="btn-brass" data-dash-go="pricing">Explore plans &amp; add-ons <span aria-hidden="true">&#8599;</span></button></div>
             <p class="dash-status" data-billing-message role="status" aria-live="polite"></p>
           </section>
+          <section class="dash-box" aria-labelledby="payment-methods-heading">
+            <h3 class="dash-h3" id="payment-methods-heading">Payment methods</h3>
+            <p class="dash-box__text">Save a card securely with Stripe, then use it when you choose a plan. Saving a card does not start a subscription or charge you.</p>
+            <p class="dash-status" id="payment-methods-status" role="status" aria-live="polite">Loading payment methods&hellip;</p>
+            <ul class="saved-payment-methods" id="payment-methods-list"></ul>
+            <button class="btn-chalk" id="save-payment-method" type="button" disabled>Save a payment method</button>
+            <p class="dash-box__text payment-methods-note">By saving a card, you agree that Stripe can store it for future plan purchases and recurring payments you authorise. Your full card details stay with Stripe.</p>
+          </section>
 
           <div class="dash-box">
             <h3 class="dash-h3 dash-h3--flush">Your profile</h3><p class="dash-box__text">The details associated with your account.</p><dl class="auth-details dash-details">
@@ -954,7 +962,7 @@
   </div>
 </main>
 
-<script type="module" src="account.js?v=20261010"></script>
+<script type="module" src="account.js?v=20261010b"></script>
 <script>
   // Fallback if account.js cannot load at all (blocked, 404, or no module support).
   setTimeout(function () {

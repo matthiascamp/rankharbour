@@ -1,4 +1,5 @@
-import {db,PLANS,findLink,stripe,checkoutError} from '../_shared/billing.ts';
+import {db,PLANS,stripe,checkoutError,stripeLiveMode} from '../_shared/billing.ts';
+import {customerFor,savedCards,createSetup,subscriptionCheckout} from '../_shared/customers.ts';
 const cors={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'authorization, apikey, content-type, x-client-info','Access-Control-Allow-Methods':'POST, OPTIONS','Cache-Control':'no-store'};
 const reply=(body:unknown,status=200)=>Response.json(body,{status,headers:cors});
 Deno.serve(async req=>{
@@ -11,11 +12,20 @@ Deno.serve(async req=>{
   if(authError||!user) return reply({error:'Your session has expired. Please sign in again.'},401);
   try {
     const input=await req.json();
-    const {data:subs,error}=await client.from('billing_subscriptions').select('stripe_subscription_id,stripe_customer_id,plan,status,amount,currency,current_period_end,cancel_at_period_end,updated_at').eq('user_id',user.id).order('updated_at',{ascending:false});
+    const {data:subs,error}=await client.from('billing_subscriptions').select('stripe_subscription_id,stripe_customer_id,plan,status,amount,currency,current_period_end,cancel_at_period_end,updated_at,livemode').eq('user_id',user.id).eq('livemode',stripeLiveMode()).order('updated_at',{ascending:false});
     if(error) throw error;
     const {data:preview,error:previewError}=await client.from('account_plan_previews').select('plan,website').eq('user_id',user.id).maybeSingle();
     if(previewError) throw previewError;
-    if(input.action==='status') return reply({subscriptions:subs.map(({stripe_customer_id,...s})=>s),preview:preview?{...preview,amount:PLANS[preview.plan].amount}:null});
+    if(input.action==='status') {
+      const customer=await customerFor(user,subs);
+      return reply({subscriptions:subs.map(({stripe_customer_id,...s})=>s),preview:preview?{...preview,amount:PLANS[preview.plan].amount}:null,paymentMethods:await savedCards(customer),testMode:!stripeLiveMode()});
+    }
+    if(input.action==='save-payment-method') {
+      if(!Deno.env.get('STRIPE_WEBHOOK_SECRET')) return reply({error:'Payment method saving is being connected. Please try again shortly.'},503);
+      const customer=await customerFor(user,subs,true);
+      const session=await createSetup(customer,user.id);
+      return reply({url:session.url});
+    }
     if(input.action==='checkout') {
       if(!Object.hasOwn(PLANS,input.plan)) return reply({error:'Choose one of the available plans.'},400);
       const blocked=checkoutError(input.plan,subs,preview);
@@ -25,12 +35,9 @@ Deno.serve(async req=>{
       if(rateError) throw rateError;
       if((count||0)>=5) return reply({error:'Please wait a minute before opening checkout again.'},429);
       if(!Deno.env.get('STRIPE_WEBHOOK_SECRET')) return reply({error:'Checkout is being connected. Please try again shortly or contact RankHarbour.'},503);
-      const link=await findLink(input.plan);
-      const {data:intent,error:insertError}=await client.from('billing_checkout_intents').insert({user_id:user.id,plan:input.plan,payment_link_id:link.id}).select('id').single();
-      if(insertError) throw insertError;
-      const url=new URL(link.url);url.searchParams.set('client_reference_id',intent.id);
-      if(user.email) url.searchParams.set('prefilled_email',user.email);
-      return reply({url:url.href});
+      const customer=await customerFor(user,subs,true);
+      const session=await subscriptionCheckout(user,customer,input.plan);
+      return reply({url:session.url});
     }
     if(input.action==='portal') {
       // Customer ownership is read from trusted records, never from browser input.

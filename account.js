@@ -5,7 +5,7 @@
    ================================================================ */
 
 import { initDashboard } from './dashboard.js?v=20261010';
-import { initBilling } from './billing.js?v=20261006e';
+import { initBilling } from './billing.js?v=20261010b';
 
 window.__rhAuthBooted = true; // tells the inline watchdog in account.html that this module ran
 
@@ -88,7 +88,7 @@ function fillAccount(user) {
     dashboard.reset();
     setResetStatus('');
     shownUserId = user.id;
-    if (['seo','pricing','editor'].includes(entryParams.get('tab'))) dashboard.open(entryParams.get('tab'));
+    if (['seo','pricing','editor','account'].includes(entryParams.get('tab'))) dashboard.open(entryParams.get('tab'));
     const website = entryParams.get('website');
     if (website) {
       try { const url = new URL(website); if (['http:','https:'].includes(url.protocol)) $('#seo-url').value = url.href; } catch { /* Keep the field empty for invalid links. */ }

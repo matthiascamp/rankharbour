@@ -1,4 +1,5 @@
-import {syncSubscription} from '../_shared/billing.ts';
+import {syncSubscription,stripeLiveMode} from '../_shared/billing.ts';
+import {syncSavedCard} from '../_shared/customers.ts';
 import {verifySignature} from './signature.ts';
 Deno.serve(async req=>{
   if(req.method!=='POST') return new Response('Method not allowed',{status:405});
@@ -8,9 +9,10 @@ Deno.serve(async req=>{
   if(body.length>1000000 || !await verifySignature(body,req.headers.get('stripe-signature')||'',secret)) return new Response('Invalid signature',{status:400});
   try {
     const event=JSON.parse(body);
-    if(!event.livemode) return Response.json({received:true});
+    if(event.livemode!==stripeLiveMode()) return Response.json({received:true});
     const object=event.data.object;
-    if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type) && object.subscription) await syncSubscription(object.subscription,object);
+    if(event.type==='checkout.session.completed' && object.mode==='setup') await syncSavedCard(object);
+    else if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type) && object.subscription) await syncSubscription(object.subscription,object);
     else if(['customer.subscription.created','customer.subscription.updated','customer.subscription.deleted'].includes(event.type)) await syncSubscription(object.id);
     else if(['invoice.paid','invoice.payment_failed'].includes(event.type) && object.subscription) await syncSubscription(object.subscription);
     return Response.json({received:true});
