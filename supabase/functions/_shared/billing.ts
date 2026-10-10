@@ -12,11 +12,11 @@ export const PLANS: Record<string,{name:string;amount:number;url:string}> = {
 export const ADDON_PLAN='backlinks';
 // Keep historical records manageable without selling the retired add-on.
 export const isAddon=(plan:string)=>plan===ADDON_PLAN||plan==='google-business-posts';
-export function checkoutError(plan:string,subs:Array<{plan:string;status:string}>,preview:unknown) {
+export function checkoutError(plan:string,subs:Array<{plan:string;status:string;addons?:string[]}>,preview:unknown) {
   if(plan==='google-business-posts') return 'This add-on is no longer available. Choose Backlinks instead.';
   const current=subs.filter(s=>!['canceled','incomplete_expired'].includes(s.status));
   if(plan===ADDON_PLAN) {
-    if(current.some(s=>s.plan===ADDON_PLAN)) return 'You already have Backlinks. Manage it in Account centre.';
+    if(current.some(s=>s.plan===ADDON_PLAN||s.addons?.includes(ADDON_PLAN))) return 'You already have Backlinks. Manage it in Account centre.';
     if(!preview && !current.some(s=>!isAddon(s.plan) && ['active','trialing'].includes(s.status))) return 'An active SEO plan is required before adding Backlinks.';
   } else if(current.some(s=>!isAddon(s.plan))) return 'You already have an SEO subscription. Manage it before starting another plan.';
   return null;

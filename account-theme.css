@@ -537,3 +537,13 @@ body.auth-page {
 .plan:not(.plan--featured) .plan__foot > .btn-brass:hover { background: #f4eefb; }
 .plan__foot > [data-compare] { background: transparent; border-color: transparent; color: #796588; }
 .plan__foot > [data-compare]:hover { background: #f4eefb; }
+
+.subscription-review { background: #fff; border: 2px solid #c7b6e7; border-radius: 20px; padding: clamp(18px, 4vw, 32px); margin: 24px 0; color: #262233; scroll-margin-top: 100px; }
+.subscription-review[hidden] { display: none; }
+.subscription-review h3 { margin: 0 0 18px; font-size: 1.5rem; }
+.subscription-total { font-size: 1.3rem; font-weight: 700; padding-top: 12px; border-top: 1px solid #e4dced; }
+.subscription-review select { display: block; background: #faf8ff; color: #262233; border: 1px solid #bcb0cc; border-radius: 10px; padding: 12px; margin: 8px 0 16px; width: 100%; }
+.subscription-consent { display: flex; align-items: flex-start; gap: 10px; margin: 18px 0; }
+.subscription-consent input { width: 20px; height: 20px; flex-shrink: 0; accent-color: #71539a; }
+.subscription-review button, .subscription-review a { margin: 6px 8px 6px 0; white-space: normal; }
+#subscription-result { overflow-wrap: anywhere; }

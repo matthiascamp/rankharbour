@@ -126,8 +126,63 @@ export type Database = {
         }
         Relationships: []
       }
+      billing_orders: {
+        Row: {
+          amount: number
+          backlinks: boolean
+          confirmed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          items: Json
+          kind: string
+          livemode: boolean
+          payment_method_id: string | null
+          plan: string
+          state: string
+          stripe_customer_id: string
+          subscription_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          backlinks?: boolean
+          confirmed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          items: Json
+          kind: string
+          livemode: boolean
+          payment_method_id?: string | null
+          plan: string
+          state?: string
+          stripe_customer_id: string
+          subscription_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          backlinks?: boolean
+          confirmed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          items?: Json
+          kind?: string
+          livemode?: boolean
+          payment_method_id?: string | null
+          plan?: string
+          state?: string
+          stripe_customer_id?: string
+          subscription_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       billing_subscriptions: {
         Row: {
+          addons: string[]
           amount: number
           cancel_at_period_end: boolean
           currency: string
@@ -142,6 +197,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          addons?: string[]
           amount: number
           cancel_at_period_end?: boolean
           currency: string
@@ -156,6 +212,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          addons?: string[]
           amount?: number
           cancel_at_period_end?: boolean
           currency?: string
@@ -383,6 +440,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      claim_billing_order: {
+        Args: {
+          card_id: string
+          mode: boolean
+          order_id: string
+          owner_id: string
+        }
+        Returns: Json
+      }
       has_role: {
         Args: { requested_role: Database["public"]["Enums"]["app_role"] }
         Returns: boolean
@@ -390,6 +456,10 @@ export type Database = {
       insert_campaign_visits: { Args: never; Returns: undefined }
       sync_billing_subscription: {
         Args: { intent_id: string; snapshot: Json }
+        Returns: undefined
+      }
+      sync_direct_subscription: {
+        Args: { order_id: string; snapshot: Json }
         Returns: undefined
       }
     }

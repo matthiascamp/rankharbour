@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="account.css?v=20261010">
   <link rel="stylesheet" href="dashboard.css?v=20261010">
   <link rel="stylesheet" href="seo-evaluation.css?v=20261006">
-  <link rel="stylesheet" href="account-theme.css?v=20261010b">
+  <link rel="stylesheet" href="account-theme.css?v=20261010c">
   <!-- Pinned, locally vendored Supabase SDK. src/auth/client.js imports the bare specifier. -->
   <script type="importmap">
     { "imports": { "@supabase/supabase-js": "./vendor/supabase-js@2.117.2/supabase.mjs" } }
@@ -286,7 +286,7 @@
           <p class="dash-lede">Our SEO plans are designed to continuously improve your website&rsquo;s visibility, attract more relevant visitors, and adapt to how people are actually searching.</p>
           <details class="pricing-approach"><summary>How we approach your SEO</summary><p class="dash-lede">Rather than simply setting a list of keywords once and leaving them unchanged, we continuously monitor search performance, emerging opportunities, competitor activity, and changing customer search behaviour. We then use that data to improve pages, update targeting, create new content, and prioritise the opportunities most likely to increase qualified organic traffic.</p></details>
           <p class="plans-currency">All prices are in Australian dollars. Compare monthly plans below.*</p>
-          <p class="dash-note">Choose a plan to pay securely with Stripe. Your subscription is linked to this signed-in account after payment confirmation. Manage billing and cancellation in Account centre. The service inclusions below retain their stated monthly delivery schedule.</p>
+          <p class="dash-note">Select optional Backlinks, choose your plan, then review and confirm your subscription here using a saved card. Manage billing and cancellation in Account centre. The service inclusions below retain their stated monthly delivery schedule.</p>
           <p class="dash-status" data-billing-message role="status" aria-live="polite"></p>
 
           <!-- All five plans share one responsive grid; each card names its category. -->
@@ -574,10 +574,25 @@
     <input id="backlinks-toggle" class="backlinks-switch" type="checkbox" role="switch" aria-label="Add backlinks" aria-describedby="backlinks-description backlinks-availability" disabled>
     <span class="backlinks-addon__availability" id="backlinks-availability">Loading account&hellip;</span>
   </div>
-<p class="backlinks-addon__terms">Billed separately every 28 days. Manage or cancel in Account centre, including if you cancel your SEO plan.</p>
+<p class="backlinks-addon__terms">Include Backlinks with a new plan for one payment every 28 days. Add-ons purchased for an existing plan are billed separately. Manage subscriptions in Account centre.</p>
 </aside>
 
           <p class="plans-currency" style="margin-top: 14px;">* A month is defined by 28 days.</p>
+
+          <section id="subscription-review" class="subscription-review" aria-labelledby="subscription-review-title" hidden>
+            <h3 id="subscription-review-title" tabindex="-1">Review your subscription</h3>
+            <div id="subscription-summary"></div>
+            <div id="subscription-payment">
+              <label for="subscription-card">Saved payment method</label>
+              <select id="subscription-card"></select>
+              <button id="subscription-save-card" type="button" class="btn-chalk" hidden>Save a card to continue</button>
+              <label class="subscription-consent"><input id="subscription-consent" type="checkbox"> <span>I authorise RankHarbour to charge my selected card today and every 28 days until I cancel in Account centre.</span></label>
+              <button id="subscription-confirm" type="button" class="btn-brass" disabled>Confirm subscription</button>
+              <button id="subscription-dismiss" type="button" class="btn-chalk">Cancel</button>
+            </div>
+            <p id="subscription-result" role="status" aria-live="polite"></p>
+            <div id="subscription-receipt-actions"></div>
+          </section>
 
           <div class="compare" id="compare">
             <div class="compare__head">
@@ -962,7 +977,7 @@
   </div>
 </main>
 
-<script type="module" src="account.js?v=20261010b"></script>
+<script type="module" src="account.js?v=20261010c"></script>
 <script>
   // Fallback if account.js cannot load at all (blocked, 404, or no module support).
   setTimeout(function () {

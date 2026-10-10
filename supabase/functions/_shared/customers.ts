@@ -26,7 +26,7 @@ export async function customerFor(user:any,subs:any[],create=false) {
 export async function savedCards(customer:string|null) {
   if(!customer) return [];
   const methods=await stripe(`customers/${encodeURIComponent(customer)}/payment_methods?type=card&limit=100`);
-  return methods.data.map(cardSummary).filter(Boolean);
+  return methods.data.filter((method:any)=>cardSummary(method)).map((method:any)=>({id:method.id,...cardSummary(method)}));
 }
 export async function createSetup(customer:string,userId:string) {
   return stripe('checkout/sessions',setupParams(customer,userId,origin()));

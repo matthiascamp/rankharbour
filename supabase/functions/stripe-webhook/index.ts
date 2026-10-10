@@ -1,4 +1,5 @@
-import {syncSubscription,stripeLiveMode} from '../_shared/billing.ts';
+import {syncAnySubscription} from '../_shared/orders.ts';
+import {stripeLiveMode} from '../_shared/billing.ts';
 import {syncSavedCard} from '../_shared/customers.ts';
 import {verifySignature} from './signature.ts';
 Deno.serve(async req=>{
@@ -12,9 +13,9 @@ Deno.serve(async req=>{
     if(event.livemode!==stripeLiveMode()) return Response.json({received:true});
     const object=event.data.object;
     if(event.type==='checkout.session.completed' && object.mode==='setup') await syncSavedCard(object);
-    else if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type) && object.subscription) await syncSubscription(object.subscription,object);
-    else if(['customer.subscription.created','customer.subscription.updated','customer.subscription.deleted'].includes(event.type)) await syncSubscription(object.id);
-    else if(['invoice.paid','invoice.payment_failed'].includes(event.type) && object.subscription) await syncSubscription(object.subscription);
+    else if(['checkout.session.completed','checkout.session.async_payment_succeeded'].includes(event.type) && object.subscription) await syncAnySubscription(object.subscription,object);
+    else if(['customer.subscription.created','customer.subscription.updated','customer.subscription.deleted'].includes(event.type)) await syncAnySubscription(object.id);
+    else if(['invoice.paid','invoice.payment_failed'].includes(event.type) && object.subscription) await syncAnySubscription(object.subscription);
     return Response.json({received:true});
   } catch(e) {
     // Non-2xx causes Stripe to retry. Never acknowledge a failed database write.
